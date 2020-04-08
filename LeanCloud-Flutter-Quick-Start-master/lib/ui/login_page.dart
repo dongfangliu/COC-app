@@ -16,21 +16,21 @@ class _LoginPageState extends State<LoginPage>
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
-  final FocusNode myFocusNodeEmailLogin = FocusNode();
+  final FocusNode myFocusNodePhoneLogin = FocusNode();
   final FocusNode myFocusNodePasswordLogin = FocusNode();
 
   final FocusNode myFocusNodePassword = FocusNode();
-  final FocusNode myFocusNodeEmail = FocusNode();
+  final FocusNode myFocusNodePhone = FocusNode();
   final FocusNode myFocusNodeName = FocusNode();
 
-  TextEditingController loginEmailController = new TextEditingController();
+  TextEditingController loginPhoneController = new TextEditingController();
   TextEditingController loginPasswordController = new TextEditingController();
 
   bool _obscureTextLogin = true;
   bool _obscureTextSignup = true;
   bool _obscureTextSignupConfirm = true;
 
-  TextEditingController signupEmailController = new TextEditingController();
+  TextEditingController signupPhoneController = new TextEditingController();
   TextEditingController signupNameController = new TextEditingController();
   TextEditingController signupPasswordController = new TextEditingController();
   TextEditingController signupConfirmPasswordController =
@@ -121,7 +121,7 @@ class _LoginPageState extends State<LoginPage>
   @override
   void dispose() {
     myFocusNodePassword.dispose();
-    myFocusNodeEmail.dispose();
+    myFocusNodePhone.dispose();
     myFocusNodeName.dispose();
     _pageController?.dispose();
     super.dispose();
@@ -228,9 +228,9 @@ class _LoginPageState extends State<LoginPage>
                         padding: EdgeInsets.only(
                             top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
                         child: TextField(
-                          focusNode: myFocusNodeEmailLogin,
-                          controller: loginEmailController,
-                          keyboardType: TextInputType.emailAddress,
+                          focusNode: myFocusNodePhoneLogin,
+                          controller: loginPhoneController,
+                          keyboardType: TextInputType.phone,
                           style: TextStyle(
                               fontFamily: "WorkSansSemiBold",
                               fontSize: 16.0,
@@ -238,14 +238,17 @@ class _LoginPageState extends State<LoginPage>
                           decoration: InputDecoration(
                             border: InputBorder.none,
                             icon: Icon(
-                              FontAwesomeIcons.envelope,
+                              FontAwesomeIcons.phone,
                               color: Colors.black,
                               size: 22.0,
                             ),
-                            hintText: "Email Address",
+                            hintText: "Phone Number",
                             hintStyle: TextStyle(
                                 fontFamily: "WorkSansSemiBold", fontSize: 17.0),
                           ),
+                          inputFormatters: <TextInputFormatter>[
+                              WhitelistingTextInputFormatter.digitsOnly,//只输入数字
+                            ],
                         ),
                       ),
                       Container(
@@ -509,9 +512,9 @@ class _LoginPageState extends State<LoginPage>
                         padding: EdgeInsets.only(
                             top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
                         child: TextField(
-                          focusNode: myFocusNodeEmail,
-                          controller: signupEmailController,
-                          keyboardType: TextInputType.emailAddress,
+                          focusNode: myFocusNodePhone,
+                          controller: signupPhoneController,
+                          keyboardType: TextInputType.phone,
                           style: TextStyle(
                               fontFamily: "WorkSansSemiBold",
                               fontSize: 16.0,
@@ -519,13 +522,18 @@ class _LoginPageState extends State<LoginPage>
                           decoration: InputDecoration(
                             border: InputBorder.none,
                             icon: Icon(
-                              FontAwesomeIcons.envelope,
+                              FontAwesomeIcons.phone,
                               color: Colors.black,
                             ),
-                            hintText: "Email Address",
+                            hintText: "Phone Number",
                             hintStyle: TextStyle(
                                 fontFamily: "WorkSansSemiBold", fontSize: 16.0),
+
+
                           ),
+                          inputFormatters: <TextInputFormatter>[
+                            WhitelistingTextInputFormatter.digitsOnly,//只输入数字
+                          ],
                         ),
                       ),
                       Container(
