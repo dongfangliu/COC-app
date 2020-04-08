@@ -8,8 +8,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     LeanCloud.initialize(
-        'ikGGdRE2YcVOemAaRbgp1xGJ-gzGzoHsz', 'NUKmuRbdAhg1vrb2wexYo1jo',
-        server: 'https://ikggdre2.lc-cn-n1-shared.com');
+        'A8faPkPtNoVClEOOU2blqXpn-gzGzoHsz', 'lIFv9FsAOTtpRzJO6aSDimKh',
+        server: 'https://a8fapkpt.lc-cn-n1-shared.com');
     LCLogger.setLevel(LCLogger.DebugLevel);
     return MaterialApp(
       title: 'Flutter Demo',
@@ -55,7 +55,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _incrementCounter() async {
     // 查询
-    int limit = 2;
+    int limit = 20;
     LCQuery<LCObject> query = new LCQuery<LCObject>('Hello');
     query.limit(limit);
     List<LCObject> list = await query.find();
