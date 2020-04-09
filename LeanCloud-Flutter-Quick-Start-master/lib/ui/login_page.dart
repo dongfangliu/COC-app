@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../style/theme.dart' as Theme;
 import '../utils/bubble_indication_painter.dart';
+import 'dart:async';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key}) : super(key: key);
@@ -22,6 +23,7 @@ class _LoginPageState extends State<LoginPage>
   final FocusNode myFocusNodePassword = FocusNode();
   final FocusNode myFocusNodePhone = FocusNode();
   final FocusNode myFocusNodeName = FocusNode();
+  final FocusNode  myFocusNodeVerifyPhone = FocusNode();
 
   TextEditingController loginPhoneController = new TextEditingController();
   TextEditingController loginPasswordController = new TextEditingController();
@@ -35,12 +37,18 @@ class _LoginPageState extends State<LoginPage>
   TextEditingController signupPasswordController = new TextEditingController();
   TextEditingController signupConfirmPasswordController =
       new TextEditingController();
+  TextEditingController signupVerifyPhoneController =
+  new TextEditingController();
 
   PageController _pageController;
 
   Color left = Colors.black;
   Color right = Colors.white;
 
+
+  bool _getVerifyCodeEnabled = true;
+  int _timeToGetVerifyCode = 30;
+  Timer _verifyCodeTimer;
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -52,9 +60,9 @@ class _LoginPageState extends State<LoginPage>
         child: SingleChildScrollView(
               child: Container(
                 width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height >= 775.0
+                height: MediaQuery.of(context).size.height >= 900.0
                     ? MediaQuery.of(context).size.height
-                    : 775.0,
+                    : 900.0,
                 decoration: new BoxDecoration(
                   gradient: new LinearGradient(
                       colors: [
@@ -122,8 +130,10 @@ class _LoginPageState extends State<LoginPage>
   void dispose() {
     myFocusNodePassword.dispose();
     myFocusNodePhone.dispose();
+    myFocusNodeVerifyPhone.dispose();
     myFocusNodeName.dispose();
     _pageController?.dispose();
+    _verifyCodeTimer.cancel();
     super.dispose();
   }
 
@@ -458,7 +468,24 @@ class _LoginPageState extends State<LoginPage>
       ),
     );
   }
-
+  void startGetVerifyCodeTimer() {
+    const oneSec = const Duration(seconds:1);
+    _verifyCodeTimer = new Timer.periodic(
+      oneSec,
+          (Timer timer) => setState(
+            () {
+          if (_timeToGetVerifyCode < 1) {
+            _getVerifyCodeEnabled = true;
+            _timeToGetVerifyCode =30;
+            timer.cancel();
+          } else {
+            _getVerifyCodeEnabled = false;
+            _timeToGetVerifyCode = _timeToGetVerifyCode - 1;
+          }
+        },
+      ),
+    );
+  }
   Widget _buildSignUp(BuildContext context) {
     return Container(
       padding: EdgeInsets.only(top: 23.0),
@@ -476,7 +503,7 @@ class _LoginPageState extends State<LoginPage>
                 ),
                 child: Container(
                   width: 300.0,
-                  height: 360.0,
+                  height: 430.0,
                   child: Column(
                     children: <Widget>[
                       Padding(
@@ -536,6 +563,48 @@ class _LoginPageState extends State<LoginPage>
                           ],
                         ),
                       ),
+                      Padding(
+                        padding: EdgeInsets.only(
+                            top: 0.0, bottom: 20.0, left: 25.0, right: 25.0),
+                        child:
+                        Row(children: <Widget>[
+                          Expanded(child:
+                          TextField(
+                            focusNode: myFocusNodeVerifyPhone,
+                            controller: signupVerifyPhoneController,
+                            keyboardType: TextInputType.text,
+                            style: TextStyle(
+                                fontFamily: "WorkSansSemiBold",
+                                fontSize: 16.0,
+                                color: Colors.black),
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              hintText: "Verify Code",
+                              hintStyle: TextStyle(
+                                  fontFamily: "WorkSansSemiBold", fontSize: 16.0),
+                            ),
+                            inputFormatters: <TextInputFormatter>[
+                              WhitelistingTextInputFormatter.digitsOnly,//只输入数字
+                            ],
+                          ),),
+                          RaisedButton(
+                            color:Colors.blueAccent,
+                              highlightColor: Colors.transparent,
+                              splashColor: Theme.Colors.loginGradientEnd,
+                              disabledColor: Colors.grey,
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5.0))),
+                              child:  Text(
+                                _getVerifyCodeEnabled?"Get":"Get ("+_timeToGetVerifyCode.toString()+")",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16.0,
+                                      fontFamily: "WorkSansBold"),
+                                ),
+                              onPressed:_onGetVerifyCodeButtonPress(),
+                                  )
+                        ],),
+
+                      ),
                       Container(
                         width: 250.0,
                         height: 1.0,
@@ -555,7 +624,7 @@ class _LoginPageState extends State<LoginPage>
                           decoration: InputDecoration(
                             border: InputBorder.none,
                             icon: Icon(
-                              FontAwesomeIcons.lock,
+                              FontAwesomeIcons.code,
                               color: Colors.black,
                             ),
                             hintText: "Password",
@@ -616,7 +685,7 @@ class _LoginPageState extends State<LoginPage>
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(top: 340.0),
+                margin: EdgeInsets.only(top: 420.0),
                 decoration: new BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(5.0)),
                   boxShadow: <BoxShadow>[
@@ -671,6 +740,14 @@ class _LoginPageState extends State<LoginPage>
         duration: Duration(milliseconds: 500), curve: Curves.decelerate);
   }
 
+  Function _onGetVerifyCodeButtonPress(){
+    if(_getVerifyCodeEnabled ) {
+
+      return (){showInSnackBar("Get Code button pressed");startGetVerifyCodeTimer();};
+    }else{
+      return null;
+    }
+  }
   void _onSignUpButtonPress() {
     _pageController?.animateToPage(1,
         duration: Duration(milliseconds: 500), curve: Curves.decelerate);
