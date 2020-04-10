@@ -1,9 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:leancloud_storage/leancloud.dart';
 import '../style/theme.dart' as Theme;
 import '../utils/bubble_indication_painter.dart';
 import 'dart:async';
+import '../LeanCloud/leancloud_login.dart';
+
+enum loginMsgs {
+  Login_LoginSuccess,
+  Login_NotLoggedIn,
+  Login_NotRegistered,
+  Login_WrongPWD,
+  Login_TryLater,
+  SignUp_UsernameUsed,
+  SignUp_MobileUsed,
+  SignUp_SignUpSuccess,
+  QQ_NotInstalled,
+}
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key}) : super(key: key);
@@ -149,7 +163,7 @@ class _LoginPageState extends State<LoginPage>
     _pageController = PageController();
   }
 
-  void showInSnackBar(String value) {
+  void showInSnackBar(String value, {bgColor = Colors.blue}) {
     FocusScope.of(context).requestFocus(new FocusNode());
     _scaffoldKey.currentState?.removeCurrentSnackBar();
     _scaffoldKey.currentState.showSnackBar(new SnackBar(
@@ -161,7 +175,7 @@ class _LoginPageState extends State<LoginPage>
             fontSize: 16.0,
             fontFamily: "WorkSansSemiBold"),
       ),
-      backgroundColor: Colors.blue,
+      backgroundColor: bgColor,
       duration: Duration(seconds: 3),
     ));
   }
@@ -331,22 +345,22 @@ class _LoginPageState extends State<LoginPage>
                       tileMode: TileMode.clamp),
                 ),
                 child: MaterialButton(
-                    highlightColor: Colors.transparent,
-                    splashColor: Theme.Colors.loginGradientEnd,
-                    //shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5.0))),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10.0, horizontal: 42.0),
-                      child: Text(
-                        "LOGIN",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 25.0,
-                            fontFamily: "WorkSansBold"),
-                      ),
+                  highlightColor: Colors.transparent,
+                  splashColor: Theme.Colors.loginGradientEnd,
+                  //shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5.0))),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 10.0, horizontal: 42.0),
+                    child: Text(
+                      "LOGIN",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 25.0,
+                          fontFamily: "WorkSansBold"),
                     ),
-                    onPressed: () =>
-                        showInSnackBar("Login button pressed")),
+                  ),
+                  onPressed: _phoneLoginAttempt,
+                )
               ),
             ],
           ),
@@ -441,7 +455,7 @@ class _LoginPageState extends State<LoginPage>
               Padding(
                 padding: EdgeInsets.only(top: 10.0),
                 child: GestureDetector(
-                  onTap: () => showInSnackBar("QQ button pressed"),
+                  onTap: _qqLoginAttempt,
                   child: Container(
                     padding: const EdgeInsets.all(15.0),
                     decoration: new BoxDecoration(
@@ -711,22 +725,22 @@ class _LoginPageState extends State<LoginPage>
                       tileMode: TileMode.clamp),
                 ),
                 child: MaterialButton(
-                    highlightColor: Colors.transparent,
-                    splashColor: Theme.Colors.loginGradientEnd,
-                    //shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5.0))),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10.0, horizontal: 42.0),
-                      child: Text(
-                        "SIGN UP",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 25.0,
-                            fontFamily: "WorkSansBold"),
-                      ),
+                  highlightColor: Colors.transparent,
+                  splashColor: Theme.Colors.loginGradientEnd,
+                  //shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5.0))),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 10.0, horizontal: 42.0),
+                    child: Text(
+                      "SIGN UP",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 25.0,
+                          fontFamily: "WorkSansBold"),
                     ),
-                    onPressed: () =>
-                        showInSnackBar("SignUp button pressed")),
+                  ),
+                  onPressed: _signUpAttempt,
+                )
               ),
             ],
           ),
@@ -737,7 +751,7 @@ class _LoginPageState extends State<LoginPage>
 
   void _onSignInButtonPress() {
     _pageController.animateToPage(0,
-        duration: Duration(milliseconds: 500), curve: Curves.decelerate);
+        duration: Duration(milliseconds: 200), curve: Curves.decelerate);
   }
 
   Function _onGetVerifyCodeButtonPress(){
@@ -750,7 +764,7 @@ class _LoginPageState extends State<LoginPage>
   }
   void _onSignUpButtonPress() {
     _pageController?.animateToPage(1,
-        duration: Duration(milliseconds: 500), curve: Curves.decelerate);
+        duration: Duration(milliseconds: 200), curve: Curves.decelerate);
   }
 
   void _toggleLogin() {
@@ -769,5 +783,91 @@ class _LoginPageState extends State<LoginPage>
     setState(() {
       _obscureTextSignupConfirm = !_obscureTextSignupConfirm;
     });
+  }
+
+  _signUpAttempt() async {
+    // showInSnackBar("SignUp button pressed");
+    // Get sign up information
+    String name = signupNameController.text;
+    String phone = signupPhoneController.text;
+    String pwd = signupPasswordController.text;
+    String confirmPwd = signupConfirmPasswordController.text;
+    if (pwd != confirmPwd){
+      showInSnackBar("Passwords do not match", bgColor: Colors.red[500]);
+      return;
+    }
+
+    loginMsgs returnMsg = await LeanCloudLogin.signUp(name, phone, pwd);
+    if(returnMsg == loginMsgs.SignUp_UsernameUsed){
+      showInSnackBar("This username is taken", bgColor: Colors.red[500]);
+      //showInSnackBar
+    } else if (returnMsg == loginMsgs.SignUp_MobileUsed) {
+      showInSnackBar("This phone number is used, please login");
+      Timer realQuick = new Timer(
+        new Duration(milliseconds: 900),
+        _onSignInButtonPress,
+      );
+    } else if (returnMsg == loginMsgs.SignUp_SignUpSuccess){
+      showInSnackBar("You have successfully signed up");
+    }
+  }
+
+  _phoneLoginAttempt() async {
+    // showInSnackBar("Logging in...");
+    // Get login information
+    String phoneNumber = loginPhoneController.text;
+    String password = loginPasswordController.text;
+    if (phoneNumber == "" && password != ""){
+      showInSnackBar(
+          "Please enter your phone number",
+          bgColor: Colors.red[500]
+      );
+      return;
+    } else if (phoneNumber != "" && password == ""){
+      showInSnackBar("Please enter your password", bgColor: Colors.red[500]);
+      return;
+    } else if (phoneNumber == "" && password == "") {
+      showInSnackBar(
+          "Please enter your phone number and password",
+          bgColor: Colors.red[500]
+      );
+      return;
+    }
+
+    loginMsgs returnMsg = await LeanCloudLogin.login(phoneNumber, password);
+    // print(returnMsg);
+
+    if (returnMsg == loginMsgs.Login_WrongPWD){
+      showInSnackBar(
+          "Wrong password, please try again",
+          bgColor: Colors.red[500]
+      );
+    } else if (returnMsg == loginMsgs.Login_NotRegistered){
+      showInSnackBar("New here? Wanna join us?");
+      Timer realQuick = new Timer(
+        new Duration(milliseconds: 900),
+        _onSignUpButtonPress,
+      );
+    } else if (returnMsg == loginMsgs.Login_TryLater){
+      showInSnackBar(
+          "Your account is locked, please try again later"
+          , bgColor: Colors.red[500]
+      );
+    } else if (returnMsg == loginMsgs.Login_LoginSuccess){
+      showInSnackBar("Successfully logged in");
+    }
+  }
+
+  _qqLoginAttempt() async{
+    showInSnackBar("QQ button pressed");
+
+    // loginMsgs returnMsg = await LeanCloudLogin.qqLogin();
+    loginMsgs returnMsg = loginMsgs.Login_LoginSuccess;
+
+    if (returnMsg == loginMsgs.QQ_NotInstalled){
+      showInSnackBar("QQ is not installed");
+    } else if (returnMsg == loginMsgs.Login_LoginSuccess){
+      showInSnackBar("QQ login success");
+    }
   }
 }
