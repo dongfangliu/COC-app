@@ -24,7 +24,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
   leancloud_storage: ^0.2.3
-  # flutter_qq: ^0.0.5
+  flutter_qq: ^0.0.5
   random_pk: any
   font_awesome_flutter: any
 

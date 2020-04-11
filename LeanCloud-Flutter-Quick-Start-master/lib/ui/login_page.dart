@@ -6,6 +6,7 @@ import '../style/theme.dart' as Theme;
 import '../utils/bubble_indication_painter.dart';
 import 'dart:async';
 import '../LeanCloud/leancloud_login.dart';
+import 'package:flutter_qq/flutter_qq.dart';
 
 enum loginMsgs {
   Login_LoginSuccess,
@@ -59,10 +60,13 @@ class _LoginPageState extends State<LoginPage>
   Color left = Colors.black;
   Color right = Colors.white;
 
-
   bool _getVerifyCodeEnabled = true;
   int _timeToGetVerifyCode = 30;
   Timer _verifyCodeTimer;
+
+  bool _isLoggingIn = false;
+  bool _isSigningUp = false;
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -351,13 +355,21 @@ class _LoginPageState extends State<LoginPage>
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                         vertical: 10.0, horizontal: 42.0),
-                    child: Text(
-                      "LOGIN",
+                    child: _isLoggingIn ?
+                    Text(
+                      "LOGGING IN...",
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 25.0,
                           fontFamily: "WorkSansBold"),
-                    ),
+                    ) :
+                    Text(
+                    "LOGIN",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 25.0,
+                        fontFamily: "WorkSansBold"),
+                    )
                   ),
                   onPressed: _phoneLoginAttempt,
                 )
@@ -731,13 +743,21 @@ class _LoginPageState extends State<LoginPage>
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                         vertical: 10.0, horizontal: 42.0),
-                    child: Text(
-                      "SIGN UP",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 25.0,
-                          fontFamily: "WorkSansBold"),
-                    ),
+                    child: _isSigningUp ?
+                      Text(
+                        "SIGNNING UP...",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 25.0,
+                            fontFamily: "WorkSansBold"),
+                      ) :
+                      Text(
+                        "SIGN UP",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 25.0,
+                            fontFamily: "WorkSansBold"),
+                      )
                   ),
                   onPressed: _signUpAttempt,
                 )
@@ -787,13 +807,20 @@ class _LoginPageState extends State<LoginPage>
 
   _signUpAttempt() async {
     // showInSnackBar("SignUp button pressed");
+    setState(() { _isSigningUp = true; });
     // Get sign up information
     String name = signupNameController.text;
     String phone = signupPhoneController.text;
     String pwd = signupPasswordController.text;
     String confirmPwd = signupConfirmPasswordController.text;
+    if (name == "" || phone == "" || pwd == "" || confirmPwd == ""){
+      showInSnackBar("Please fill in all the blanks", bgColor: Colors.red[500]);
+      setState(() { _isSigningUp = false; });
+      return;
+    }
     if (pwd != confirmPwd){
       showInSnackBar("Passwords do not match", bgColor: Colors.red[500]);
+      setState(() { _isSigningUp = false; });
       return;
     }
 
@@ -810,10 +837,12 @@ class _LoginPageState extends State<LoginPage>
     } else if (returnMsg == loginMsgs.SignUp_SignUpSuccess){
       showInSnackBar("You have successfully signed up");
     }
+    setState(() { _isSigningUp = false; });
   }
 
   _phoneLoginAttempt() async {
     // showInSnackBar("Logging in...");
+    setState(() { _isLoggingIn = true; });
     // Get login information
     String phoneNumber = loginPhoneController.text;
     String password = loginPasswordController.text;
@@ -822,15 +851,18 @@ class _LoginPageState extends State<LoginPage>
           "Please enter your phone number",
           bgColor: Colors.red[500]
       );
+      setState(() { _isLoggingIn = false; });
       return;
     } else if (phoneNumber != "" && password == ""){
       showInSnackBar("Please enter your password", bgColor: Colors.red[500]);
+      setState(() { _isLoggingIn = false; });
       return;
     } else if (phoneNumber == "" && password == "") {
       showInSnackBar(
           "Please enter your phone number and password",
           bgColor: Colors.red[500]
       );
+      setState(() { _isLoggingIn = false; });
       return;
     }
 
@@ -856,6 +888,7 @@ class _LoginPageState extends State<LoginPage>
     } else if (returnMsg == loginMsgs.Login_LoginSuccess){
       showInSnackBar("Successfully logged in");
     }
+    setState(() { _isLoggingIn = false; });
   }
 
   _qqLoginAttempt() async{
