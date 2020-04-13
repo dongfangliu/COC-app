@@ -1,4 +1,5 @@
 import 'package:flutter_qq/flutter_qq.dart';
+
 class mFlutterQQ {
   mFlutterQQ(){}
   static String qqAPPID = '1110330239';
