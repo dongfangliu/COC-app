@@ -41,5 +41,56 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>CFBundleURLTypes</key>
+    <array>
+      <dict>
+        <key>CFBundleTypeRole</key>
+        <string>Editor</string>
+        <key>CFBundleURLName</key>
+        <string>tencent</string>
+        <key>CFBundleURLSchemes</key>
+        <array>
+          <string>tencent1110330239</string>
+        </array>
+      </dict>
+    </array>
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+      <string>mqq</string>
+      <string>mqqapi</string>
+      <string>mqqwpa</string>
+      <string>mqqbrowser</string>
+      <string>mttbrowser</string>
+      <string>mqqOpensdkSSoLogin</string>
+      <string>mqqopensdkapiV2</string>
+      <string>mqqopensdkapiV3</string>
+      <string>mqqopensdkapiV4</string>
+      <string>wtloginmqq2</string>
+      <string>mqzone</string>
+      <string>mqzoneopensdk</string>
+      <string>mqzoneopensdkapi</string>
+      <string>mqzoneopensdkapi19</string>
+      <string>mqzoneopensdkapiV2</string>
+      <string>mqqapiwallet</string>
+      <string>mqqopensdkfriend</string>
+      <string>mqqopensdkdataline</string>
+      <string>mqqgamebindinggroup</string>
+      <string>mqqopensdkgrouptribeshare</string>
+      <string>tencentapi.qq.reqContent</string>
+      <string>tencentapi.qzone.reqContent</string>
+    </array>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>microphoneUsageDescription</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>photoLibraryDesciption</string>
+    <key>NSCameraUsageDescription</key>
+    <string>cameraUsageDesciption</string>
+    <key>LSRequiresIPhoneOS</key>
+    <true/>
+    <key>UIBackgroundModes</key>
+    <array>
+      <string>fetch</string>
+      <string>remote-notification</string>
+    </array>
 </dict>
 </plist>

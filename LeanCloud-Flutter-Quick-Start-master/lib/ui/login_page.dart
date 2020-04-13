@@ -1,13 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:leancloud_storage/leancloud.dart';
 import '../style/theme.dart' as Theme;
 import '../utils/bubble_indication_painter.dart';
 import 'dart:async';
-import '../LeanCloud/leancloud_login.dart';
-import '../qq/flutterqq_login.dart';
+import '../controller/login/LeanCloud/leancloud_login.dart';
+import '../controller/login/qq/flutterqq_login.dart';
 
+enum loginMsgs {
+  Login_LoginSuccess,
+  Login_NotLoggedIn,
+  Login_NotRegistered,
+  Login_WrongPWD,
+  Login_TryLater,
+  SignUp_UsernameUsed,
+  SignUp_MobileUsed,
+  SignUp_SignUpSuccess,
+}
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key}) : super(key: key);
@@ -797,6 +806,9 @@ class _LoginPageState extends State<LoginPage>
   _signUpAttempt() async {
     // showInSnackBar("SignUp button pressed");
     setState(() { _isSigningUp = true; });
+
+    LeanCloudLogin leanCloudLogin = new LeanCloudLogin();
+
     // Get sign up information
     String name = signupNameController.text;
     String phone = signupPhoneController.text;
@@ -813,7 +825,7 @@ class _LoginPageState extends State<LoginPage>
       return;
     }
 
-    loginMsgs returnMsg = await LeanCloudLogin.signUp(name, phone, pwd);
+    loginMsgs returnMsg = await leanCloudLogin.signUp(name, phone, pwd);
     if(returnMsg == loginMsgs.SignUp_UsernameUsed){
       showInSnackBar("This username is taken", bgColor: Colors.red[500]);
       //showInSnackBar
@@ -832,6 +844,9 @@ class _LoginPageState extends State<LoginPage>
   _phoneLoginAttempt() async {
     // showInSnackBar("Logging in...");
     setState(() { _isLoggingIn = true; });
+
+    LeanCloudLogin leanCloudLogin = new LeanCloudLogin();
+
     // Get login information
     String phoneNumber = loginPhoneController.text;
     String password = loginPasswordController.text;
@@ -855,7 +870,7 @@ class _LoginPageState extends State<LoginPage>
       return;
     }
 
-    loginMsgs returnMsg = await LeanCloudLogin.login(phoneNumber, password);
+    loginMsgs returnMsg = await leanCloudLogin.login(phoneNumber, password);
     // print(returnMsg);
 
     if (returnMsg == loginMsgs.Login_WrongPWD){

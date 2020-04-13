@@ -1,6 +1,6 @@
-import '../ui/login_page.dart';
+import '../../../ui/login_page.dart';
 import 'package:leancloud_storage/leancloud.dart';
-
+/*
 enum loginMsgs {
   Login_LoginSuccess,
   Login_NotLoggedIn,
@@ -10,7 +10,7 @@ enum loginMsgs {
   SignUp_UsernameUsed,
   SignUp_MobileUsed,
   SignUp_SignUpSuccess,
-}
+}*/
 class LeanCloudLogin{
   // LeanCloud Setup Information
   String _appID = 'mscpCUgWqeI2RdYhrkgHF4ab-gzGzoHsz';
@@ -22,7 +22,7 @@ class LeanCloudLogin{
     LCLogger.setLevel(LCLogger.DebugLevel);
   }
 
-  static Future<loginMsgs> login(String phone, String pwd) async {
+  Future<loginMsgs> login(String phone, String pwd) async {
     try {
       LCUser result = await LCUser.loginByMobilePhoneNumber(phone, pwd);
     } on LCException catch (e){
@@ -47,7 +47,7 @@ class LeanCloudLogin{
     return loginMsgs.Login_LoginSuccess;
   }
   
-  static Future<loginMsgs> signUp(String name, String mobile, String pwd) async {
+  Future<loginMsgs> signUp(String name, String mobile, String pwd) async {
     // Build LC user
     LCUser newUser = new LCUser();
     newUser.username = name;
