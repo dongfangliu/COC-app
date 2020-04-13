@@ -1,7 +1,16 @@
 import '../ui/login_page.dart';
 import 'package:leancloud_storage/leancloud.dart';
-//import 'package:flutter_qq/flutter_qq.dart';
 
+enum loginMsgs {
+  Login_LoginSuccess,
+  Login_NotLoggedIn,
+  Login_NotRegistered,
+  Login_WrongPWD,
+  Login_TryLater,
+  SignUp_UsernameUsed,
+  SignUp_MobileUsed,
+  SignUp_SignUpSuccess,
+}
 class LeanCloudLogin{
   // LeanCloud Setup Information
   String _appID = 'mscpCUgWqeI2RdYhrkgHF4ab-gzGzoHsz';
@@ -61,14 +70,5 @@ class LeanCloudLogin{
     return loginMsgs.SignUp_SignUpSuccess;
   }
 
-  /*
-  static Future<loginMsgs> qqLogin() async{
-    // Check if QQ is installed
-    bool qqInstalled = await FlutterQq.isQQInstalled();
-    print(qqInstalled);
-    if(!qqInstalled){
-      return loginMsgs.QQNotInstalled;
-    }
-    return loginMsgs.LoginSuccess;
-  }*/
+
 }

@@ -6,19 +6,8 @@ import '../style/theme.dart' as Theme;
 import '../utils/bubble_indication_painter.dart';
 import 'dart:async';
 import '../LeanCloud/leancloud_login.dart';
-import 'package:flutter_qq/flutter_qq.dart';
+import '../qq/flutterqq_login.dart';
 
-enum loginMsgs {
-  Login_LoginSuccess,
-  Login_NotLoggedIn,
-  Login_NotRegistered,
-  Login_WrongPWD,
-  Login_TryLater,
-  SignUp_UsernameUsed,
-  SignUp_MobileUsed,
-  SignUp_SignUpSuccess,
-  QQ_NotInstalled,
-}
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key}) : super(key: key);
@@ -894,13 +883,10 @@ class _LoginPageState extends State<LoginPage>
   _qqLoginAttempt() async{
     showInSnackBar("QQ button pressed");
 
-    // loginMsgs returnMsg = await LeanCloudLogin.qqLogin();
-    loginMsgs returnMsg = loginMsgs.Login_LoginSuccess;
-
-    if (returnMsg == loginMsgs.QQ_NotInstalled){
-      showInSnackBar("QQ is not installed");
-    } else if (returnMsg == loginMsgs.Login_LoginSuccess){
-      showInSnackBar("QQ login success");
+    var qqInstalled = await mFlutterQQ.handleisQQInstalled();
+    if(!qqInstalled){
+      print("QQ not installed");
     }
+     mFlutterQQ.handleQQLogin();
   }
 }
