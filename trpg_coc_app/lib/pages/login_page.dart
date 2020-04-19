@@ -4,9 +4,19 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:trpgcocapp/controller/Bmob/BmobLogin.dart';
+
+enum loginMsgs {
+  WrongPhoneFormat, // 301
+  VerifyCodeWrong, // 207
+  NetworkFailure, // 9015
+  InfoIncorrect, // 101
+  SMSSent,
+  UnknownFailure,
+  LoginSuccess
+}
 
 class LoginPage extends StatefulWidget{
-
   @override
   _LoginPageState createState() => new _LoginPageState();
 }
@@ -15,46 +25,57 @@ class _LoginPageState extends State<LoginPage> {
   // region Variables
   PageController _pageController;
   bool _passwordObscure = true;
-  // Color _backgroundColor = Color(0xff2c003e);
   Color _backgroundColor = Colors.grey[900];
-  // region FocusNodes
-  final FocusNode usernameNode = FocusNode();
-  final FocusNode passwordNode = FocusNode();
-  final FocusNode cellNumberNode = FocusNode();
-  final FocusNode verifyCodeNode = FocusNode();
-  // endregion
+  bool _loginButtonEnabled = false;
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   // region TextEditingControllers
   TextEditingController usernameCtrl = TextEditingController();
   TextEditingController passwordCtrl = TextEditingController();
   TextEditingController cellNumberCtrl = TextEditingController();
-  TextEditingController veirfyCodeCtrl = TextEditingController();
+  TextEditingController verifyCodeCtrl = TextEditingController();
   // endregion
   // region Verify Code
   bool _getVerifyCodeEnabled = true;
   int _timeToGetVerifyCode = 30;
   Timer _verifyCodeTimer;
   // endregion
-  // region Login Button
-  bool _loginButtonEnabled = false;
-  //bool _
   // endregion
-  // endregion
+
+  // region For The Whole Page
+  void showInSnackBar(String value, {bgColor = Colors.transparent}) {
+    FocusScope.of(context).requestFocus(new FocusNode());
+    _scaffoldKey.currentState?.removeCurrentSnackBar();
+    _scaffoldKey.currentState.showSnackBar(new SnackBar(
+      content: new Text(
+        value,
+        textAlign: TextAlign.center,
+        style: TextStyle(
+            color: Colors.grey[400],
+            fontSize: 16.0,
+            fontFamily: "papyrus"
+        ),
+      ),
+      backgroundColor: bgColor,
+      duration: Duration(seconds: 3),
+    ));
+  }
 
   @override
   void initState() {
     super.initState();
     _pageController = PageController();
-    _addTextFieldsListener();
+    cellNumberCtrl.addListener((){_changeLoginButtonStatus();});
+    verifyCodeCtrl.addListener((){_changeLoginButtonStatus();});
+    usernameCtrl.addListener((){_changeLoginButtonStatus();});
+    passwordCtrl.addListener((){_changeLoginButtonStatus();});
   }
 
   @override
   void dispose() {
-    usernameNode.dispose();
-    passwordNode.dispose();
-    cellNumberNode.dispose();
-    verifyCodeNode.dispose();
+    usernameCtrl.dispose();
     _pageController?.dispose();
     _verifyCodeTimer.cancel();
+    super.dispose();
   }
 
   @override
@@ -62,6 +83,7 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       // backgroundColor: _backgroundColor
       backgroundColor: _backgroundColor,
+      key: _scaffoldKey,
       appBar: AppBar(
         centerTitle: true,
         elevation: 0,
@@ -99,6 +121,7 @@ class _LoginPageState extends State<LoginPage> {
                 height: 200,
                 child: PageView(
                   controller: _pageController,
+                  onPageChanged: (index){_onPageChange(index);},
                   children: <Widget>[
                     ConstrainedBox(
                       constraints: const BoxConstraints.expand(),
@@ -121,6 +144,7 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+  // endregion
 
   // region For Phone Verify Page
   void _switchToPhoneVerifyPage() {
@@ -146,8 +170,17 @@ class _LoginPageState extends State<LoginPage> {
       },),
     );
   }
-  void _onGetVerifyCodeButtonTabbed() {
-    if(_getVerifyCodeEnabled ) {
+  void _onGetVerifyCodeButtonTabbed() async {
+    if(!_getVerifyCodeEnabled) { return; }
+    BmobLogin bmobLogin = BmobLogin();
+    loginMsgs result = await bmobLogin.sendSMS(cellNumberCtrl.text);
+    if (result == loginMsgs.WrongPhoneFormat) {
+      showInSnackBar("Please check your phone number");
+    } else if (result == loginMsgs.NetworkFailure) {
+      showInSnackBar("Please check your network");
+    } else if (result == loginMsgs.UnknownFailure) {
+      showInSnackBar("UNKNOWN FAILURE");
+    } else if (result == loginMsgs.SMSSent) {
       _startGetVerifyCodeTimer();
     }
   }
@@ -173,7 +206,7 @@ class _LoginPageState extends State<LoginPage> {
                   Container(
                     width: 200,
                     child: TextField(
-                      focusNode: cellNumberNode,
+                      //focusNode: cellNumberNode,
                       controller: cellNumberCtrl,
                       keyboardType: TextInputType.phone,
                       style: TextStyle(
@@ -193,9 +226,9 @@ class _LoginPageState extends State<LoginPage> {
                       children: <Widget>[
                         Expanded(
                           child: TextField(
-                            focusNode: verifyCodeNode,
-                            controller: veirfyCodeCtrl,
-                            keyboardType: TextInputType.number,
+                            //focusNode: verifyCodeNode,
+                            controller: verifyCodeCtrl,
+                            keyboardType: TextInputType.phone,
                             style: TextStyle(
                               fontFamily: 'papyrus',
                               fontSize: 20,
@@ -293,7 +326,7 @@ class _LoginPageState extends State<LoginPage> {
                   Container(
                     width: 200,
                     child: TextField(
-                      focusNode: usernameNode,
+                      //focusNode: usernameNode,
                       controller: usernameCtrl,
                       style: TextStyle(
                           fontFamily: 'papyrus',
@@ -309,7 +342,7 @@ class _LoginPageState extends State<LoginPage> {
                   Container(
                     width: 200,
                     child: TextField(
-                      focusNode: passwordNode,
+                      //focusNode: passwordNode,
                       controller: passwordCtrl,
                       obscureText: _passwordObscure,
                       style: TextStyle(
@@ -342,19 +375,32 @@ class _LoginPageState extends State<LoginPage> {
   // endregion
 
   // region For Login Button
-  void _addTextFieldsListener(){
-    cellNumberNode.addListener(_chooseLoginButtonStatus);
-    verifyCodeNode.addListener(_chooseLoginButtonStatus);
-    usernameNode.addListener(_chooseLoginButtonStatus);
-    passwordNode.addListener(_chooseLoginButtonStatus);
+  void _onPageChange (int index) {
+    if (index == 0) {
+      String cell = cellNumberCtrl.text;
+      String code = verifyCodeCtrl.text;
+      if (cell == "" || code == "") {
+        setState(() { _loginButtonEnabled = false; });
+      } else {
+        setState(() { _loginButtonEnabled = true; });
+      }
+    } else if (index == 1) {
+      String username = usernameCtrl.text;
+      String password = passwordCtrl.text;
+      if (username == "" || password == "") {
+        setState(() { _loginButtonEnabled = false; });
+      } else {
+        setState(() { _loginButtonEnabled = true; });
+      }
+    }
   }
-  void _chooseLoginButtonStatus() {
+  void _changeLoginButtonStatus() {
     if (_pageController == null) {
       return;
     }
-    if (_pageController.offset == 0) {
+    if (_pageController.page == 0) {
       String cell = cellNumberCtrl.text;
-      String code = veirfyCodeCtrl.text;
+      String code = verifyCodeCtrl.text;
       if (cell == "" || code == "") {
         setState(() { _loginButtonEnabled = false; });
       } else {
@@ -370,8 +416,39 @@ class _LoginPageState extends State<LoginPage> {
       }
     }
   }
-  void _onLoginPressed() {
-    print("Login button pressed");
+  void _onLoginPressed() async {
+    if(_pageController.page == 0){
+      // On phone verify page
+      String phone = cellNumberCtrl.text;
+      String code = verifyCodeCtrl.text;
+      BmobLogin bmobLogin = BmobLogin();
+      loginMsgs result = await bmobLogin.loginBySMS(phone, code);
+      if (result == loginMsgs.LoginSuccess) {
+        showInSnackBar("Login Success");
+      } else if (result == loginMsgs.VerifyCodeWrong) {
+        showInSnackBar("Wrong verify code");
+      } else if (result == loginMsgs.NetworkFailure) {
+        showInSnackBar("Please check your network");
+      } else if (result == loginMsgs.UnknownFailure) {
+        showInSnackBar("UNKNOWN FAILURE");
+      }
+    } else {
+      // On password page
+      print(_pageController.page);
+      String username = usernameCtrl.text;
+      String password = passwordCtrl.text;
+      BmobLogin bmobLogin = BmobLogin();
+      loginMsgs result = await bmobLogin.loginByPWD(username, password);
+      if (result == loginMsgs.LoginSuccess){
+        showInSnackBar("Login Success");
+      } else if (result == loginMsgs.InfoIncorrect) {
+        showInSnackBar("Wrong username or password");
+      } else if (result == loginMsgs.NetworkFailure) {
+        showInSnackBar("Please check your network");
+      } else if (result == loginMsgs.UnknownFailure) {
+        showInSnackBar("UNKNOWN FAILURE");
+      }
+    }
   }
   Widget _buildLoginButton() {
     return SizedBox(

@@ -1,10 +1,12 @@
+// import 'dart:html';
+
 import 'package:data_plugin/bmob/bmob.dart';
 import 'package:data_plugin/bmob/bmob_sms.dart';
 import 'package:data_plugin/bmob/response/bmob_error.dart';
 import 'package:data_plugin/bmob/response/bmob_registered.dart';
 import 'package:data_plugin/bmob/response/bmob_sent.dart';
 import 'package:data_plugin/bmob/table/bmob_user.dart';
-import '../../ui/login_page.dart';
+import '../../pages/login_page.dart';
 
 class BmobLogin{
   String appId = 'c0e5dbfe38a164ba90d2c4c7e1c846a9';
@@ -15,6 +17,7 @@ class BmobLogin{
     Bmob.init(appHost, appId, apiKey);
   }
 
+  // region For phone SMS login
   Future<loginMsgs> sendSMS (String phone) async {
     BmobSms bmobSms = new BmobSms();
     bmobSms.mobilePhoneNumber = phone;
@@ -25,40 +28,34 @@ class BmobLogin{
       int errorCode = BmobError.convert(e).code;
       switch (errorCode) {
         case 301: {
-          return loginMsgs.SignUp_WrongPhoneFormat;
+          return loginMsgs.WrongPhoneFormat;
         }
+        break;
         case 9015: {
           return loginMsgs.NetworkFailure;
         }
         break;
-        case 207: {
-          return loginMsgs.SignUp_VerifyCodeWrong;
-        }
         default:{
           return loginMsgs.UnknownFailure;
         }
         break;
       }
     }
-    return loginMsgs.SignUp_SMSSent;
+    return loginMsgs.SMSSent;
   }
-
-  Future<loginMsgs> signUp (String name, String phone, String verifyCode, String pwd) async {
-    // Get account information
-    BmobUser bmobUserRegister = new BmobUser();
-    // bmobUserRegister.username = name;
-    bmobUserRegister.mobilePhoneNumber = phone;
-    // bmobUserRegister.password = pwd;
-
-    // Check verify code
+  Future<loginMsgs> loginBySMS(String phone, String code) async {
+    BmobUser bmobUser = BmobUser();
+    bmobUser.mobilePhoneNumber = phone;
+    bmobUser.password = 'password';
     try {
-      BmobUser result = await bmobUserRegister.loginBySms(verifyCode);
+      BmobUser result = await bmobUser.loginBySms(code);
+      // print(result);
     } catch (e) {
       print(BmobError.convert(e));
       int errorCode = BmobError.convert(e).code;
       switch (errorCode) {
-        case 202: {
-          return loginMsgs.SignUp_UsernameUsed;
+        case 207: {
+          return loginMsgs.VerifyCodeWrong;
         }
         break;
         case 9015: {
@@ -71,43 +68,37 @@ class BmobLogin{
         break;
       }
     }
-
-    // Start register
-    /*try {
-      BmobRegistered result = await bmobUserRegister.register();
-    } catch (e){
-      print(BmobError.convert(e));
-      int errorCode = BmobError.convert(e).code;
-      switch (errorCode){
-        case 202: {
-          return loginMsgs.SignUp_UsernameUsed;
-        }
-        break;
-        case 209: {
-          return loginMsgs.SignUp_MobileUsed;
-        }
-        break;
-        case 9015: {
-          return loginMsgs.NetworkFailure;
-        }
-        break;
-        default:{
-          return loginMsgs.UnknownFailure;
-        }
-        break;
-      }
-    }
-    return loginMsgs.SignUp_SignUpSuccess;*/
+    print(bmobUser.password);
+    return loginMsgs.LoginSuccess;
   }
+  // endregion
 
-  Future<loginMsgs> login (String username, String password) async {
-    BmobUser bmobUserLogin = new BmobUser();
-    bmobUserLogin.username = username;
-    bmobUserLogin.password = password;
+  // region For password login
+  Future<loginMsgs> loginByPWD(String username, String password) async {
+    BmobUser bmobUser = BmobUser();
+    bmobUser.username = username;
+    bmobUser.password = password;
     try {
-      BmobUser result = await bmobUserLogin.login();
+      BmobUser result = await bmobUser.login();
     } catch (e) {
       print(BmobError.convert(e));
+      int errorCode = BmobError.convert(e).code;
+      switch (errorCode) {
+        case 101: {
+          return loginMsgs.InfoIncorrect;
+        }
+        break;
+        case 9015: {
+          return loginMsgs.NetworkFailure;
+        }
+        break;
+        default:{
+          return loginMsgs.UnknownFailure;
+        }
+        break;
+      }
     }
+    return loginMsgs.LoginSuccess;
   }
+  // endregion
 }
