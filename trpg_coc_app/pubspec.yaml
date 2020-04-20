@@ -25,6 +25,7 @@ dependencies:
   cupertino_icons: ^0.1.2
   font_awesome_flutter: any
   data_plugin: ^0.0.17
+  flutter_qq: ^0.0.5
 
 
 dev_dependencies:

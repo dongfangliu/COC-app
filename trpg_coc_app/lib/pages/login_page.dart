@@ -4,7 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:trpgcocapp/controller/Bmob/BmobLogin.dart';
+import 'package:trpgcocapp/controller/Bmob/bmob_login.dart';
+import 'package:trpgcocapp/controller/flutter_qq/qq_login.dart';
 
 enum loginMsgs {
   WrongPhoneFormat, // 301
@@ -497,8 +498,15 @@ class _LoginPageState extends State<LoginPage> {
   // endregion
 
   // region For QQ Button
-  void _onQQButtonTapped() {
-    showInSnackBar("QQ Tabbed");
+  void _onQQButtonTapped() async {
+    print("QQ Tabbed");
+    bool qqInstalled = await QQLogin.handleisQQInstalled();
+    if(!qqInstalled) {
+      showInSnackBar("QQ not detected in your device");
+      return;
+    }
+    var qqLoginResult = await QQLogin.handleQQLogin();
+    //print(qqLoginResult);
   }
   // endregion
 
