@@ -1,9 +1,6 @@
-// import 'dart:html';
-
 import 'package:data_plugin/bmob/bmob.dart';
 import 'package:data_plugin/bmob/bmob_sms.dart';
 import 'package:data_plugin/bmob/response/bmob_error.dart';
-import 'package:data_plugin/bmob/response/bmob_registered.dart';
 import 'package:data_plugin/bmob/response/bmob_sent.dart';
 import 'package:data_plugin/bmob/table/bmob_user.dart';
 import '../../pages/login_page.dart';

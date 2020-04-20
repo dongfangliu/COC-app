@@ -137,6 +137,27 @@ class _LoginPageState extends State<LoginPage> {
               Padding(
                 padding: EdgeInsets.only(top: 60),
                 child: _buildLoginButton(),
+              ), // Login Button
+              Padding(
+                padding: EdgeInsets.only(top: 20),
+                child: Text(
+                  '———————    OR    ———————',
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontFamily: 'papyrus',
+                    fontSize: 14
+                  ),
+                ),
+              ), // Or
+              Padding(
+                padding: EdgeInsets.only(top: 20),
+                child: GestureDetector(
+                  onTap: _onQQButtonTapped,
+                  child: Icon(
+                    FontAwesomeIcons.qq,
+                    color: Colors.grey,
+                  ),
+                ),
               )
             ],
           ),
@@ -472,6 +493,12 @@ class _LoginPageState extends State<LoginPage> {
         onPressed: _loginButtonEnabled ? _onLoginPressed : null,
       ),
     );
+  }
+  // endregion
+
+  // region For QQ Button
+  void _onQQButtonTapped() {
+    showInSnackBar("QQ Tabbed");
   }
   // endregion
 
