@@ -499,14 +499,14 @@ class _LoginPageState extends State<LoginPage> {
 
   // region For QQ Button
   void _onQQButtonTapped() async {
-    print("QQ Tabbed");
     bool qqInstalled = await QQLogin.handleisQQInstalled();
     if(!qqInstalled) {
       showInSnackBar("QQ not detected in your device");
-      return;
+      //return;
     }
     var qqLoginResult = await QQLogin.handleQQLogin();
-    //print(qqLoginResult);
+    print("======");
+    print(qqLoginResult);
   }
   // endregion
 

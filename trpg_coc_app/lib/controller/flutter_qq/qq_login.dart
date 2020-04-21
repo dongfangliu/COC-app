@@ -13,24 +13,26 @@ class QQLogin {
   }
 
   static Future<bool> handleisQQInstalled() async {
-    //tryResigter();
+    tryResigter();
     bool result = await FlutterQq.isQQInstalled();
     return result;
   }
 
   static Future<Map> handleQQLogin() async {
+    tryResigter();
     try {
-      //tryResigter();
+      print('QQLoggingIn1');
       var qqResult = await FlutterQq.login();
+      print(qqResult.code);
       if(qqResult.code == 0){
         print(qqResult.response);
         return qqResult.response;
       }else{
-        print(qqResult);
+        print(qqResult.code);
         return null;
       }
     } catch (error) {
-      print("flutter_plugin_qq_example:" + error.toString());
+      print("flutter_plugin_qq:" + error.toString());
       return null;
     }
   }
