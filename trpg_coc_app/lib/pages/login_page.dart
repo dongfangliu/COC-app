@@ -151,7 +151,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ), // Or
               Padding(
-                padding: EdgeInsets.only(top: 20),
+                padding: EdgeInsets.only(top: 20, bottom: 40),
                 child: GestureDetector(
                   onTap: _onQQButtonTapped,
                   child: Icon(
