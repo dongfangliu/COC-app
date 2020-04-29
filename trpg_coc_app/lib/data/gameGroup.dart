@@ -18,12 +18,15 @@ class gameParamSetting{
 
 }
 class gameGroup{
+  String name="";
   gameGroupStatus status;
-  int roomID;
-  int moduleID;
-  String description;
-  String note;//其他一些备注信息
+  int roomID=-1;
+  int moduleID=-1;
+  String description="";
+  String note="";//其他一些备注信息
   List<gameGroup_UserData> participants;//0 is KP/GM
   gameParamSetting setting;
-  String lastActiveTime;
+  String lastActiveTime="";
+  String startTime="2018=02-02";
+  int minSize=0,maxSize=10;
 }

@@ -5,12 +5,12 @@ import 'package:json_annotation/json_annotation.dart';
 import 'roleCard.dart';
 import 'chatRoom.dart';
 import 'storyModule.dart';
-class trpgUser extends BmobUser{
-  BmobFile mIcon;
-  List<UserGroupData> mGroups;
-  List<storyModule> mMods;
-  String lastLoginTime;
-}
+//class trpgUser extends BmobUser{
+//  BmobFile mIcon;
+//  List<UserGroupData> mGroups;
+//  List<storyModule> mMods;
+//  String lastLoginTime;
+//}
 
 
 
