@@ -5,20 +5,14 @@ import 'package:flutter/services.dart';
 import '../data/gameGroup.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'groupDetail.dart';
 
 class groupSearchFilter {
-  String _name = "";
   int _minNum = 0;
   int _maxNum = 100;
-  DateTime _lastActiveTimeStart = DateTime(2019),
-      _lastActiveTimeEnd = DateTime(2020);
+  DateTime _startTimeStart = DateTime(2019),
+      _startTimeEnd = DateTime(2020);
   List<bool> _status = [false, false, false, false];
   List<String> statusStrs = ["HIRING", "HIRED_FULL", "ONGOING", "ARCHIVED"];
-
-//  groupSearchFilter(this._name, this._minNum, this._maxNum,
-//      this._lastActiveTimeStart, this._lastActiveTimeEnd, this._status);
-
 }
 
 class gameGroupsPage extends StatefulWidget {
@@ -34,7 +28,7 @@ class gameGroupsPage extends StatefulWidget {
       ggs[i].name = "Test group  " + i.toString();
       ggs[i].description = "description  " + i.toString();
       ggs[i].participants = [new gameGroup_UserData()];
-      ggs[i].moduleID = i;
+//      ggs[i].module = new ;
     }
     return new gameGroupsPageState();
     ;
@@ -164,7 +158,6 @@ class gameGroupsPageState extends State<gameGroupsPage> {
 
   Widget getDatePicker(BuildContext context, StateSetter setState) {
     return new Container(
-
       height: 200,
       decoration: BoxDecoration(
           color: Colors.white,
@@ -185,7 +178,7 @@ class gameGroupsPageState extends State<gameGroupsPage> {
                           .add(new Duration(days: 30)), // 加 30 天
                     ).then((DateTime val) {
                       if (val != null) {
-                        widget._searchFilter._lastActiveTimeStart = val;
+                        widget._searchFilter._startTimeStart = val;
                       }
                       setState(() {}); // 2018-07-12 00:00:00.000
                     }).catchError((err) {
@@ -193,7 +186,7 @@ class gameGroupsPageState extends State<gameGroupsPage> {
                     });
                   },
                   child: new Text(
-                      widget._searchFilter._lastActiveTimeStart.toString()))),
+                      widget._searchFilter._startTimeStart.toString()))),
           new Container(
               height: 15,
               child: VerticalDivider(
@@ -211,7 +204,7 @@ class gameGroupsPageState extends State<gameGroupsPage> {
                           .add(new Duration(days: 30)), // 加 30 天
                     ).then((DateTime val) {
                       if (val != null) {
-                        widget._searchFilter._lastActiveTimeEnd = val;
+                        widget._searchFilter._startTimeEnd = val;
                         print(val.toString());
                       }
                       setState(() {}); // 2018-07-12 00:00:00.000
@@ -220,7 +213,7 @@ class gameGroupsPageState extends State<gameGroupsPage> {
                     });
                   },
                   child: new Text(
-                      widget._searchFilter._lastActiveTimeEnd.toString()))),
+                      widget._searchFilter._startTimeEnd.toString()))),
           new RaisedButton(child:Text("Confirm"),onPressed: (){Navigator.of(context).pop();})
         ],
       ),
@@ -355,88 +348,83 @@ class gameGroupCardState extends State<gameGroupCard> {
               });
             });
       },
-      child: new Container(
-        height: 150,
-        decoration: BoxDecoration(
-            color: Colors.grey,
-            borderRadius: BorderRadius.all(Radius.circular(8)),
-            image: DecorationImage(
-                image: new NetworkImage(
-                    'http://n.sinaimg.cn/sports/2_img/upload/cf0d0fdd/107/w1024h683/20181128/pKtl-hphsupx4744393.jpg'),
-                fit: BoxFit.cover),
-            boxShadow: [
-              BoxShadow(
-                  color: Colors.grey,
-                  offset: Offset(5.0, 5.0),
-                  blurRadius: 5.0,
-                  spreadRadius: 2.0)
-            ]),
-//            alignment: Alignment.st,
-        margin: EdgeInsets.all(5),
-//            color: Colors.blue,
-        child: new Stack(fit: StackFit.expand, children: <Widget>[
-          new Positioned(
-            top: 10,
-            left: 10,
-            child: new Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  'GroupName',
-                  style: TextStyle(color: Colors.white, fontSize: 20),
-                ),
-                Text('Module Name', style: TextStyle(color: Colors.white)),
-                Text("人数", style: TextStyle(color: Colors.white)),
-                Text("一句话简介", style: TextStyle(color: Colors.white)),
+      child: new CachedNetworkImage( // module thumbnail
+        imageUrl:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1588157187534&di=57cc7cfbfc64d5fe7234760784afd00a&imgtype=0&src=http%3A%2F%2Ffile02.16sucai.com%2Fd%2Ffile%2F2014%2F1006%2Fe94e4f70870be76a018dff428306c5a3.jpg',
+        imageBuilder: (context, imageProvider) => new Container(
+            height: 150,
+            margin: EdgeInsets.all(5),
+            decoration: BoxDecoration(
+              color: Colors.grey,
+              borderRadius: BorderRadius.all(Radius.circular(8)),
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.grey,
+                    offset: Offset(5.0, 5.0),
+                    blurRadius: 5.0,
+                    spreadRadius: 2.0)
               ],
+              image:
+              DecorationImage(image: imageProvider, fit: BoxFit.cover),
             ),
-          ), //Group name
-          new Positioned(
-              bottom: 5, left: 10, child: getGroupMemAvator()), //Avators
+            child: new Stack(fit: StackFit.expand, children: <Widget>[
+              new Positioned(
+                top: 10,
+                left: 10,
+                child: new Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      widget.group.name,
+                      style: TextStyle(color: Colors.white, fontSize: 20),
+                    ),
+                    Text(widget.group.module.moduleName, style: TextStyle(color: Colors.white)),
+                    Text(widget.group.participants.length.toString(), style: TextStyle(color: Colors.white)),
+                    Text(widget.group.description, style: TextStyle(color: Colors.white)),
+                  ],
+                ),
+              ), //Group name
+              new Positioned(
+                  bottom: 5, left: 10, child: getGroupMemAvator()), //Avators
 
-          new Positioned(
-            child: new Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  new Text(
-                    "团状态",
-                    style: TextStyle(color: Colors.white, fontSize: 20),
-                  ),
-                  new Text(
-                    "start by     : 2020-02-02",
-                    style: TextStyle(color: Colors.white, fontSize: 10),
-                  ),
-                  new Text(
-                    "last active : --",
-                    style: TextStyle(color: Colors.white, fontSize: 10),
-                  ),
-                ]),
-            bottom: 10,
-            right: 10,
-          ) //Group Status
-        ]),
+              new Positioned(
+                child: new Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      new Text(
+                        widget.group.status.toString(),
+                        style: TextStyle(color: Colors.white, fontSize: 20),
+                      ),
+                      new Text(
+                        "start by     : "+widget.group.startTime,
+                        style: TextStyle(color: Colors.white, fontSize: 10),
+                      ),
+                      new Text(
+                        "last active : "+widget.group.lastActiveTime,
+                        style: TextStyle(color: Colors.white, fontSize: 10),
+                      ),
+                    ]),
+                bottom: 10,
+                right: 10,
+              ) //Group Status
+            ])
+        ),
+        placeholder: (context, url) => CircularProgressIndicator(),
+        errorWidget: (context, url, error) => Icon(Icons.error),
       ),
     );
   }
 
-  Image getGroupSnapShot() {
-    return new Image(
-      image: new NetworkImage(
-          'http://n.sinaimg.cn/sports/2_img/upload/cf0d0fdd/107/w1024h683/20181128/pKtl-hphsupx4744393.jpg'),
-      fit: BoxFit.cover,
-    );
-  }
+
 
   Widget getGroupMemAvator() {
     return new Container(
         width: 200,
         height: 40,
         child: ListView.builder(
-          itemCount: 10,
+          itemCount: widget.group.participants.length,
           itemBuilder: (BuildContext ctxt, int index) {
             return new CachedNetworkImage(
-              imageUrl:
-                  'http://n.sinaimg.cn/sports/2_img/upload/cf0d0fdd/107/w1024h683/20181128/pKtl-hphsupx4744393.jpg',
+              imageUrl:widget.group.participants[index].avatar.url,
               imageBuilder: (context, imageProvider) => new Container(
                 width: 35,
                 height: 35,
@@ -474,8 +462,8 @@ class gameGroupCardState extends State<gameGroupCard> {
           new Text("Start : "+widget.group.startTime.toString(),style: new TextStyle(fontStyle: FontStyle.italic,),),
 
           new Text("active : "+widget.group.lastActiveTime.toString(),style: new TextStyle(fontStyle: FontStyle.italic,),),
-          new Text("Module : "+widget.group.moduleID.toString()),
-          new Text("人数 ： " +widget.group.minSize.toString()+"-"+widget.group.maxSize.toString()),
+          new Text("Module : "+widget.group.module.moduleName),
+          new Text("人数 ： " +widget.group.minSize.toString()+" - "+widget.group.maxSize.toString()),
           new Container(padding: EdgeInsets.all(10),
           child:
           new Column(
@@ -492,7 +480,7 @@ class gameGroupCardState extends State<gameGroupCard> {
                     color: Colors.white70,
                     borderRadius: BorderRadius.circular(10)
                 ),
-                child: new Text("xxsdfwerwerewrwtwtrw",),
+                child: new Text(widget.group.description,),
               )
             ],),),
           new Container(padding: EdgeInsets.all(10),
@@ -511,7 +499,7 @@ class gameGroupCardState extends State<gameGroupCard> {
                       color: Colors.white70,
                       borderRadius: BorderRadius.circular(10)
                   ),
-                  child: new Text("xxsdfwerwerewrwtwtrw",),
+                  child: new Text(widget.group.note),
                 )
               ],),),
           new RaisedButton(onPressed: (){setState(() {
@@ -519,7 +507,7 @@ class gameGroupCardState extends State<gameGroupCard> {
           });
           Navigator.of(context).pop();
 
-          },child: Text("Apply/Archived"),)
+          },child: Text("Apply"),)
         ],
 
       ),

@@ -3,19 +3,19 @@ import 'package:data_plugin/bmob/type/bmob_file.dart';
 import "package:data_plugin/data_plugin.dart";
 import "roleCard.dart";
 class storyMap{
-  BmobFile bgImageURL;
-  List<storyScene> scenes;
+  BmobFile bgImageURL=BmobFile();
+  List<storyScene> scenes=[];
 }
 class storyScene{
   storyMap map;
   int bgPosx,bgPosy;
-  BmobFile fgImageURL;// foreground
-  BmobFile bgImageURL;// background
-  List<roleCard> npcs;
+  BmobFile fgImageURL=BmobFile();// foreground
+  BmobFile bgImageURL=BmobFile();// background
+  List<int> npcsId=[];
 }
 class storyModule{
-  storyMap map;
-  List<roleCard> npcs;
-  String moduleName;
-  BmobFile snapShotImageURL;
+  storyMap map=storyMap();
+  List<roleCard> npcs=[];
+  String moduleName='undefined';
+  BmobFile thumbnailImg=BmobFile();
 }
