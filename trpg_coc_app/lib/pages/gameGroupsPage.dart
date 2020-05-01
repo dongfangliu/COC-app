@@ -27,7 +27,7 @@ class gameGroupsPage extends StatefulWidget {
     for (int i = 0; i < ggs.length; i++) {
       ggs[i].name = "Test group  " + i.toString();
       ggs[i].description = "description  " + i.toString();
-      ggs[i].participants = [new gameGroup_UserData()];
+      ggs[i].participants = [new gameGroup_UserData(),new gameGroup_UserData()];
 //      ggs[i].module = new ;
     }
     return new gameGroupsPageState();
@@ -63,11 +63,12 @@ class gameGroupsPageState extends State<gameGroupsPage> {
 
   Widget getSearchPanel(BuildContext context) {
     Widget searchTextField = new Container(
+      width: MediaQuery.of(context).size.width*0.7,
       decoration: new BoxDecoration(
         color: Colors.grey,
         borderRadius: new BorderRadius.all(new Radius.circular(10.0)),
       ),
-      padding: EdgeInsets.only(left: 10, right: 10, bottom: 5, top: 5),
+      padding: EdgeInsets.only(left: 10,),
       child: TextField(
         cursorColor: Colors.white, //设置光标
         decoration: InputDecoration(
@@ -90,15 +91,13 @@ class gameGroupsPageState extends State<gameGroupsPage> {
           )),
     );
     return new Container(
-        height: 50,
-        padding: EdgeInsets.all(5),
+        height: MediaQuery.of(context).size.height*0.08,
         child: new Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Expanded(
-              child: searchTextField,
-              flex: 1,
-            ),
+          Padding(padding: const EdgeInsets.only(left: 5, right: 5),
+      child:
+      searchTextField),
             Padding(
               padding: const EdgeInsets.only(left: 5, right: 5),
               child: searchButton,
@@ -158,7 +157,7 @@ class gameGroupsPageState extends State<gameGroupsPage> {
 
   Widget getDatePicker(BuildContext context, StateSetter setState) {
     return new Container(
-      height: 200,
+      height:MediaQuery.of(context).size.height*0.25,
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.all(Radius.circular(20))),
@@ -188,7 +187,7 @@ class gameGroupsPageState extends State<gameGroupsPage> {
                   child: new Text(
                       widget._searchFilter._startTimeStart.toString()))),
           new Container(
-              height: 15,
+              height:MediaQuery.of(context).size.height*0.025,
               child: VerticalDivider(
                 thickness: 1,
               )),
@@ -237,8 +236,8 @@ class gameGroupsPageState extends State<gameGroupsPage> {
           new Flexible(
               child: new Container(
                   margin: EdgeInsets.all(2),
-                  width: 60,
-                  height: 40,
+                  width: MediaQuery.of(context).size.width*0.15,
+                  height: MediaQuery.of(context).size.height*0.06,
                   child: new TextField(
                     decoration: InputDecoration(
                         border: OutlineInputBorder(), labelText: "min"),
@@ -256,8 +255,8 @@ class gameGroupsPageState extends State<gameGroupsPage> {
           new Flexible(
             child: new Container(
                 margin: EdgeInsets.all(2),
-                width: 60,
-                height: 40,
+                width: MediaQuery.of(context).size.width*0.15,
+                height: MediaQuery.of(context).size.height*0.06,
                 child: new TextField(
                   decoration: InputDecoration(
                       border: OutlineInputBorder(), labelText: "max"),
@@ -280,44 +279,39 @@ class gameGroupsPageState extends State<gameGroupsPage> {
 
   Widget getStatusFilterCB(BuildContext context, StateSetter setState) {
     return new Container(
-      height: 200,
+      height: MediaQuery.of(context).size.height*0.5,
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.all(Radius.circular(20))),
-      padding: EdgeInsets.all(5),
-      child: new Column(children: <Widget>[
-        new Expanded(
-            child: new CheckboxListTile(
+      child: new Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[new CheckboxListTile(
                 title: Text(widget._searchFilter.statusStrs[0]),
                 value: widget._searchFilter._status[0],
                 onChanged: (val) {
                   widget._searchFilter._status[0] = val;
                   setState(() {});
-                })),
-        new Expanded(
-            child: new CheckboxListTile(
+                }),
+            new CheckboxListTile(
                 title: Text(widget._searchFilter.statusStrs[1]),
                 value: widget._searchFilter._status[1],
                 onChanged: (val) {
                   widget._searchFilter._status[1] = val;
                   setState(() {});
-                })),
-        new Expanded(
-            child: new CheckboxListTile(
+                }),
+        new CheckboxListTile(
                 title: Text(widget._searchFilter.statusStrs[2]),
                 value: widget._searchFilter._status[2],
                 onChanged: (val) {
                   widget._searchFilter._status[2] = val;
                   setState(() {});
-                })),
-        new Expanded(
-            child: new CheckboxListTile(
+                }), new CheckboxListTile(
                 title: Text(widget._searchFilter.statusStrs[3]),
                 value: widget._searchFilter._status[3],
                 onChanged: (val) {
                   widget._searchFilter._status[3] = val;
                   setState(() {});
-                })),
+                }),
         new RaisedButton(child:Text("Confirm"),onPressed: (){Navigator.of(context).pop();})
       ]),
     );
@@ -350,9 +344,9 @@ class gameGroupCardState extends State<gameGroupCard> {
             });
       },
       child: new CachedNetworkImage( // module thumbnail
-        imageUrl:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1588157187534&di=57cc7cfbfc64d5fe7234760784afd00a&imgtype=0&src=http%3A%2F%2Ffile02.16sucai.com%2Fd%2Ffile%2F2014%2F1006%2Fe94e4f70870be76a018dff428306c5a3.jpg',
+        imageUrl:'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1713396441,1487163637&fm=26&gp=0.jpg',
         imageBuilder: (context, imageProvider) => new Container(
-            height: 150,
+            height: MediaQuery.of(context).size.height*0.2,
             margin: EdgeInsets.all(5),
             decoration: BoxDecoration(
               color: Colors.grey,
@@ -369,8 +363,8 @@ class gameGroupCardState extends State<gameGroupCard> {
             ),
             child: new Stack(fit: StackFit.expand, children: <Widget>[
               new Positioned(
-                top: 10,
-                left: 10,
+                top: MediaQuery.of(context).size.height*0.001,
+                left: MediaQuery.of(context).size.width*0.05,
                 child: new Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
@@ -385,7 +379,7 @@ class gameGroupCardState extends State<gameGroupCard> {
                 ),
               ), //Group name
               new Positioned(
-                  bottom: 5, left: 10, child: getGroupMemAvator()), //Avators
+                  bottom: MediaQuery.of(context).size.height*0.002, left:  MediaQuery.of(context).size.width*0.02, child: getGroupMemAvator()), //Avators
 
               new Positioned(
                 child: new Column(
@@ -404,8 +398,8 @@ class gameGroupCardState extends State<gameGroupCard> {
                         style: TextStyle(color: Colors.white, fontSize: 10),
                       ),
                     ]),
-                bottom: 10,
-                right: 10,
+                bottom: MediaQuery.of(context).size.height*0.02,
+                right: MediaQuery.of(context).size.width*0.04,
               ) //Group Status
             ])
         ),
@@ -419,17 +413,19 @@ class gameGroupCardState extends State<gameGroupCard> {
 
   Widget getGroupMemAvator() {
     return new Container(
-        width: 200,
-        height: 40,
+        width: MediaQuery.of(context).size.width*0.5,
+        height: MediaQuery.of(context).size.height*0.06,
         child: ListView.builder(
-          itemCount: widget.group.participants.length,
+//          itemCount: widget.group.participants.length,
+        itemCount: 10,
           itemBuilder: (BuildContext ctxt, int index) {
             return new CachedNetworkImage(
-              imageUrl:widget.group.participants[index].avatar.url,
+//              imageUrl:widget.group.participants[index].avatar.url,
+            imageUrl: 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1713396441,1487163637&fm=26&gp=0.jpg',
               imageBuilder: (context, imageProvider) => new Container(
-                width: 35,
-                height: 35,
-                margin: EdgeInsets.all(2.5),
+                width: MediaQuery.of(context).size.height*0.05,
+                height: MediaQuery.of(context).size.height*0.05,
+                margin: EdgeInsets.all(MediaQuery.of(context).size.height*0.005,),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   image:
@@ -446,8 +442,8 @@ class gameGroupCardState extends State<gameGroupCard> {
 
   Widget getDetailPage(BuildContext context, StateSetter setState) {
     Widget content = new Container(
-      height: 500,
-      width: 300,
+      height: MediaQuery.of(context).size.height*0.8,//500
+      width: MediaQuery.of(context).size.width*0.8,//300
       padding: EdgeInsets.all(20),
       decoration: BoxDecoration(
           color: Colors.grey,
@@ -472,8 +468,8 @@ class gameGroupCardState extends State<gameGroupCard> {
             children: <Widget>[
               new Text("Module Descript "),
               new Container(
-                width: 250,
-                height: 100,
+                width:  MediaQuery.of(context).size.width*0.75,
+                height: MediaQuery.of(context).size.height*0.1,
                 padding: EdgeInsets.all(10),
                 margin: EdgeInsets.only(top: 5),
                 decoration: BoxDecoration(
@@ -491,8 +487,8 @@ class gameGroupCardState extends State<gameGroupCard> {
               children: <Widget>[
                 new Text("Notes from KP"),
                 new Container(
-                  width: 250,
-                  height: 100,
+                  width:  MediaQuery.of(context).size.width*0.75,
+                  height: MediaQuery.of(context).size.height*0.2,
                   padding: EdgeInsets.all(10),
                   margin: EdgeInsets.only(top: 5),
                   decoration: BoxDecoration(
