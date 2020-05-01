@@ -27,6 +27,7 @@ dependencies:
   data_plugin: ^0.0.17
   flutter_qq: ^0.0.5
   cached_network_image: ^2.1.0+1
+  image_picker: any
 
 
 dev_dependencies:

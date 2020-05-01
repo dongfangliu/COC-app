@@ -193,7 +193,8 @@ class gameGroupsPageState extends State<gameGroupsPage> {
                 thickness: 1,
               )),
           new Expanded(
-              child: new FlatButton(
+              child:
+              new FlatButton(
                   onPressed: () {
                     showDatePicker(
                       context: context,
