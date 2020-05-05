@@ -3,7 +3,7 @@ import 'package:data_plugin/bmob/bmob_sms.dart';
 import 'package:data_plugin/bmob/response/bmob_error.dart';
 import 'package:data_plugin/bmob/response/bmob_sent.dart';
 import 'package:data_plugin/bmob/table/bmob_user.dart';
-import '../../pages/login_page.dart';
+import '../../ui/pages/login_page.dart';
 
 class BmobLogin{
   String appId = 'c0e5dbfe38a164ba90d2c4c7e1c846a9';

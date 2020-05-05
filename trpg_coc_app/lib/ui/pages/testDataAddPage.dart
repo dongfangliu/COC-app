@@ -1,11 +1,21 @@
 
 import 'dart:io';
 
+import 'package:circular_profile_avatar/circular_profile_avatar.dart';
+import 'package:data_plugin/bmob/bmob.dart';
+import 'package:data_plugin/bmob/response/bmob_error.dart';
+import 'package:data_plugin/bmob/response/bmob_saved.dart';
+import 'package:data_plugin/utils/dialog_util.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:trpgcocapp/data/gameGroup/gameGroup.dart';
+import 'package:trpgcocapp/data/gameGroup/gameGroupUserData.dart';
+import 'package:trpgcocapp/controller/Bmob/bmob_login.dart';
+import '../widgets/dialogs/statefulDialog.dart';
 class testDataAddPage extends StatefulWidget{
 
   File _imageFile ;
+  File _avatorFile;
 
   final TextEditingController groupNameController = new TextEditingController();
 
@@ -15,29 +25,25 @@ class testDataAddPage extends StatefulWidget{
   final TextEditingController kpNoteController = new TextEditingController();
   @override
   State<StatefulWidget> createState() {
+    BmobLogin bmobLogin = BmobLogin();
     // TODO: implement createState
     return new testDataAddPageState();
   }
 
 }
-void showStatefulDialog(BuildContext context,Widget childBuildCallback(BuildContext context,StateSetter setState)){
-  showDialog(
-      context: context,
-      builder: (context) {
-        return StatefulBuilder(builder: (context, setState) {
-          return Dialog(
-            child: childBuildCallback(context, setState),
-            backgroundColor: Colors.transparent,
-          );
-        });
-      });
-}
+
 class testDataAddPageState extends State<testDataAddPage>{
   @override
   Widget build(BuildContext context) {
 
     return new Scaffold(
-      body: new Center(child:new FlatButton(onPressed: ()=>showStatefulDialog(context,addGroupContent), child: new Text("Try ADD"),))
+      body: new Column(
+        children: <Widget>[
+          new FlatButton(onPressed: ()=>showStatefulDialog(context,addGroupContent), child: new Text("Try ADD Group"),),
+          new FlatButton(onPressed: ()=>showStatefulDialog(context,addUserDataContent), child: new Text("Try ADD User"),)
+
+        ],
+      )
     );
   }
 
@@ -162,4 +168,56 @@ class testDataAddPageState extends State<testDataAddPage>{
 
   }
 
+  Widget addUserDataContent(BuildContext context,StateSetter setState){
+    Widget content = new Container(
+        height: MediaQuery.of(context).size.height*0.85,
+        width: MediaQuery.of(context).size.width*0.85,
+        padding: EdgeInsets.all(10),
+        decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.all(Radius.circular(8)),
+        ),
+        child:SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+    child:  new Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+    children: <Widget>[
+      CircularProfileAvatar(
+        widget._avatorFile==null?'https://avatars0.githubusercontent.com/u/8264639?s=460&v=4':widget._avatorFile.path, //sets image path, it should be a URL string. default value is empty string, if path is empty it will display only initials
+        radius: 100, // sets radius, default 50.0
+        backgroundColor: Colors.transparent, // sets background color, default Colors.white
+        borderWidth: 10,  // sets border, default 0.0  // sets initials text, set your own style, default Text('')
+        borderColor: Colors.brown, // sets border color, default Colors.white
+        elevation: 5.0, // sets elevation (shadow of the profile picture), default value is 0.0
+        foregroundColor: Colors.brown.withOpacity(0.5), //sets foreground colour, it works if showInitialTextAbovePicture = true , default Colors.transparent
+        cacheImage: true, // allow widget to cache image against provided url
+        onTap: () async{
+          try {
+            widget._avatorFile = await ImagePicker.pickImage(source: ImageSource.gallery);
+            setState(() {});
+          }catch (e) {
+            print(e);
+          }
+        }, // sets on tap
+        showInitialTextAbovePicture: true, // setting it true will show initials text above profile picture, default false
+      ),
+      new RaisedButton(onPressed: (){
+        gameGroupUserData user = gameGroupUserData();;
+        user.save().then((BmobSaved bmobSaved) {
+          String message =
+              "创建一条数据成功：${bmobSaved.objectId} - ${bmobSaved.createdAt}";
+          var currentObjectId = bmobSaved.objectId;
+          showSuccess(context, message);
+        }).catchError((e) {
+          showError(context, BmobError.convert(e).error);
+        });
+      },child: Text("push a use data"),),
+      ])
+        )
+
+
+
+    );
+    return content;
+  }
 }

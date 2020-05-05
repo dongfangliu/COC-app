@@ -1,13 +1,13 @@
 import 'package:data_plugin/bmob/table/bmob_user.dart';
 import 'package:data_plugin/bmob/type/bmob_file.dart';
 import "package:data_plugin/data_plugin.dart";
-import "roleCard.dart";
+import '../roleCard/roleCard.dart';
 class storyMap{
   BmobFile bgImageURL=BmobFile();
   List<storyScene> scenes=[];
 }
 class storyScene{
-  storyMap map;
+  String sceneName;
   int bgPosx,bgPosy;
   BmobFile fgImageURL=BmobFile();// foreground
   BmobFile bgImageURL=BmobFile();// background

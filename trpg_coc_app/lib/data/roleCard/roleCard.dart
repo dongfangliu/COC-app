@@ -1,3 +1,6 @@
+import 'buff.dart';
+import 'packable.dart';
+import 'skill.dart';
 //Attr define
 abstract class attr{
   String name;
@@ -23,8 +26,8 @@ abstract class  Operator<T1,T2>{
 
 
 class numericalOperation<T>{
- List<int> operator;
- List<T> values;
+  List<int> operator;
+  List<T> values;
 
 }
 class boolOperation<T>{
@@ -33,23 +36,6 @@ class boolOperation<T>{
 
 
 
-class skill {
-  roleCard card;
-  String name="undefined";
-  int baseValue=0;
-  int intrestPoint=0;
-  int occupationPoint=0;
-  int get value{return baseValue+intrestPoint+occupationPoint;}
-}
-class buff{
-  String description="undefined";
-}
-class packable{
-  String name="undefined";
-  String description="undefined";
-  int num=-1;
-  String loc="undefined";
-}
 class roleCard {
   int hp=0, mp=0,san=0,luck=0;
   int strength=0,constitution=0,size=0,appearance=0,intelligence=0,willpower=0,education=0,agility=0;
