@@ -3,40 +3,52 @@ import 'package:data_plugin/bmob/type/bmob_file.dart';
 import "package:data_plugin/data_plugin.dart";
 import '../roleCard/roleCard.dart';
 class storyMap{
+  storyModule module;
+
+  storyMap(this.module);
+
   BmobFile bgImageURL=BmobFile();
-  int gridx=80;
-  int gridy=60;
   List<storyScene> scenes=[];
-  List<int> sceneIdx=[];
   void addScene(storyScene scene){
     this.scenes.add(scene);
-    this.sceneIdx.add(scene.idx);
   }
 }
 class storyScene{
+  storyMap map;
   String name;
 //  int iconType=0;// 0000 is  point ,4 bit correspond to left,right,up,down
-  int idx;
   int mainSceneIdx=0;
+  double xPosition;
+  double yPosition;
   List<storySubScene> subScenes=[];
   List<int> npcsId=[];
 
-  storyScene(this.name, this.idx);
+  storyScene(this.map, this.name, this.xPosition, this.yPosition);
+
+
 }
 class storySubScene{
+  storyScene scene;
+  String name='undefined';
   BmobFile bgImg=BmobFile();
 
-  storySubScene(this.name);
+  storySubScene(this.scene, this.name);
 
-  String name='undefined';
+
 }
 
 class storyModule{
-  storyMap map=storyMap();
+  storyMap map;
   List<roleCard> npcs=[];
   String moduleName='undefined';
   BmobFile thumbnailImg=BmobFile();
   int estimate_hours;
   int kpHourMin;
   int plHourMin;
+
+  storyModule();
+
+  void addMap(){
+    this.map = new storyMap(this);
+  }
 }

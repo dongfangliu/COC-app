@@ -35,6 +35,7 @@ dependencies:
   equatable: ^1.0.0
   super_tooltip: ^0.9.0
   selectable_container: ^0.1.3
+  matrix_gesture_detector: ^0.1.0
 
 
 

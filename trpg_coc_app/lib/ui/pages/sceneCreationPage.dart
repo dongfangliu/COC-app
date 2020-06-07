@@ -6,7 +6,7 @@ import 'package:selectable_container/selectable_container.dart';
 import 'package:trpgcocapp/data/storyModule/storyModule.dart';
 import 'package:image_picker/image_picker.dart';
 
-class createScenePage extends StatefulWidget {
+class sceneCreationPage extends StatefulWidget {
   storyModule _module;
   storyMap _map;
   storyScene _scene;
@@ -17,12 +17,12 @@ class createScenePage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return createScenPageState();
+    return sceneCreationPageState();
   }
 
-  createScenePage(this._module, this._map, this._scene);
+  sceneCreationPage(this._module, this._map, this._scene);
 }
-class createScenPageState extends State<createScenePage>{
+class sceneCreationPageState extends State<sceneCreationPage>{
   File _bgImg;final ImagePicker _picker = ImagePicker();
   @override
   Widget build(BuildContext context) {
@@ -180,7 +180,9 @@ class createScenPageState extends State<createScenePage>{
                   child: new Text('Confirm'),
                   onPressed: () {
                     setState(() {
-                      widget._scene.subScenes.add(new storySubScene( widget._controller.text));
+                      widget._scene.subScenes.add(new storySubScene(
+                        widget._scene,
+                          widget._controller.text));
                     });
                     Navigator.of(cxt).pop();
                   },

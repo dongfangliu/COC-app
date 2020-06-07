@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:trpgcocapp/ui/pages/createModulePage.dart';
+import 'package:trpgcocapp/ui/pages/moduleCreationPage.dart';
 import 'ui/pages/gameGroupsPage.dart';
 import 'ui/pages/testDataAddPage.dart';
 void main() => runApp(MyApp());
@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: createModulePage(),
+      home: moduleCreationPage(),
     );
   }
 }
