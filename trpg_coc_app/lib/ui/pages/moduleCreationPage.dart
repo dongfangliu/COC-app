@@ -4,7 +4,7 @@ import 'package:trpgcocapp/ui/pages/mapPage.dart';
 import 'package:trpgcocapp/ui/pages/sceneCreationPage.dart';
 
 class moduleCreationPage extends StatefulWidget {
-  final storyModule _module = storyModule();
+  final storyModule _module = new storyModule();
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
@@ -19,6 +19,11 @@ class moduleCreationState extends State<moduleCreationPage> {
   final TextEditingController gamehoursTextController = TextEditingController();
   final TextEditingController plhoursTextController = TextEditingController();
   final TextEditingController kphoursTextController = TextEditingController();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

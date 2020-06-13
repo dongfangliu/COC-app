@@ -1,7 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:matrix_gesture_detector/matrix_gesture_detector.dart';
 import 'package:trpgcocapp/data/storyModule/storyModule.dart';
+import 'package:trpgcocapp/ui/pages/sceneCreationPage.dart';
 import 'package:vector_math/vector_math_64.dart' as v;
 
 class storyMapWidget extends StatefulWidget {
@@ -27,218 +29,222 @@ class storyMapWidgetState extends State<storyMapWidget> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return useListView?buildListViewPage(context):buildTransformableMap(context);
+    return useListView
+        ? buildListViewPage(context)
+        : buildTransformableMap(context);
   }
 
   Widget buildListViewPage(BuildContext context) {
-    return Stack(
-      alignment: Alignment.center,
-      fit: StackFit.expand,
+    return Column(
+//      mainAxisAlignment: MainAxisAlignment.center,
+//      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        ListView.builder(
-          itemCount: widget.map.scenes.length,
-          itemBuilder: (BuildContext ctxt, int index) {
-            return buildListViewCard(index, context);
-          },
+        Flexible(
+          child:
+            ListView.builder(
+              itemCount: widget.map.scenes.length,
+              itemBuilder: (BuildContext ctxt, int index) {
+                return buildListViewCard(index, context);
+              },
+            ),
+
         ),
-        Positioned(
-            bottom: 10.0,
-            child: Row(
-              children: <Widget>[
-                Padding(
-                  child: 
-                  buildAddSceneFAB(context),
-                  padding: EdgeInsets.only(right: 5),
-                ),
-                Padding(
-                  child: buildSwapViewFAB(),
-                  padding: EdgeInsets.only(left: 5),
-                ),
-              ],
-            )),
+        buildFABRow(context),
       ],
     );
   }
 
   Card buildListViewCard(int index, BuildContext context) {
     return Card(
-            child: ListTile(
-              contentPadding: EdgeInsets.all(5),
-              leading: Icon(Icons.assignment_turned_in),
-              title: Text(widget.map.scenes[index].name),
-              onTap: () {
-                showDialog<Null>(
-                    context: context,
-                    barrierDismissible: true,
-                    builder: (BuildContext cxt) {
-                      return new AlertDialog(
-                        title: new Text(
-                            'Scene ' + widget.map.scenes[index].name),
-                        content: new SingleChildScrollView(
-                          child: new Text('Edit this scene?'),
-                        ),
-                        actions: <Widget>[
-                          new FlatButton(
-                            child: new Text('No'),
-                            onPressed: () {
-                              Navigator.of(cxt).pop();
-                            },
-                          ),
-                          new FlatButton(
-                              child: new Text('Yes'),
-                              onPressed: () {
-//                                setState(() {});
-                                Navigator.of(cxt).pop();
-                              })
-                        ],
-                      );
-                    });
-              },
-              onLongPress: () {
-                showDialog<Null>(
-                    context: context,
-                    barrierDismissible: true,
-                    builder: (BuildContext cxt) {
-                      return new AlertDialog(
-                        title: new Text(
-                            'Scene ' + widget.map.scenes[index].name),
-                        content: new SingleChildScrollView(
-                          child: new Text('Delete this scene?'),
-                        ),
-                        actions: <Widget>[
-                          new FlatButton(
-                            child: new Text('Cancel'),
-                            onPressed: () {
-                              Navigator.of(cxt).pop();
-                            },
-                          ),
-                          new FlatButton(
-                              child: new Text('Confirm'),
-                              onPressed: () {
-                                widget.map.scenes.removeAt(index);
-                                setState(() {});
-                                Navigator.of(cxt).pop();
-                              })
-                        ],
-                      );
-                    });
-              },
-            ),
-          );
+      child: ListTile(
+        contentPadding: EdgeInsets.all(5),
+        leading: Icon(Icons.assignment_turned_in),
+        title: Text(widget.map.scenes[index].name),
+        onTap: () {
+          showDialog<Null>(
+              context: context,
+              barrierDismissible: true,
+              builder: (BuildContext cxt) {
+                return new AlertDialog(
+                  title: new Text('Scene ' + widget.map.scenes[index].name),
+                  content: new SingleChildScrollView(
+                    child: new Text('Edit this scene?'),
+                  ),
+                  actions: <Widget>[
+                    new FlatButton(
+                      child: new Text('No'),
+                      onPressed: () {
+                        Navigator.of(cxt).pop();
+                      },
+                    ),
+                    new FlatButton(
+                        child: new Text('Yes'),
+                        onPressed: () {
+                          Navigator.of(cxt).pop();
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => sceneCreationPage(widget.map.scenes[index]),
+                            ),
+                          );
+                        })
+                  ],
+                );
+              });
+        },
+        onLongPress: () {
+          showDialog<Null>(
+              context: context,
+              barrierDismissible: true,
+              builder: (BuildContext cxt) {
+                return new AlertDialog(
+                  title: new Text('Scene ' + widget.map.scenes[index].name),
+                  content: new SingleChildScrollView(
+                    child: new Text('Delete this scene?'),
+                  ),
+                  actions: <Widget>[
+                    new FlatButton(
+                      child: new Text('Cancel'),
+                      onPressed: () {
+                        Navigator.of(cxt).pop();
+                      },
+                    ),
+                    new FlatButton(
+                        child: new Text('Confirm'),
+                        onPressed: () {
+                          widget.map.scenes.removeAt(index);
+                          setState(() {});
+                          Navigator.of(cxt).pop();
+                        })
+                  ],
+                );
+              });
+        },
+      ),
+    );
   }
 
   FloatingActionButton buildAddSceneFAB(BuildContext context) {
     return new FloatingActionButton(
-                  child: const Icon(Icons.add),
-                  backgroundColor: Colors.blueAccent,
-                  onPressed: () {
-                    showDialog<Null>(
-                        context: context,
-                        barrierDismissible: true,
-                        builder: (BuildContext cxt) {
-                          return new AlertDialog(
-                            title: new Text('Create new scene?'),
-                            content: new SingleChildScrollView(
-                              child: new TextField(
-                                controller: _controller,
-                                maxLines: 1,
-                                maxLength: 20,
-                                decoration:
-                                    InputDecoration(hintText: "scene name"),
-                              ),
-                            ),
-                            actions: <Widget>[
-                              new FlatButton(
-                                child: new Text('Confirm'),
-                                onPressed: () {
-                                  widget.map.addScene(new storyScene(
-                                      widget.map, _controller.text, 0, 0));
-                                  _controller.clear();
-                                  setState(() {});
-                                  Navigator.of(cxt).pop();
-                                },
-                              ),
-                            ],
-                          );
-                        });
-                  },
-                );
+      child: const Icon(Icons.add),
+      backgroundColor: Colors.blueAccent,
+      onPressed: () {
+        showDialog<Null>(
+            context: context,
+            barrierDismissible: true,
+            builder: (BuildContext cxt) {
+              return new AlertDialog(
+                title: new Text('Create new scene?'),
+                content: new SingleChildScrollView(
+                  child: new TextField(
+                    controller: _controller,
+                    maxLines: 1,
+                    maxLength: 20,
+                    decoration: InputDecoration(hintText: "scene name"),
+                  ),
+                ),
+                actions: <Widget>[
+                  new FlatButton(
+                    child: new Text('Confirm'),
+                    onPressed: () {
+                      widget.map.addScene(
+                          new storyScene(widget.map, _controller.text, 0, 0));
+                      _controller.clear();
+                      setState(() {});
+                      Navigator.of(cxt).pop();
+                    },
+                  ),
+                ],
+              );
+            });
+      },
+    );
   }
 
   FloatingActionButton buildSwapViewFAB() {
     return new FloatingActionButton(
-                    heroTag: "change Scene",
-                    child: const Icon(Icons.cached),
-                    backgroundColor: Colors.blueAccent,
-                    onPressed: () {
-                      setState(() {
-                        useListView = !useListView;
-                      });
-                    });
+        heroTag: "change Scene",
+        child: const Icon(Icons.cached),
+        backgroundColor: Colors.blueAccent,
+        onPressed: () {
+          setState(() {
+            useListView = !useListView;
+          });
+        });
   }
 
   Widget buildTransformableMap(BuildContext context) {
-    return
-
-      Column(
+    return Column(
         crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-Flexible(
-  child:MatrixGestureDetector(
-    onMatrixUpdate: (m, tm, sm, rm) {
-      setState(() {});
-      notifier.value = m;
-    },
-    onTapUp: (details) {
-      RenderBox box = stackKey.currentContext.findRenderObject();
-      Offset offset = box.globalToLocal(details.globalPosition);
-      showDialog<Null>(
-          context: context,
-          barrierDismissible: true,
-          builder: (BuildContext cxt) {
-            return new AlertDialog(
-              title: new Text('Create new scene?'),
-              content: new SingleChildScrollView(
-                child: new TextField(
-                  controller: _controller,
-                  maxLines: 1,
-                  maxLength: 20,
-                  decoration: InputDecoration(hintText: "scene name"),
+        children: <Widget>[
+          Flexible(
+            child: MatrixGestureDetector(
+              onMatrixUpdate: (m, tm, sm, rm) {
+                setState(() {});
+                notifier.value = m;
+              },
+              onTapUp: (details) {
+                RenderBox box = stackKey.currentContext.findRenderObject();
+                Offset offset = box.globalToLocal(details.globalPosition);
+                showDialog<Null>(
+                    context: context,
+                    barrierDismissible: true,
+                    builder: (BuildContext cxt) {
+                      return new AlertDialog(
+                        title: new Text('Create new scene?'),
+                        content: new SingleChildScrollView(
+                          child: new TextField(
+                            controller: _controller,
+                            maxLines: 1,
+                            maxLength: 20,
+                            decoration: InputDecoration(hintText: "scene name"),
+                          ),
+                        ),
+                        actions: <Widget>[
+                          new FlatButton(
+                            child: new Text('Confirm'),
+                            onPressed: () {
+                              widget.map.addScene(new storyScene(widget.map,
+                                  _controller.text, offset.dx, offset.dy));
+                              _controller.clear();
+                              setState(() {});
+                              Navigator.of(cxt).pop();
+                            },
+                          ),
+                        ],
+                      );
+                    });
+              },
+              child: Transform(
+                transform: notifier.value,
+                child: Stack(
+                  key: stackKey,
+                  fit: StackFit.expand,
+                  overflow: Overflow.visible,
+                  alignment: Alignment.center,
+                  children: composeWidgets(context),
                 ),
               ),
-              actions: <Widget>[
-                new FlatButton(
-                  child: new Text('Confirm'),
-                  onPressed: () {
-                    widget.map.addScene(new storyScene(
-                        widget.map, _controller.text, offset.dx, offset.dy));
-                    _controller.clear();
-                    setState(() {});
-                    Navigator.of(cxt).pop();
-                  },
-                ),
-              ],
-            );
-          });
-    },
-    child: Transform(
-      transform: notifier.value,
-      child:
-      Stack(
-        key: stackKey,
-        fit: StackFit.expand,
-        overflow: Overflow.visible,
-        alignment: Alignment.center,
-        children: composeWidgets(context),
-      ),
-    )
-    ,
-  ),
-),
+            ),
+          ),
+          buildFABRow(context)
+        ]);
+  }
 
-            buildSwapViewFAB()
-          ]
-    );
+  Row buildFABRow(BuildContext context) {
+    return Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Padding(
+              child: buildAddSceneFAB(context),
+              padding: EdgeInsets.all(5),
+            ),
+            Padding(
+              child: buildSwapViewFAB(),
+              padding: EdgeInsets.all(5),
+            ),
+          ],
+        );
   }
 
   Widget getMapBg(BuildContext context) {
@@ -312,7 +318,14 @@ class storyMapPointWidgetState extends State<storyMapPointWidget> {
                   new FlatButton(
                     child: new Text('Edit'),
                     onPressed: () {
+
                       Navigator.of(cxt).pop();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => sceneCreationPage(widget.scene),
+                        ),
+                      );
                     },
                   ),
                   new FlatButton(

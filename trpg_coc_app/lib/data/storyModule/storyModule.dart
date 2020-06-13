@@ -8,7 +8,7 @@ class storyMap{
   storyMap(this.module);
 
   BmobFile bgImageURL=BmobFile();
-  List<storyScene> scenes=[];
+  List<storyScene> scenes=new List<storyScene>();
   void addScene(storyScene scene){
     this.scenes.add(scene);
   }
