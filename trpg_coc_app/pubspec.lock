@@ -499,6 +499,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.4.0"
+  photofilters:
+    dependency: "direct main"
+    description:
+      name: photofilters
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.0.5"
   platform:
     dependency: transitive
     description:

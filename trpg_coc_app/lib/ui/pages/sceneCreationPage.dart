@@ -3,23 +3,25 @@ import 'dart:io';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:photofilters/photofilters.dart';
 import 'package:selectable_container/selectable_container.dart';
 import 'package:trpgcocapp/data/storyModule/storyModule.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:image/image.dart' as imageLib;
 
 class sceneCreationPage extends StatefulWidget {
   storyScene _scene;
   storySubScene _curScene = null;
   String _curTime = "noon";
-  List<String> timeofDay = [
-    "Early morning",
-    "morning",
-    "noon",
-    "afternoon",
-    "dusk",
-    "evening",
-    "late night"
-  ];
+  Map<String,String> timeofDay = {
+    "Early morning":"AddictiveBlue",
+    "morning":"Lo-Fi",
+    "noon":"Hudson",
+    "afternoon":"Helena",
+    "dusk":"Kelvin",
+    "evening":"Moon",
+    "late night":"Willow"
+  };
   final TextEditingController _controller = new TextEditingController();
   @override
   State<StatefulWidget> createState() {
@@ -35,8 +37,19 @@ class sceneCreationPage extends StatefulWidget {
 }
 
 class sceneCreationPageState extends State<sceneCreationPage> {
-  File _bgImg;
-  final ImagePicker _picker = ImagePicker();
+  imageLib.Image _image;
+  String _imagefileName;
+
+  var filters_map = Map.fromIterable(presetFiltersList, key: (e) => e.name, value: (e) => e);
+  Future getImage() async {
+    var imageFile = await ImagePicker.pickImage(source: ImageSource.gallery);
+    _imagefileName = imageFile.path;
+    var image = imageLib.decodeImage(imageFile.readAsBytesSync());
+    image = imageLib.copyResize(image, width:600);
+    setState(() {
+      _image = image;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -46,6 +59,7 @@ class sceneCreationPageState extends State<sceneCreationPage> {
       ),
       body: buildBody(context),
     );
+
   }
 
   Stack buildBody(BuildContext context) {
@@ -132,7 +146,7 @@ class sceneCreationPageState extends State<sceneCreationPage> {
           widget._curTime = value;
         });
       },
-      items: widget.timeofDay.map<DropdownMenuItem<String>>((String value) {
+      items: widget.timeofDay.keys.map<DropdownMenuItem<String>>((String value) {
         return DropdownMenuItem<String>(
           value: value,
           child: SizedBox(
@@ -153,24 +167,20 @@ class sceneCreationPageState extends State<sceneCreationPage> {
           borderRadius: BorderRadius.circular(5),
           border: Border.all(color: Colors.black54, width: 2)),
       child: InkWell(
-        child: _bgImg == null
+        child: _image == null
             ? Image.asset(
                 "assets/images/add.png",
                 fit: BoxFit.fill,
               )
-            : Image.file(
-                _bgImg,
-                fit: BoxFit.fill,
-              ),
+            : PhotoFilter(image: _image, filename: _imagefileName, filter: filters_map[getTimeFilterName()],fit: BoxFit.fill,),
         onTap: () async {
-          final pickedFile =
-              await ImagePicker.pickImage(source: ImageSource.gallery);
-          _bgImg = File(pickedFile.path);
-          setState(() {});
+          getImage();
         },
       ),
     );
   }
+
+  String getTimeFilterName() => widget.timeofDay[widget._curTime];
 
   Widget buildNPCList(BuildContext context) {
     return Container(

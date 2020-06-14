@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:matrix_gesture_detector/matrix_gesture_detector.dart';
 import 'package:trpgcocapp/data/storyModule/storyModule.dart';
 import 'package:trpgcocapp/ui/pages/sceneCreationPage.dart';
-import 'package:vector_math/vector_math_64.dart' as v;
+
+
 
 class storyMapWidget extends StatefulWidget {
   storyMap map;
