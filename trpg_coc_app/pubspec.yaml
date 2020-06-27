@@ -37,7 +37,7 @@ dependencies:
   matrix_gesture_detector: ^0.1.0
   expandable: ^4.1.4
   photofilters: ^1.0.5
-
+  dio: ^3.0.9
 
 
 dev_dependencies:

@@ -92,7 +92,7 @@ class sceneCreationPageState extends State<sceneCreationPage> {
 
   Widget buildSceneSelectionDropDown(BuildContext context) {
     return DropdownButton<storySubScene>(
-      value: widget._scene.subScenes.length == 0?null: widget._scene.subScenes[0],
+      value: widget._scene.subScenes.length == 0?null: (widget._curScene==null?widget._scene.subScenes[0]:widget._curScene),
       icon: Icon(Icons.arrow_drop_down),
       iconSize: 24,
       elevation: 16,
@@ -272,6 +272,7 @@ class sceneCreationPageState extends State<sceneCreationPage> {
                           widget._curScene=widget._scene.subScenes[0];
                         }
                       });
+                      widget._controller.clear();
                       Navigator.of(cxt).pop();
                     },
                   ),
