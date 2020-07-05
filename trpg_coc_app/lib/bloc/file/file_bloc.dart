@@ -5,8 +5,8 @@ import '../bloc.dart';
 import 'file_bloc_state.dart';
 
 class FileBloc extends Bloc<FileBlocEvent, FileBlocState> {
-  FileRepository repository;
-  FileBloc();
+  FileRepository repository = new FileRepository();
+  FileBloc(){repository.init();}
 
   @override
   FileBlocState get initialState => FileReady();

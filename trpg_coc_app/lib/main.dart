@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:trpgcocapp/ui/pages/moduleCreationPage.dart';
-import 'ui/pages/gameGroupsPage.dart';
-import 'ui/pages/testDataAddPage.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:trpgcocapp/bloc/bloc.dart';
+import 'package:trpgcocapp/bloc/file/file_widget.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -15,7 +14,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: moduleCreationPage(),
+      home: BlocProvider<FileBloc>(
+        create: (context) => FileBloc(),
+        child: FileBlocDemo(),
+      ),
     );
   }
 }

@@ -11,7 +11,7 @@ class FileHelper{
   static Future<dynamic> uploadFile(String path) async{
     if (path == null) {
       DataPlugin.toast("请先选择文件");
-      return null;
+      throw Exception("No File Selected");
     }
     DataPlugin.toast("上传中，请稍候……");
     File file = new File(path);
@@ -29,7 +29,7 @@ class FileHelper{
   static Future<dynamic> downloadFile(String url, String path) async {
     if (url == null) {
       DataPlugin.toast("请先上传文件");
-      return null;
+      throw Exception("No Remote File");
     }
     Dio dio = Dio();
     try{
@@ -46,7 +46,7 @@ class FileHelper{
   static Future<dynamic>  deleteFile(String url) async {
     if (url == null) {
       DataPlugin.toast("请先上传文件");
-      return null;
+      throw Exception("No Remote File");
     }
     try{
       BmobHandled handled = await BmobFileManager.delete(url);
