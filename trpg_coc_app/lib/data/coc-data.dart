@@ -4,7 +4,7 @@ import "package:data_plugin/data_plugin.dart";
 import 'package:json_annotation/json_annotation.dart';
 //import 'roleCard.dart';
 import 'chatRoom/chatRoom.dart';
-import 'storyModule/storyModule.dart';
+import 'storyModule/storyModOnUse.dart';
 //class trpgUser extends BmobUser{
 //  BmobFile mIcon;
 //  List<UserGroupData> mGroups;

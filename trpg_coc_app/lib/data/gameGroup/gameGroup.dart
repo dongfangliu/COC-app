@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:data_plugin/bmob/table/bmob_object.dart';
 import 'package:data_plugin/bmob/type/bmob_file.dart';
-import '../storyModule/storyModule.dart';
+import '../storyModule/storyModOnUse.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'gameGroupUserData.dart';
 

@@ -5,13 +5,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:photofilters/photofilters.dart';
 import 'package:selectable_container/selectable_container.dart';
-import 'package:trpgcocapp/data/storyModule/storyModule.dart';
+import 'package:trpgcocapp/data/storyModule/storyModCreate.dart';
+import 'package:trpgcocapp/data/storyModule/storyModOnUse.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image/image.dart' as imageLib;
 
 class sceneCreationPage extends StatefulWidget {
-  storyScene _scene;
-  storySubScene _curScene = null;
+  StorySceneCreate _scene;
+  StorySubSceneCreate _curScene = null;
   String _curTime = "noon";
   Map<String,String> timeofDay = {
     "Early morning":"AddictiveBlue",
@@ -29,7 +30,7 @@ class sceneCreationPage extends StatefulWidget {
     return sceneCreationPageState();
   }
 
-  storyModule getModule() {
+  StoryModCreate getModule() {
     return this._scene.map.module;
   }
 
@@ -91,7 +92,7 @@ class sceneCreationPageState extends State<sceneCreationPage> {
   }
 
   Widget buildSceneSelectionDropDown(BuildContext context) {
-    return DropdownButton<storySubScene>(
+    return DropdownButton<StorySubSceneCreate>(
       value: widget._scene.subScenes.length == 0?null: (widget._curScene==null?widget._scene.subScenes[0]:widget._curScene),
       icon: Icon(Icons.arrow_drop_down),
       iconSize: 24,
@@ -101,14 +102,14 @@ class sceneCreationPageState extends State<sceneCreationPage> {
         height: 2,
         color: Colors.deepPurpleAccent,
       ),
-      onChanged: (storySubScene value) {
+      onChanged: (StorySubSceneCreate value) {
         setState(() {
           widget._curScene = value;
         });
       },
       items: widget._scene.subScenes.length == 0
           ? [
-              DropdownMenuItem<storySubScene>(
+              DropdownMenuItem<StorySubSceneCreate>(
                 value: null,
                 child:SizedBox(
                   width: MediaQuery.of(context).size.width/5, // for example
@@ -117,8 +118,8 @@ class sceneCreationPageState extends State<sceneCreationPage> {
               )
             ]
           : widget._scene.subScenes
-              .map<DropdownMenuItem<storySubScene>>((storySubScene value) {
-              return DropdownMenuItem<storySubScene>(
+              .map<DropdownMenuItem<StorySubSceneCreate>>((StorySubSceneCreate value) {
+              return DropdownMenuItem<StorySubSceneCreate>(
                 value: value,
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width/5, // for example
@@ -266,7 +267,7 @@ class sceneCreationPageState extends State<sceneCreationPage> {
                     child: new Text('Confirm'),
                     onPressed: () {
                       setState(() {
-                        widget._scene.subScenes.add(new storySubScene(
+                        widget._scene.subScenes.add(new StorySubSceneCreate(
                             widget._scene, widget._controller.text));
                         if(widget._curScene==null){
                           widget._curScene=widget._scene.subScenes[0];

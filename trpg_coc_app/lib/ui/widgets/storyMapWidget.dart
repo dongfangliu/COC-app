@@ -2,22 +2,23 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:matrix_gesture_detector/matrix_gesture_detector.dart';
-import 'package:trpgcocapp/data/storyModule/storyModule.dart';
+import 'package:trpgcocapp/data/storyModule/storyModCreate.dart';
+import 'package:trpgcocapp/data/storyModule/storyModOnUse.dart';
 import 'package:trpgcocapp/ui/pages/sceneCreationPage.dart';
 
 
 
-class storyMapWidget extends StatefulWidget {
-  storyMap map;
+class storyMapCreateWidget extends StatefulWidget {
+  StoryMapCreate map;
   @override
   State<StatefulWidget> createState() {
-    return storyMapWidgetState();
+    return storyMapCreateWidgetState();
   }
 
-  storyMapWidget(this.map);
+  storyMapCreateWidget(this.map);
 }
 
-class storyMapWidgetState extends State<storyMapWidget> {
+class storyMapCreateWidgetState extends State<storyMapCreateWidget> {
   List<Widget> movableMapPoints = [];
   final ValueNotifier<Matrix4> notifier = ValueNotifier(Matrix4.identity());
   bool useListView = true;
@@ -149,7 +150,7 @@ class storyMapWidgetState extends State<storyMapWidget> {
                     child: new Text('Confirm'),
                     onPressed: () {
                       widget.map.addScene(
-                          new storyScene(widget.map, _controller.text, 0, 0));
+                          new StorySceneCreate(widget.map, _controller.text, 0, 0));
                       _controller.clear();
                       setState(() {});
                       Navigator.of(cxt).pop();
@@ -205,7 +206,7 @@ class storyMapWidgetState extends State<storyMapWidget> {
                           new FlatButton(
                             child: new Text('Confirm'),
                             onPressed: () {
-                              widget.map.addScene(new storyScene(widget.map,
+                              widget.map.addScene(new StorySceneCreate(widget.map,
                                   _controller.text, offset.dx, offset.dy));
                               _controller.clear();
                               setState(() {});
@@ -262,7 +263,7 @@ class storyMapWidgetState extends State<storyMapWidget> {
 
   void buildMapPoints(BuildContext context) {
     movableMapPoints.clear();
-    for (storyScene scene in widget.map.scenes) {
+    for (StorySceneCreate scene in widget.map.scenes) {
       movableMapPoints.add(storyMapPointWidget(scene, this.callback));
     }
   }
@@ -277,7 +278,7 @@ class storyMapWidgetState extends State<storyMapWidget> {
 }
 
 class storyMapPointWidget extends StatefulWidget {
-  storyScene scene;
+  StorySceneCreate scene;
 
   Function setStateParent;
   final TextEditingController _controller = new TextEditingController();

@@ -8,6 +8,10 @@ enum FileOperateStatus { OPERATING, FAILURE, SUCCESS }
 
 class FileRepository {
   String localPath = ""; // currently use by local but can be not-uploaded
+  String defaultRemoteURL= "";
+FileRepository();
+  FileRepository.url(this.defaultRemoteURL);
+
   dynamic remoteData = null; // downloaded remote file 's data..
   BmobFile remoteFile = BmobFile();
 

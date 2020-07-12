@@ -1,9 +1,8 @@
 import "package:flutter/material.dart";
-import 'package:trpgcocapp/data/storyModule/storyModule.dart';
-import 'package:trpgcocapp/ui/pages/sceneCreationPage.dart';
+import 'package:trpgcocapp/data/storyModule/storyModCreate.dart';
 import 'package:trpgcocapp/ui/widgets/storyMapWidget.dart';
 class mapPage extends StatefulWidget {
-  storyModule module;
+  StoryModCreate module;
 
   mapPage(this.module);
 
@@ -26,7 +25,7 @@ class mapPageState extends State<mapPage> {
   }
 
   buildBody(BuildContext context) {
-    return storyMapWidget(widget.module.map);
+    return storyMapCreateWidget(widget.module.map);
 
   }
 

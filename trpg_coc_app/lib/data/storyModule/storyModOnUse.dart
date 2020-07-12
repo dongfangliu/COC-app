@@ -2,43 +2,40 @@ import 'package:data_plugin/bmob/table/bmob_user.dart';
 import 'package:data_plugin/bmob/type/bmob_file.dart';
 import "package:data_plugin/data_plugin.dart";
 import '../roleCard/roleCard.dart';
-class storyMap{
-  storyModule module;
+class StoryMap{
+  StoryMod module;
 
-  storyMap(this.module);
+  StoryMap(this.module);
 
   BmobFile bgImageURL=BmobFile();
-  List<storyScene> scenes=new List<storyScene>();
-  void addScene(storyScene scene){
+  List<StoryScene> scenes=new List<StoryScene>();
+  void addScene(StoryScene scene){
     this.scenes.add(scene);
   }
 }
-class storyScene{
-  storyMap map;
+class StoryScene{
+  StoryMap map;
   String name;
-//  int iconType=0;// 0000 is  point ,4 bit correspond to left,right,up,down
   int mainSceneIdx=0;
   double xPosition;
   double yPosition;
-  List<storySubScene> subScenes=[];
+  List<StorySubScene> subScenes=[];
   List<int> npcsId=[];
 
-  storyScene(this.map, this.name, this.xPosition, this.yPosition);
+  StoryScene(this.map, this.name, this.xPosition, this.yPosition);
 
 
 }
-class storySubScene{
-  storyScene scene;
+class StorySubScene{
+  StoryScene scene;
   String name='undefined';
   BmobFile bgImg=BmobFile();
 
-  storySubScene(this.scene, this.name);
-
-
+  StorySubScene(this.scene, this.name);
 }
 
-class storyModule{
-  storyMap map;
+class StoryMod{
+  StoryMap map;
   List<roleCard> npcs=[];
   String moduleName='undefined';
   BmobFile thumbnailImg=BmobFile();
@@ -46,9 +43,9 @@ class storyModule{
   int kpHourMin;
   int plHourMin;
 
-  storyModule();
+  StoryMod();
 
   void addMap(){
-    this.map = new storyMap(this);
+    this.map = new StoryMap(this);
   }
 }
