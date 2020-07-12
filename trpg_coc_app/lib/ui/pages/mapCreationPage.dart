@@ -1,19 +1,19 @@
 import "package:flutter/material.dart";
 import 'package:trpgcocapp/data/storyModule/storyModCreate.dart';
 import 'package:trpgcocapp/ui/widgets/storyMapWidget.dart';
-class mapPage extends StatefulWidget {
+class MapCreationPage extends StatefulWidget {
   StoryModCreate module;
 
-  mapPage(this.module);
+  MapCreationPage(this.module);
 
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return mapPageState();
+    return MapCreationPageState();
   }
 }
 
-class mapPageState extends State<mapPage> {
+class MapCreationPageState extends State<MapCreationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
