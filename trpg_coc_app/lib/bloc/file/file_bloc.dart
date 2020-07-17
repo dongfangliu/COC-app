@@ -1,56 +1,23 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
+import 'package:trpgcocapp/bloc/common/timecost_operation_bloc.dart';
+import 'package:trpgcocapp/bloc/common/timecost_operation_event.dart';
+import 'package:trpgcocapp/bloc/common/timecost_operation_state.dart';
 import 'package:trpgcocapp/bloc/file/file_repository.dart';
 import '../bloc.dart';
 import 'file_bloc_state.dart';
 
-class FileBloc extends Bloc<FileBlocEvent, FileBlocState> {
+class FileBloc extends TimecostOperationBloc{
   FileRepository repository = new FileRepository();
-  FileBloc(){repository.init();}
+  FileBloc(){
+    repository.init();
+    operator.addEventActionPair(UploadFile(), repository.upload);
+    operator.addEventActionPair(DeleteFile(), repository.delete);
+    operator.addEventActionPair(DownloadFile(), repository.download);
 
-  @override
-  FileBlocState get initialState => FileReady();
-
-  @override
-  Stream<FileBlocState> mapEventToState(
-    FileBlocEvent event,
-  ) async* {
-    if (state is FileReady) {
-      yield* _mapForReadyState(event);
-    }else if(state is FileOperationFailure){
-      if(event is FileOperationResultGot){
-        yield FileReady();
-      }
-    }else if(state is FileOperationSuccess) {
-      if(event is FileOperationResultGot){
-        yield FileReady();
-      }
-    }
   }
-
-  Stream<FileBlocState> _mapForReadyState(FileBlocEvent event) async* {
-    if ((event is UploadFile) ||
-        (event is DeleteFile) ||
-        (event is DownloadFile)) {
-      FileOperateStatus status;
-      yield FileOperating();
-      if (event is UploadFile) {
-        status = await repository.upload();
-      }
-      if (event is DeleteFile) {
-        status = await repository.delete();
-      }
-      if (event is DownloadFile) {
-        status = await repository.download();
-      }
-      if (status == FileOperateStatus.SUCCESS) {
-        yield FileOperationSuccess();
-      } else {
-        yield FileOperationFailure(repository.msg);
-      }
-    }
-  }
-
+  @override
+  TimecostOperationState get initialState => ReadyToOperate();
   @override
   Future<void> close() {
     return super.close();

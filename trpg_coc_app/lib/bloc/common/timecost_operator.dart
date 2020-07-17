@@ -13,8 +13,8 @@ class OperateResult{
 typedef Future<OperateResult>  OperateFunc();
 
 class TimecostOperator{
-  Map<TimecostOperationEvent,OperateFunc> _eventToAction;
-  OperateResult lastResult;
+  Map<TimecostOperationEvent,OperateFunc> _eventToAction =Map<TimecostOperationEvent,OperateFunc>();
+  OperateResult lastResult =OperateResult();
   void addEventActionPair(TimecostOperationEvent event,OperateFunc operateFunc){
     if(_eventToAction.containsKey(event)) {
       print("Warning, $event is already has a mapped func");

@@ -5,6 +5,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:trpgcocapp/bloc/common/timecost_operation_event.dart';
+import 'package:trpgcocapp/bloc/common/timecost_operation_state.dart';
 import 'package:trpgcocapp/bloc/file/file_bloc_event.dart';
 import 'package:trpgcocapp/bloc/file/file_bloc_state.dart';
 
@@ -25,19 +27,19 @@ class FileBlocDemoState extends State<FileBlocDemo>{
     final FileBloc fileBloc = BlocProvider.of<FileBloc>(context);
     return Scaffold(
       appBar: AppBar(title: Text('FileBloc')),
-      body: BlocListener<FileBloc, FileBlocState>(
-        listener: (BuildContext context, FileBlocState state) {
-          if(state is FileOperating){
+      body: BlocListener<FileBloc, TimecostOperationState>(
+        listener: (BuildContext context, TimecostOperationState state) {
+          if(state is Operating){
             showFileOperatingDialog(context);
-          }else if(state is FileOperationSuccess){
+          }else if(state is OperationSuccess){
             showFileOperationSuccessDialog(context);
-          }else if(state is FileOperationFailure){
+          }else if(state is OperationSuccess){
             showFileOperationFailDialog(context);
           }
 
         },
         condition:(prevState, currentState) {
-          if ((prevState is FileOperating)){
+          if ((prevState is Operating)){
             Navigator.pop(context);
           }
           return true;
@@ -132,7 +134,7 @@ class FileBlocDemoState extends State<FileBlocDemo>{
               new FlatButton(
                 child: new Text('OK'),
                 onPressed: () {
-                  fileBloc.add(FileOperationResultGot());
+                  fileBloc.add(OperationResultGot());
                   Navigator.of(context).pop();
                 },
               ),
@@ -151,8 +153,8 @@ class FileBlocDemoState extends State<FileBlocDemo>{
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  Icon(Icons.warning,color: fileBloc.repository.hasError?Colors.red:Colors.grey,size: 100,),
-                  Text(fileBloc.repository.msg)
+                  Icon(Icons.warning,color: Colors.grey,size: 100,),
+                  Text(fileBloc.operator.lastResult.msg)
                 ],
               ),
             ),
@@ -160,7 +162,7 @@ class FileBlocDemoState extends State<FileBlocDemo>{
               new FlatButton(
                 child: new Text('OK'),
                 onPressed: () {
-                  fileBloc.add(FileOperationResultGot());
+                  fileBloc.add(OperationResultGot());
                   Navigator.of(context).pop();
                 },
               ),

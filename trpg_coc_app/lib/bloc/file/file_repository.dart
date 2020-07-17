@@ -2,28 +2,18 @@ import 'package:data_plugin/bmob/bmob.dart';
 import 'package:data_plugin/bmob/response/bmob_handled.dart';
 import 'package:data_plugin/bmob/type/bmob_file.dart';
 import 'file_helper.dart';
+import 'package:trpgcocapp/bloc/common/timecost_operator.dart';
 
-enum FileStatus { READY, OPERATING, COMPLETED }
-enum FileOperateStatus { OPERATING, FAILURE, SUCCESS }
 
 class FileRepository {
   String localPath = ""; // currently use by local but can be not-uploaded
   String defaultRemoteURL= "";
-FileRepository();
+  FileRepository();
   FileRepository.url(this.defaultRemoteURL);
 
   dynamic remoteData = null; // downloaded remote file 's data..
-  BmobFile remoteFile = BmobFile();
+  BmobFile remoteFile = BmobFile(); // uploaded file's remote path
 
-  FileStatus get status => _status;
-
-  set status(FileStatus value) {
-    _status = value;
-  } // uploaded file's remote path
-
-  FileStatus _status = FileStatus.READY;
-  bool _hasError = false;
-  String _msg = "";
 
   void init() {
     String appId = 'c0e5dbfe38a164ba90d2c4c7e1c846a9';
@@ -36,79 +26,53 @@ FileRepository();
     this.localPath = path;
   }
 
-  Map<String, dynamic> getOperateInfo() {
-    return {'hasError': _hasError, 'msg': _msg};
-  }
 
-  Future<FileOperateStatus> upload() async {
-    this._status = FileStatus.OPERATING;
+  Future<OperateResult> upload() async {
     try {
       BmobFile file = await FileHelper.uploadFile(localPath);
       this.remoteFile = file;
-      this._status = FileStatus.COMPLETED;
-      return FileOperateStatus.SUCCESS;
+      OperateResult result=OperateResult();result.isSuccess=true;
+      result.result=remoteFile;result.msg="success upload";
+      return result;
     } catch (e) {
-      setError(e);
-      this._status = FileStatus.COMPLETED;
-      return FileOperateStatus.FAILURE;
+      OperateResult result=OperateResult();result.isSuccess=false;result.msg=e.toString();
+      return result;
     }
     ;
   }
 
-  Future<FileOperateStatus> delete() async {
-    this._status = FileStatus.OPERATING;
+  Future<OperateResult> delete() async {
     if (remoteFile == null || remoteFile.url == "") {
       String e = "No file to delete at all";
-      setError(e);
-      this._status = FileStatus.COMPLETED;
-      return FileOperateStatus.FAILURE;
+      OperateResult result=OperateResult();result.isSuccess=false;result.msg=e.toString();
+      return result;
     }
     try {
       BmobHandled handled = await FileHelper.deleteFile(remoteFile.url);
-      setMsg(handled.msg);
       this.remoteFile = BmobFile();
-      this._status = FileStatus.COMPLETED;
-      return FileOperateStatus.SUCCESS;
+
+      OperateResult result=OperateResult();result.isSuccess=true;
+      result.result=handled;result.msg=handled.msg;
+      return result;
     } catch (e) {
-      setError(e);
-      this._status = FileStatus.COMPLETED;
-      return FileOperateStatus.FAILURE;
+      OperateResult result=OperateResult();result.isSuccess=false;result.msg=e.toString();
+      return result;
     }
   }
 
-  Future<FileOperateStatus> download() async {
-    this._status = FileStatus.OPERATING;
+  Future<OperateResult> download() async {
     try {
       remoteData = await FileHelper.downloadFile(remoteFile.url, null);
-      this._status = FileStatus.COMPLETED;
-      return FileOperateStatus.SUCCESS;
+      OperateResult result=OperateResult();
+      result.isSuccess=true;
+      result.result=remoteData;
+      result.msg = "download success";
+      return result;
     } catch (e) {
-      setError(e);
-      this._status = FileStatus.COMPLETED;
-      return FileOperateStatus.FAILURE;
+      OperateResult result=OperateResult();result.isSuccess=false;result.msg=e.toString();
+      return result;
     }
   }
 
-  void setMsg(String msg){this._msg =msg;}
-  void setError(e) {
-    _hasError = true;
-    setMsg(e.toString());
-  }
 
-  void dismissError() {
-    _hasError = false;
-    setMsg("");
-  }
-
-  bool get hasError => _hasError;
-
-  set hasError(bool value) {
-    _hasError = value;
-  }
-
-  String get msg => _msg;
-
-  set msg(String value) {
-    _msg = value;
-  }
 }

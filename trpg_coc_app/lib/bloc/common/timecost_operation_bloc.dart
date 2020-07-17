@@ -8,10 +8,10 @@ import 'package:bloc/bloc.dart';
 class TimecostOperationBloc extends Bloc<TimecostOperationEvent, TimecostOperationState> {
   @override
   TimecostOperationState get initialState => ReadyToOperate();
-  TimecostOperator operator;
+  TimecostOperator operator = TimecostOperator();
   @override
   Stream<TimecostOperationState> mapEventToState(
-    TimecostOperationEvent event,
+      TimecostOperationEvent event,
   ) async* {
     if (state is ReadyToOperate) {
       yield* _mapForReadyState(event);

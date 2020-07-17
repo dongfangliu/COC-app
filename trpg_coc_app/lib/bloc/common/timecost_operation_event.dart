@@ -2,7 +2,9 @@ import 'package:meta/meta.dart';
 import 'package:equatable/equatable.dart';
 
 @immutable
-abstract class TimecostOperationEvent extends Equatable {}
+abstract class TimecostOperationEvent extends Equatable {
+  const TimecostOperationEvent();
+}
 class TakeOperation extends TimecostOperationEvent{
 
   @override
