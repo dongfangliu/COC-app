@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:trpgcocapp/bloc/common/timecost_operation_event.dart';
 import 'package:trpgcocapp/bloc/common/timecost_operation_state.dart';
+import 'package:trpgcocapp/bloc/common/timecost_operator_widget.dart';
 import 'package:trpgcocapp/bloc/file/file_bloc_event.dart';
 import 'package:trpgcocapp/bloc/file/file_bloc_state.dart';
 
@@ -24,32 +25,14 @@ class FileBlocDemo extends StatefulWidget  {
 class FileBlocDemoState extends State<FileBlocDemo>{
   @override
   Widget build(BuildContext context) {
-    final FileBloc fileBloc = BlocProvider.of<FileBloc>(context);
     return Scaffold(
       appBar: AppBar(title: Text('FileBloc')),
-      body: BlocListener<FileBloc, TimecostOperationState>(
-        listener: (BuildContext context, TimecostOperationState state) {
-          if(state is Operating){
-            showFileOperatingDialog(context);
-          }else if(state is OperationSuccess){
-            showFileOperationSuccessDialog(context);
-          }else if(state is OperationSuccess){
-            showFileOperationFailDialog(context);
-          }
-
-        },
-        condition:(prevState, currentState) {
-          if ((prevState is Operating)){
-            Navigator.pop(context);
-          }
-          return true;
-        },
-        child: buildNormalPanel(context, fileBloc),
-      ),
+      body: TimecostOpListenerWidget<FileBloc>(child:buildNormalPanel(context))
     );
   }
 
-  Widget buildNormalPanel(BuildContext context,FileBloc fileBloc ) {
+  Widget buildNormalPanel(BuildContext context ) {
+    final FileBloc fileBloc = BlocProvider.of<FileBloc>(context);
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -110,68 +93,6 @@ class FileBlocDemoState extends State<FileBlocDemo>{
     );
   }
 
-  void showFileOperatingDialog(BuildContext context) {
-    showDialog(context: context,barrierDismissible: false,
-        builder: (context){
-          return new AlertDialog(
-            title: new Text("Operating.."),
-            content:SizedBox(height: 100,width: 100,child: Center(child:CircularProgressIndicator()),)
-
-
-          );
-        }
-    );
-  }
-  void showFileOperationSuccessDialog(BuildContext context) {
-    final FileBloc fileBloc = BlocProvider.of<FileBloc>(context);
-    showDialog(context: context,barrierDismissible: false,
-        builder: (context){
-          return new AlertDialog(
-            title: new Text("Operation Success"),
-            content:
-            Icon(Icons.wb_sunny,color: Colors.yellow,size: 100,),
-            actions: <Widget>[
-              new FlatButton(
-                child: new Text('OK'),
-                onPressed: () {
-                  fileBloc.add(OperationResultGot());
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        }
-    );
-  }
-  void showFileOperationFailDialog(BuildContext context) {
-    final FileBloc fileBloc = BlocProvider.of<FileBloc>(context);
-    showDialog(context: context,barrierDismissible: false,
-        builder: (context){
-          return new AlertDialog(
-            title: new Text("Operation Failure"),
-            content:Container(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Icon(Icons.warning,color: Colors.grey,size: 100,),
-                  Text(fileBloc.operator.lastResult.msg)
-                ],
-              ),
-            ),
-            actions: <Widget>[
-              new FlatButton(
-                child: new Text('OK'),
-                onPressed: () {
-                  fileBloc.add(OperationResultGot());
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        }
-    );
-
-  }
 
 
 }

@@ -5,7 +5,7 @@ import 'timecost_operation_state.dart';
 import 'timecost_operation_event.dart';
 import 'package:bloc/bloc.dart';
 
-class TimecostOperationBloc extends Bloc<TimecostOperationEvent, TimecostOperationState> {
+class TimecostOperationBloc extends Bloc<TimecostOperationEvent,TimecostOperationState> {
   @override
   TimecostOperationState get initialState => ReadyToOperate();
   TimecostOperator operator = TimecostOperator();
