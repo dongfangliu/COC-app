@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:trpgcocapp/bloc/bloc.dart';
+import 'package:trpgcocapp/bloc/file/file_bloc.dart';
 import 'package:trpgcocapp/bloc/file/file_widget.dart';
 import 'package:trpgcocapp/ui/pages/moduleCreationPage.dart';
 void main() => runApp(MyApp());

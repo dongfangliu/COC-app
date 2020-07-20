@@ -1,10 +1,13 @@
 import "package:flutter/material.dart";
+import 'package:trpgcocapp/data/coc_file.dart';
 import 'package:trpgcocapp/data/storyModule/storyModCreate.dart';
 import 'package:trpgcocapp/ui/pages/mapCreationPage.dart';
 import 'package:trpgcocapp/ui/pages/sceneCreationPage.dart';
 
 class moduleCreationPage extends StatefulWidget {
-  final StoryModCreate _module = new StoryModCreate();
+  final StoryModCreate _module = new StoryModCreate(
+[],'undefined',LocalFile(),0,0,0
+  );
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState

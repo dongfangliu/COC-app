@@ -150,7 +150,7 @@ class storyMapCreateWidgetState extends State<storyMapCreateWidget> {
                     child: new Text('Confirm'),
                     onPressed: () {
                       widget.map.addScene(
-                          new StorySceneCreate(widget.map, _controller.text, 0, 0));
+                          new StorySceneCreate( _controller.text, 0,[],0, 0));
                       _controller.clear();
                       setState(() {});
                       Navigator.of(cxt).pop();
@@ -206,8 +206,8 @@ class storyMapCreateWidgetState extends State<storyMapCreateWidget> {
                           new FlatButton(
                             child: new Text('Confirm'),
                             onPressed: () {
-                              widget.map.addScene(new StorySceneCreate(widget.map,
-                                  _controller.text, offset.dx, offset.dy));
+                              widget.map.addScene(new StorySceneCreate(
+                                  _controller.text,0,[], offset.dx, offset.dy));
                               _controller.clear();
                               setState(() {});
                               Navigator.of(cxt).pop();
@@ -264,7 +264,7 @@ class storyMapCreateWidgetState extends State<storyMapCreateWidget> {
   void buildMapPoints(BuildContext context) {
     movableMapPoints.clear();
     for (StorySceneCreate scene in widget.map.scenes) {
-      movableMapPoints.add(storyMapPointWidget(scene, this.callback));
+      movableMapPoints.add(storyMapPointWidget(widget.map,scene, this.callback));
     }
   }
 
@@ -278,6 +278,7 @@ class storyMapCreateWidgetState extends State<storyMapCreateWidget> {
 }
 
 class storyMapPointWidget extends StatefulWidget {
+  StoryMapCreate map;
   StorySceneCreate scene;
 
   Function setStateParent;
@@ -287,7 +288,7 @@ class storyMapPointWidget extends StatefulWidget {
     return storyMapPointWidgetState();
   }
 
-  storyMapPointWidget(this.scene, this.setStateParent);
+  storyMapPointWidget(this.map,this.scene, this.setStateParent);
 }
 
 class storyMapPointWidgetState extends State<storyMapPointWidget> {
@@ -333,7 +334,7 @@ class storyMapPointWidgetState extends State<storyMapPointWidget> {
                   new FlatButton(
                       child: new Text('Delete'),
                       onPressed: () {
-                        widget.scene.map.scenes.remove(widget.scene);
+                        widget.map.scenes.remove(widget.scene);
                         widget.setStateParent(() {});
                         Navigator.of(cxt).pop();
                       })

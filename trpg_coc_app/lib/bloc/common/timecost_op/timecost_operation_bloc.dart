@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:trpgcocapp/bloc/common/timecost_operator.dart';
+import 'timecost_operator.dart';
 
 import 'timecost_operation_state.dart';
 import 'timecost_operation_event.dart';

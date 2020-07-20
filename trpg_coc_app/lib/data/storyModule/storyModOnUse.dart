@@ -1,51 +1,53 @@
-import 'package:data_plugin/bmob/table/bmob_user.dart';
-import 'package:data_plugin/bmob/type/bmob_file.dart';
-import "package:data_plugin/data_plugin.dart";
-import '../roleCard/roleCard.dart';
-class StoryMap{
-  StoryMod module;
+import 'package:trpgcocapp/data/coc_file.dart';
+import 'package:trpgcocapp/data/storyModule/storyMod.dart';
+import 'package:trpgcocapp/data/storyModule/storyModCreate.dart';
 
-  StoryMap(this.module);
+class StoryMapUsing extends StoryMap<COCBmobFile> {
+  StoryMapUsing() : super() {
+    this.bgImage = new COCBmobFile();
+  }
 
-  BmobFile bgImageURL=BmobFile();
-  List<StoryScene> scenes=new List<StoryScene>();
-  void addScene(StoryScene scene){
-    this.scenes.add(scene);
+  StoryMapUsing.from(StoryMapCreate mapCreate) : super(){
+
+    this.bgImage = new COCBmobFile();
+    this.bgImage.fromLocalFile(mapCreate.bgImage.file);
+    this.scenes = mapCreate.scenes.map((scene){
+      return StorySceneUsing.from(scene);
+    }).toList();
+  }
+
+}
+
+class StorySceneUsing extends StoryScene<COCBmobFile> {
+
+  StorySceneUsing.from(StorySceneCreate sceneCreate)
+      : super(sceneCreate.name,sceneCreate.mainSceneIdx,sceneCreate.npcsId, sceneCreate.xPosition,
+            sceneCreate.yPosition){
+    this.subScenes = sceneCreate.subScenes.map((subscene){
+      return StorySubSceneUsing.from(subscene);
+    }).toList();
   }
 }
-class StoryScene{
-  StoryMap map;
-  String name;
-  int mainSceneIdx=0;
-  double xPosition;
-  double yPosition;
-  List<StorySubScene> subScenes=[];
-  List<int> npcsId=[];
 
-  StoryScene(this.map, this.name, this.xPosition, this.yPosition);
+class StorySubSceneUsing extends StorySubScene<COCBmobFile> {
+  StorySubSceneUsing(String name)
+      : super(name) {
+    this.bgImg = COCBmobFile();
+  }
 
-
-}
-class StorySubScene{
-  StoryScene scene;
-  String name='undefined';
-  BmobFile bgImg=BmobFile();
-
-  StorySubScene(this.scene, this.name);
+  StorySubSceneUsing.from(
+      StorySubSceneCreate sceneCreate)
+      : super(sceneCreate.name) {
+    this.bgImg = COCBmobFile();
+    this.bgImg.fromLocalFile(sceneCreate.bgImg.file);
+  }
 }
 
-class StoryMod{
-  StoryMap map;
-  List<roleCard> npcs=[];
-  String moduleName='undefined';
-  BmobFile thumbnailImg=BmobFile();
-  int estimate_hours;
-  int kpHourMin;
-  int plHourMin;
+class StoryModUsing extends StoryMod<COCBmobFile> {
 
-  StoryMod();
-
-  void addMap(){
-    this.map = new StoryMap(this);
+  StoryModUsing.from(StoryModCreate modCreate) : super(modCreate.npcs,modCreate. moduleName,modCreate.estimate_hours, modCreate.kpHourMin, modCreate.plHourMin){
+   this.thumbnailImg= COCBmobFile();
+   this.thumbnailImg.fromLocalFile(modCreate.thumbnailImg.file);
+   this.map = StoryMapUsing.from(modCreate.map );
   }
 }

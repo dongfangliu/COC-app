@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:trpgcocapp/bloc/common/timecost_operation_event.dart';
-import 'package:trpgcocapp/bloc/common/timecost_operation_state.dart';
-import 'package:trpgcocapp/bloc/common/timecost_operation_bloc.dart';
+import 'package:trpgcocapp/bloc/common/timecost_op/timecost_operation_event.dart';
+import 'package:trpgcocapp/bloc/common/timecost_op/timecost_operation_state.dart';
+import 'package:trpgcocapp/bloc/common/timecost_op/timecost_operation_bloc.dart';
 
 class TimecostOpListenerWidget<T extends TimecostOperationBloc> extends StatefulWidget  {
 

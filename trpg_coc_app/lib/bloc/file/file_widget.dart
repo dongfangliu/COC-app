@@ -5,11 +5,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:trpgcocapp/bloc/common/timecost_operation_event.dart';
-import 'package:trpgcocapp/bloc/common/timecost_operation_state.dart';
-import 'package:trpgcocapp/bloc/common/timecost_operator_widget.dart';
+import 'package:trpgcocapp/bloc/common/timecost_op/timecost_operation_event.dart';
+import 'package:trpgcocapp/bloc/common/timecost_op/timecost_operation_state.dart';
+import 'package:trpgcocapp/bloc/common/timecost_op/timecost_operator_widget.dart';
 import 'package:trpgcocapp/bloc/file/file_bloc_event.dart';
-import 'package:trpgcocapp/bloc/file/file_bloc_state.dart';
 
 import 'file_bloc.dart';
 

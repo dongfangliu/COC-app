@@ -1,14 +1,14 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:trpgcocapp/bloc/common/timecost_operation_bloc.dart';
-import 'package:trpgcocapp/bloc/common/timecost_operation_event.dart';
-import 'package:trpgcocapp/bloc/common/timecost_operation_state.dart';
+import 'package:trpgcocapp/bloc/common/timecost_op/timecost_operation_bloc.dart';
+import 'package:trpgcocapp/bloc/common/timecost_op/timecost_operation_event.dart';
+import 'package:trpgcocapp/bloc/common/timecost_op/timecost_operation_state.dart';
+import 'package:trpgcocapp/bloc/file/file_helper.dart';
 import 'package:trpgcocapp/bloc/file/file_repository.dart';
-import '../bloc.dart';
-import 'file_bloc_state.dart';
+import 'file_bloc_event.dart';
 
 class FileBloc extends TimecostOperationBloc{
-  FileRepository repository = new FileRepository();
+  FileRepository<BmobFileHelper> repository = new FileRepository<BmobFileHelper>();
   FileBloc(){
     repository.init();
     operator.addEventActionPair(UploadFile(), repository.upload);

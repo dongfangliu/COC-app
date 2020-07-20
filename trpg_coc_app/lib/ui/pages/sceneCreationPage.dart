@@ -5,6 +5,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:photofilters/photofilters.dart';
 import 'package:selectable_container/selectable_container.dart';
+import 'package:trpgcocapp/data/coc_file.dart';
+import 'package:trpgcocapp/data/storyModule/storyMod.dart';
 import 'package:trpgcocapp/data/storyModule/storyModCreate.dart';
 import 'package:trpgcocapp/data/storyModule/storyModOnUse.dart';
 import 'package:image_picker/image_picker.dart';
@@ -30,9 +32,6 @@ class sceneCreationPage extends StatefulWidget {
     return sceneCreationPageState();
   }
 
-  StoryModCreate getModule() {
-    return this._scene.map.module;
-  }
 
   sceneCreationPage(this._scene);
 }
@@ -92,7 +91,7 @@ class sceneCreationPageState extends State<sceneCreationPage> {
   }
 
   Widget buildSceneSelectionDropDown(BuildContext context) {
-    return DropdownButton<StorySubSceneCreate>(
+    return DropdownButton<StorySubScene<LocalFile>>(
       value: widget._scene.subScenes.length == 0?null: (widget._curScene==null?widget._scene.subScenes[0]:widget._curScene),
       icon: Icon(Icons.arrow_drop_down),
       iconSize: 24,
@@ -102,7 +101,7 @@ class sceneCreationPageState extends State<sceneCreationPage> {
         height: 2,
         color: Colors.deepPurpleAccent,
       ),
-      onChanged: (StorySubSceneCreate value) {
+      onChanged: (StorySubScene<LocalFile> value) {
         setState(() {
           widget._curScene = value;
         });
@@ -118,8 +117,9 @@ class sceneCreationPageState extends State<sceneCreationPage> {
               )
             ]
           : widget._scene.subScenes
-              .map<DropdownMenuItem<StorySubSceneCreate>>((StorySubSceneCreate value) {
-              return DropdownMenuItem<StorySubSceneCreate>(
+              .map<DropdownMenuItem<StorySubScene<LocalFile>>>(
+              (StorySubScene<LocalFile> value) {
+              return DropdownMenuItem<StorySubScene<LocalFile>>(
                 value: value,
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width/5, // for example

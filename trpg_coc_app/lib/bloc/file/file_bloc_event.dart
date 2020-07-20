@@ -1,4 +1,4 @@
-import 'package:trpgcocapp/bloc/common/timecost_operation_event.dart';
+import 'package:trpgcocapp/bloc/common/timecost_op/timecost_operation_event.dart';
 class FileBlocEvent extends TakeOperation{
 
 }

@@ -1,5 +1,5 @@
 
-import 'package:trpgcocapp/bloc/common/timecost_operation_event.dart';
+import 'timecost_operation_event.dart';
 
 class OperateResult{
 
