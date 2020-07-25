@@ -1,45 +1,79 @@
+import 'package:data_plugin/bmob/table/bmob_object.dart';
+import 'package:json_annotation/json_annotation.dart';
 import 'package:trpgcocapp/data/coc_file.dart';
+import 'package:trpgcocapp/data/roleCard/roleCard.dart';
 import 'package:trpgcocapp/data/storyModule/storyMod.dart';
 import 'package:trpgcocapp/data/storyModule/storyModCreate.dart';
 
+part 'storyModOnUse.g.dart';
+
+@JsonSerializable()
 class StoryMapUsing extends StoryMap<COCBmobServerFile> {
   StoryMapUsing() : super() {
   }
 
-  StoryMapUsing.from(StoryMapCreate mapCreate) : super(){
-    this.mapImg = new COCBmobServerFile.from(mapCreate.mapImg.file);
-    this.scenes = mapCreate.scenes.map((scene){
-      return StorySceneUsing.from(scene);
-    }).toList();
+  from(StoryMapCreate mapCreate)async {
+    this.mapImg = new COCBmobServerFile();
+    await this.mapImg.from(mapCreate.mapImg.file);
+
+    this.scenes = new List<StorySceneUsing>();
+    for(int i = 0; i<mapCreate.scenes.length;i++){
+      StorySceneCreate sceneCreate = mapCreate.scenes[i];
+      StorySceneUsing sceneUsing = new StorySceneUsing(sceneCreate.name,sceneCreate.mainSceneIdx,sceneCreate.npcsId,sceneCreate.xPosition,sceneCreate.yPosition);
+      await sceneUsing.from(sceneCreate);
+      this.scenes.add(sceneUsing);
+    }
   }
 
 }
 
+@JsonSerializable()
 class StorySceneUsing extends StoryScene<COCBmobServerFile> {
+  StorySceneUsing(String name, int mainSceneIdx, List<int> npcsId, double xPosition, double yPosition) : super(name, mainSceneIdx, npcsId, xPosition, yPosition);
 
-  StorySceneUsing.from(StorySceneCreate sceneCreate)
-      : super(sceneCreate.name,sceneCreate.mainSceneIdx,sceneCreate.npcsId, sceneCreate.xPosition,
-            sceneCreate.yPosition){
-    this.subScenes = sceneCreate.subScenes.map((subscene){
-      return StorySubSceneUsing.from(subscene);
-    }).toList();
+
+  from(StorySceneCreate sceneCreate) async {
+    this.subScenes = new List<StorySubSceneUsing>();
+    for(int i = 0; i<sceneCreate.subScenes.length;i++){
+      StorySubSceneUsing subSceneUsing = new StorySubSceneUsing(sceneCreate.subScenes[i].name);
+      await subSceneUsing.from(sceneCreate.subScenes[i]);
+      this.subScenes.add(subSceneUsing);
+    }
   }
 }
 
+@JsonSerializable()
 class StorySubSceneUsing extends StorySubScene<COCBmobServerFile> {
   StorySubSceneUsing(String name)
       : super(name) {
   }
 
-  StorySubSceneUsing.from(
-      StorySubSceneCreate sceneCreate)
-      : super(sceneCreate.name) {
-    this.bgImg = COCBmobServerFile.from(sceneCreate.bgImg.file);
+  from(StorySubSceneCreate sceneCreate)
+     async {
+    this.bgImg =new  COCBmobServerFile();
+    await this.bgImg.from(sceneCreate.bgImg.file);
   }
 }
 
+@JsonSerializable()
 class StoryModUsing extends StoryMod<COCBmobServerFile> {
-  StoryModUsing.from(StoryModCreate modCreate) : super(modCreate.npcs,StoryMapUsing.from(modCreate.map ),modCreate. moduleName,modCreate.estimate_hours, modCreate.kpHourMin, modCreate.plHourMin){
-   this.thumbnailImg= COCBmobServerFile.from(modCreate.thumbnailImg.file);
+  StoryModUsing(List<roleCard> npcs, String moduleName, int estimate_hours, int kpHourMin, int plHourMin) : super(npcs, moduleName, estimate_hours, kpHourMin, plHourMin);
+
+  from(StoryModCreate modCreate) async {
+   this.thumbnailImg= COCBmobServerFile();
+   await this.thumbnailImg.from(modCreate.thumbnailImg.file);
+   StoryMapUsing mapUsing =new StoryMapUsing();
+   await  mapUsing.from(modCreate.map);
+   this.map = mapUsing;
   }
+
+  factory StoryModUsing.fromJson(Map<String, dynamic> json) => _$StoryModUsingFromJson(json);
+  Map<String, dynamic> toJson() => _$StoryModUsingToJson(this);
 }
+
+
+T _dataFromJson<T>(Map<String, dynamic> input) =>
+    input['value'] as T;
+
+Map<String, dynamic> _dataToJson<T>(T input) =>
+    {'value': input};

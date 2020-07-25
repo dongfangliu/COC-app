@@ -23,6 +23,8 @@ class TimecostOperator{
 
   }
   Future<OperateResult> takeAction(TimecostOperationEvent event) async {
+
+    lastResult.msg=null;lastResult.isSuccess=false;lastResult.result=null;
     if(!_eventToAction.containsKey(event)){
       lastResult=OperateResult();
     }else{

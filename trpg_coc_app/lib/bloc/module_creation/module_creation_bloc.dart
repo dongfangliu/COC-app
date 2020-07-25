@@ -7,7 +7,7 @@ import 'module_creation_event.dart';
 class ModuleCreationBloc extends TimecostOperationBloc {
   @override
   TimecostOperationState get initialState => ReadyToOperate();
-  FileBloc(){
+  ModuleCreationBloc(){
     operator.addEventActionPair(SubmmitModule(), ModuleCreationRepository.submmit);
   }
   @override
@@ -15,6 +15,4 @@ class ModuleCreationBloc extends TimecostOperationBloc {
     return super.close();
   }
 
-  ModuleCreationBloc(){
-  }
 }

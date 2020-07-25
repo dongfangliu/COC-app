@@ -15,10 +15,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: BlocProvider<FileBloc>(
-        create: (context) => FileBloc(),
-        child: moduleCreationPage(),
-      ),
+      home: moduleCreationPage(),
     );
   }
 }

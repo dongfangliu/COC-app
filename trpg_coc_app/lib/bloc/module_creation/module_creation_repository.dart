@@ -59,7 +59,9 @@ class ModuleCreationHelper{
   }
   static Future<StoryModUsing> convertToUsing(StoryModCreate _modCreate) async {
     try {
-      StoryModUsing modUsing = await StoryModUsing.from(_modCreate);
+
+      StoryModUsing modUsing =new StoryModUsing(_modCreate.npcs, _modCreate.moduleName, _modCreate.estimate_hours, _modCreate.kpHourMin, _modCreate.plHourMin);
+      await modUsing.from(_modCreate);
       return modUsing;
     } catch (e) {
       throw e;

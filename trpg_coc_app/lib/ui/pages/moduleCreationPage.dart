@@ -11,6 +11,7 @@ class moduleCreationPage extends StatefulWidget {
   StoryModCreate _module;
   moduleCreationPage();
 
+
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
@@ -29,6 +30,7 @@ class moduleCreationState extends State<moduleCreationPage> {
   final TextEditingController gamehoursTextController = TextEditingController();
   final TextEditingController plhoursTextController = TextEditingController();
   final TextEditingController kphoursTextController = TextEditingController();
+  ModuleCreationBloc _moduleCreationBloc;
   @override
   void initState() {
     super.initState();
@@ -40,7 +42,7 @@ class moduleCreationState extends State<moduleCreationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocProvider<ModuleCreationBloc>(
-        create: (context) => ModuleCreationBloc(),
+        create: (context){_moduleCreationBloc = ModuleCreationBloc();return _moduleCreationBloc;},
         child: TimecostOpListenerWidget<ModuleCreationBloc>(
             child: widget._module==null?buildPendingPage(context):buildBody(context)
         )
@@ -93,7 +95,7 @@ class moduleCreationState extends State<moduleCreationPage> {
     widget._module.kpHourMin = int.parse(kphoursTextController.text);
     widget._module.estimate_hours = int.parse(gamehoursTextController.text);
     ModuleCreationRepository.modCreate = widget._module;
-    BlocProvider.of<ModuleCreationBloc>(context).add(SubmmitModule());
+    _moduleCreationBloc.add(SubmmitModule());
   }
 
   Widget buildSceneList(BuildContext context) {

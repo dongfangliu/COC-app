@@ -17,15 +17,14 @@ abstract class FileHelper{
 class BmobFileHelper extends FileHelper{
    Future<dynamic> uploadFile(File file) async{
     if (file == null) {
-      DataPlugin.toast("请先选择文件");
+//      DataPlugin.toast("请先选择文件");
       throw Exception("No File Selected");
     }
-    DataPlugin.toast("上传中，请稍候……");
+//    DataPlugin.toast("上传中，请稍候……");
     try{
       var bmobFile = await BmobFileManager.upload(file);
-      print("${bmobFile.cdn}\n${bmobFile.url}\n${bmobFile.filename}");
-      DataPlugin.toast(
-          "上传成功：${bmobFile.cdn}\n${bmobFile.url}\n${bmobFile.filename}");
+//      print("${bmobFile.cdn}\n${bmobFile.url}\n${bmobFile.filename}");
+//      DataPlugin.toast(          "上传成功：${bmobFile.cdn}\n${bmobFile.url}\n${bmobFile.filename}");
       return bmobFile;
     }catch(e){
 
@@ -34,7 +33,7 @@ class BmobFileHelper extends FileHelper{
   }
     Future<dynamic> downloadFile(String remote_url, String savepath) async {
     if (remote_url == null) {
-      DataPlugin.toast("请先上传文件");
+//      DataPlugin.toast("请先上传文件");
       throw Exception("No Remote File");
     }
     Dio dio = Dio();
@@ -46,7 +45,7 @@ class BmobFileHelper extends FileHelper{
       // response.data is List<int> type
       raf.writeFromSync(response.data);
       await raf.close();
-      DataPlugin.toast("下载结束");
+//      DataPlugin.toast("下载结束");
       return file;
     }catch(e){
       throw e;
@@ -55,12 +54,12 @@ class BmobFileHelper extends FileHelper{
   }
    Future<dynamic>  deleteFile(String remote_url) async {
     if (remote_url == null) {
-      DataPlugin.toast("请先上传文件");
+//      DataPlugin.toast("请先上传文件");
       throw Exception("No Remote File");
     }
     try{
       BmobHandled handled = await BmobFileManager.delete(remote_url);
-      DataPlugin.toast("删除成功：" + handled.msg);
+//      DataPlugin.toast("删除成功：" + handled.msg);
       return handled;
     }catch(e){
       throw e;

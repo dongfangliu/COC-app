@@ -1,41 +1,11 @@
+import 'package:json_annotation/json_annotation.dart';
+
 import 'buff.dart';
 import 'packable.dart';
 import 'skill.dart';
-//Attr define
-abstract class attr{
-  String name;
-  String description;
-  String dtype;
-}
+part 'roleCard.g.dart';
 
-abstract class valuableAttr<T> extends attr{
-  T min;
-  T max;
-  T initial;
-}
-abstract class nonValuableAttr<T> extends attr{
-
-}
-
-// Attr evaluate
-
-// Attr change
-abstract class  Operator<T1,T2>{
-  T2 over(List<T1> input);
-}
-
-
-class numericalOperation<T>{
-  List<int> operator;
-  List<T> values;
-
-}
-class boolOperation<T>{
-
-}
-
-
-
+@JsonSerializable()
 class roleCard {
   int hp=0, mp=0,san=0,luck=0;
   int strength=0,constitution=0,size=0,appearance=0,intelligence=0,willpower=0,education=0,agility=0;
@@ -52,4 +22,11 @@ class roleCard {
   List<skill> skills=[];
   String additionInfo="undefined";
   bool isNPC=false;
+
+  factory roleCard.fromJson(Map<String, dynamic> json) =>
+      _$roleCardFromJson(json);
+
+  Map<String, dynamic> toJson() => _$roleCardToJson(this);
+
+  roleCard();
 }

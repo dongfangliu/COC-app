@@ -2,9 +2,11 @@ import 'dart:io';
 
 import 'package:data_plugin/bmob/type/bmob_file.dart';
 import 'package:dio/dio.dart';
+import 'package:json_annotation/json_annotation.dart';
 import 'package:trpgcocapp/bloc/file/file_helper.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:path_provider/path_provider.dart';
+part 'coc_file.g.dart';
 class FileGenerator{
   static Future<File> fromAsset(String pathRelativeToAssets) async {
     try {
@@ -44,29 +46,46 @@ class COCEditableFile<T extends COCServerFile> extends COCFile{
   COCEditableFile(this.file);
 }
 
-abstract class COCServerFile<T>  extends COCFile{
+@JsonSerializable()
+class COCServerFile<T>  extends COCFile{
+
+  @JsonKey(fromJson: _dataFromJson, toJson: _dataToJson)
   T serverfile;
-  toServer(File file);
-  COCServerFile(this.serverfile);
-  COCServerFile.from(File file){
-    toServer(file);
+  Future<T > toServer(File file){}
+  COCServerFile();
+  from(File file) async {
+    this.serverfile = await toServer(file);
   }
+  factory COCServerFile.fromJson(Map<String, dynamic> json) => _$COCServerFileFromJson(json);
+  Map<String, dynamic> toJson() => _$COCServerFileToJson(this);
 }
 
+
+@JsonSerializable()
 class COCBmobServerFile extends  COCServerFile<BmobFile>{
-  COCBmobServerFile.from(File file) : super.from(file);
+  COCBmobServerFile() : super();
+
   @override
-  toServer(File file) async {
+  Future<BmobFile > toServer(File file) async {
     try {
       if (this.serverfile != null) {
         await BmobFileHelper().deleteFile(serverfile.url);
       }
+
       this.serverfile = await BmobFileHelper().uploadFile(file);
+      return this.serverfile;
     } catch (e) {
       throw e;
     }
   }
 }
+
 class COCBmobEditable extends COCEditableFile<COCBmobServerFile>{
   COCBmobEditable({File file=null}):super(file);
 }
+
+T _dataFromJson<T>(Map<String, dynamic> input) =>
+    input['value'] as T;
+
+Map<String, dynamic> _dataToJson<T>(T input) =>
+    {'value': input};
