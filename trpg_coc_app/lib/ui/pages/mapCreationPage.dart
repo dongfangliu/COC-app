@@ -2,9 +2,9 @@ import "package:flutter/material.dart";
 import 'package:trpgcocapp/data/storyModule/storyModCreate.dart';
 import 'package:trpgcocapp/ui/widgets/storyMapWidget.dart';
 class MapCreationPage extends StatefulWidget {
-  StoryModCreate module;
+  StoryMapCreate _mapCreate;
 
-  MapCreationPage(this.module);
+  MapCreationPage(this._mapCreate);
 
   @override
   State<StatefulWidget> createState() {
@@ -19,13 +19,13 @@ class MapCreationPageState extends State<MapCreationPage> {
     return Scaffold(
       body: buildBody(context),
       appBar: AppBar(
-        title: Text("Create Module"),
+        title: Text("Create Map"),
       ),
     );
   }
 
   buildBody(BuildContext context) {
-    return storyMapCreateWidget(widget.module.map);
+    return storyMapCreateWidget(widget._mapCreate);
 
   }
 

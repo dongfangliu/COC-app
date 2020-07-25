@@ -2,15 +2,12 @@ import 'package:trpgcocapp/data/coc_file.dart';
 import 'package:trpgcocapp/data/storyModule/storyMod.dart';
 import 'package:trpgcocapp/data/storyModule/storyModCreate.dart';
 
-class StoryMapUsing extends StoryMap<COCBmobFile> {
+class StoryMapUsing extends StoryMap<COCBmobServerFile> {
   StoryMapUsing() : super() {
-    this.bgImage = new COCBmobFile();
   }
 
   StoryMapUsing.from(StoryMapCreate mapCreate) : super(){
-
-    this.bgImage = new COCBmobFile();
-    this.bgImage.fromLocalFile(mapCreate.bgImage.file);
+    this.mapImg = new COCBmobServerFile.from(mapCreate.mapImg.file);
     this.scenes = mapCreate.scenes.map((scene){
       return StorySceneUsing.from(scene);
     }).toList();
@@ -18,7 +15,7 @@ class StoryMapUsing extends StoryMap<COCBmobFile> {
 
 }
 
-class StorySceneUsing extends StoryScene<COCBmobFile> {
+class StorySceneUsing extends StoryScene<COCBmobServerFile> {
 
   StorySceneUsing.from(StorySceneCreate sceneCreate)
       : super(sceneCreate.name,sceneCreate.mainSceneIdx,sceneCreate.npcsId, sceneCreate.xPosition,
@@ -29,25 +26,20 @@ class StorySceneUsing extends StoryScene<COCBmobFile> {
   }
 }
 
-class StorySubSceneUsing extends StorySubScene<COCBmobFile> {
+class StorySubSceneUsing extends StorySubScene<COCBmobServerFile> {
   StorySubSceneUsing(String name)
       : super(name) {
-    this.bgImg = COCBmobFile();
   }
 
   StorySubSceneUsing.from(
       StorySubSceneCreate sceneCreate)
       : super(sceneCreate.name) {
-    this.bgImg = COCBmobFile();
-    this.bgImg.fromLocalFile(sceneCreate.bgImg.file);
+    this.bgImg = COCBmobServerFile.from(sceneCreate.bgImg.file);
   }
 }
 
-class StoryModUsing extends StoryMod<COCBmobFile> {
-
-  StoryModUsing.from(StoryModCreate modCreate) : super(modCreate.npcs,modCreate. moduleName,modCreate.estimate_hours, modCreate.kpHourMin, modCreate.plHourMin){
-   this.thumbnailImg= COCBmobFile();
-   this.thumbnailImg.fromLocalFile(modCreate.thumbnailImg.file);
-   this.map = StoryMapUsing.from(modCreate.map );
+class StoryModUsing extends StoryMod<COCBmobServerFile> {
+  StoryModUsing.from(StoryModCreate modCreate) : super(modCreate.npcs,StoryMapUsing.from(modCreate.map ),modCreate. moduleName,modCreate.estimate_hours, modCreate.kpHourMin, modCreate.plHourMin){
+   this.thumbnailImg= COCBmobServerFile.from(modCreate.thumbnailImg.file);
   }
 }

@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
       ),
       home: BlocProvider<FileBloc>(
         create: (context) => FileBloc(),
-        child: FileBlocDemo(),
+        child: moduleCreationPage(),
       ),
     );
   }

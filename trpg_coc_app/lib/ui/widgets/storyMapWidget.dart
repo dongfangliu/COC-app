@@ -38,8 +38,6 @@ class storyMapCreateWidgetState extends State<storyMapCreateWidget> {
 
   Widget buildListViewPage(BuildContext context) {
     return Column(
-//      mainAxisAlignment: MainAxisAlignment.center,
-//      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         Flexible(
           child:
@@ -252,9 +250,8 @@ class storyMapCreateWidgetState extends State<storyMapCreateWidget> {
   Widget getMapBg(BuildContext context) {
     return Container(
       color: Colors.yellow,
-      child: CachedNetworkImage(
-        imageUrl:
-            "https://www.filledstacks.com/assets/static/043.07cc2b7.6f4ea837fbd6bd8a22f973da839908d8.jpg",
+      child: Image.file(
+        widget.map.mapImg.file,
         fit: BoxFit.fitWidth,
       ),
 //color: Colors.transparent,

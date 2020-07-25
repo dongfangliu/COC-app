@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:data_plugin/bmob/bmob.dart';
 import 'package:data_plugin/bmob/response/bmob_handled.dart';
 import 'package:data_plugin/bmob/type/bmob_file.dart';
@@ -32,7 +34,7 @@ class FileRepository<fileHelper extends FileHelper> {
 
   Future<OperateResult> upload() async {
     try {
-      BmobFile file = await _helper.uploadFile(localPath);
+      BmobFile file = await _helper.uploadFile(File(localPath));
       this.remoteFile = file;
       OperateResult result=OperateResult();result.isSuccess=true;
       result.result=remoteFile;result.msg="success upload";

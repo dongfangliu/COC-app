@@ -66,7 +66,9 @@ flutter:
   #  - images/a_dot_ham.jpeg
   assets:
     - assets/images/parchment.jpg
+    - assets/images/subscenebg.jpg
     - assets/images/add.png
+    - assets/images/map.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

@@ -9,19 +9,18 @@ import 'package:dio/dio.dart';
 typedef S ItemCreator<S>();
 
 abstract class FileHelper{
-  Future<dynamic> uploadFile(String local_path);
+  Future<dynamic> uploadFile(File file);
   Future<dynamic> downloadFile(String remote_url, String local_path);
   Future<dynamic>  deleteFile(String remote_url);
 }
 
 class BmobFileHelper extends FileHelper{
-   Future<dynamic> uploadFile(String local_path) async{
-    if (local_path == null) {
+   Future<dynamic> uploadFile(File file) async{
+    if (file == null) {
       DataPlugin.toast("请先选择文件");
       throw Exception("No File Selected");
     }
     DataPlugin.toast("上传中，请稍候……");
-    File file = new File(local_path);
     try{
       var bmobFile = await BmobFileManager.upload(file);
       print("${bmobFile.cdn}\n${bmobFile.url}\n${bmobFile.filename}");

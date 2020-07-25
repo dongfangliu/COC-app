@@ -1,38 +1,72 @@
 import 'dart:io';
 
 import 'package:data_plugin/bmob/type/bmob_file.dart';
+import 'package:dio/dio.dart';
 import 'package:trpgcocapp/bloc/file/file_helper.dart';
-
-abstract class CoCFile<T>{
-  T file;
-  Future<T> fromLocalFile(File file);
-  Future<File> toLocalFile(T file,String save_path);
+import 'package:flutter/services.dart' show rootBundle;
+import 'package:path_provider/path_provider.dart';
+class FileGenerator{
+  static Future<File> fromAsset(String pathRelativeToAssets) async {
+    try {
+      final byteData = await rootBundle.load('assets/$pathRelativeToAssets');
+      final file =await new File('${(await getTemporaryDirectory()).path}/$pathRelativeToAssets').create(recursive: true);
+      await file.writeAsBytes(byteData.buffer.asUint8List(
+          byteData.offsetInBytes, byteData.lengthInBytes));
+      return file;
+    }catch(e){
+      throw  e;
+    }
+  }
+  static Future<File> fromURL(String url,String filename) async {
+    Dio dio = Dio();
+    try{
+      Response<dynamic> response = await dio.download(url, filename);
+      print(response.toString());
+      File file = File(filename);
+      var raf = file.openSync(mode: FileMode.write);
+      // response.data is List<int> type
+      raf.writeFromSync(response.data);
+      await raf.close();
+      return file;
+    }catch(e){
+      throw e;
+    }
+  }
 }
-class LocalFile extends CoCFile<File>{
-  String defaultPath = "";
-  LocalFile({this.defaultPath=""});
 
-  @override
-  Future<File> fromLocalFile(File file) async {
-    return file;
-  }
+abstract class COCFile{
 
-  @override
-  Future<File> toLocalFile(File file,String save_path) async{
-    return file;
+}
+
+class COCEditableFile<T extends COCServerFile> extends COCFile{
+  File file=null;
+  T serverFile=null;
+  COCEditableFile(this.file);
+}
+
+abstract class COCServerFile<T>  extends COCFile{
+  T serverfile;
+  toServer(File file);
+  COCServerFile(this.serverfile);
+  COCServerFile.from(File file){
+    toServer(file);
   }
 }
 
-class COCBmobFile extends  CoCFile<BmobFile>{
+class COCBmobServerFile extends  COCServerFile<BmobFile>{
+  COCBmobServerFile.from(File file) : super.from(file);
   @override
-  Future<BmobFile> fromLocalFile(File file) async {
-    BmobFile f = await BmobFileHelper().uploadFile(file.path);
-    return f;
+  toServer(File file) async {
+    try {
+      if (this.serverfile != null) {
+        await BmobFileHelper().deleteFile(serverfile.url);
+      }
+      this.serverfile = await BmobFileHelper().uploadFile(file);
+    } catch (e) {
+      throw e;
+    }
   }
-
-  @override
-  Future<File> toLocalFile(BmobFile file,String save_path) async {
-    File f = await    BmobFileHelper().downloadFile(file.url, save_path);
-    return f;
-  }
+}
+class COCBmobEditable extends COCEditableFile<COCBmobServerFile>{
+  COCBmobEditable({File file=null}):super(file);
 }

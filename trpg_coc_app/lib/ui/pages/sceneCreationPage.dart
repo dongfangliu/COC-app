@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:photofilters/photofilters.dart';
 import 'package:selectable_container/selectable_container.dart';
+import 'package:trpgcocapp/bloc/module_creation/module_creation_repository.dart';
 import 'package:trpgcocapp/data/coc_file.dart';
 import 'package:trpgcocapp/data/storyModule/storyMod.dart';
 import 'package:trpgcocapp/data/storyModule/storyModCreate.dart';
@@ -14,7 +15,7 @@ import 'package:image/image.dart' as imageLib;
 
 class sceneCreationPage extends StatefulWidget {
   StorySceneCreate _scene;
-  StorySubSceneCreate _curScene = null;
+  StorySubSceneCreate _curScene;
   String _curTime = "noon";
   Map<String,String> timeofDay = {
     "Early morning":"AddictiveBlue",
@@ -28,12 +29,13 @@ class sceneCreationPage extends StatefulWidget {
   final TextEditingController _controller = new TextEditingController();
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
-    return sceneCreationPageState();
+    sceneCreationPageState state = sceneCreationPageState();
+    state.setImage(_curScene.bgImg.file);
+    return state;
   }
-
-
-  sceneCreationPage(this._scene);
+  sceneCreationPage(this._scene){
+    _curScene = _scene.subScenes[0];
+  }
 }
 
 class sceneCreationPageState extends State<sceneCreationPage> {
@@ -41,14 +43,12 @@ class sceneCreationPageState extends State<sceneCreationPage> {
   String _imagefileName;
 
   var filters_map = Map.fromIterable(presetFiltersList, key: (e) => e.name, value: (e) => e);
-  Future getImage() async {
-    var imageFile = await ImagePicker.pickImage(source: ImageSource.gallery);
-    _imagefileName = imageFile.path;
-    var image = imageLib.decodeImage(imageFile.readAsBytesSync());
+  void setImage(File file){
+    var image = imageLib.decodeImage(file.readAsBytesSync());
+    _imagefileName = file.path;
+
     image = imageLib.copyResize(image, width:600);
-    setState(() {
-      _image = image;
-    });
+    _image = image;
   }
   @override
   Widget build(BuildContext context) {
@@ -91,7 +91,7 @@ class sceneCreationPageState extends State<sceneCreationPage> {
   }
 
   Widget buildSceneSelectionDropDown(BuildContext context) {
-    return DropdownButton<StorySubScene<LocalFile>>(
+    return DropdownButton<StorySubSceneCreate>(
       value: widget._scene.subScenes.length == 0?null: (widget._curScene==null?widget._scene.subScenes[0]:widget._curScene),
       icon: Icon(Icons.arrow_drop_down),
       iconSize: 24,
@@ -101,7 +101,7 @@ class sceneCreationPageState extends State<sceneCreationPage> {
         height: 2,
         color: Colors.deepPurpleAccent,
       ),
-      onChanged: (StorySubScene<LocalFile> value) {
+      onChanged: (StorySubSceneCreate value) {
         setState(() {
           widget._curScene = value;
         });
@@ -117,9 +117,9 @@ class sceneCreationPageState extends State<sceneCreationPage> {
               )
             ]
           : widget._scene.subScenes
-              .map<DropdownMenuItem<StorySubScene<LocalFile>>>(
-              (StorySubScene<LocalFile> value) {
-              return DropdownMenuItem<StorySubScene<LocalFile>>(
+              .map<DropdownMenuItem<StorySubSceneCreate>>(
+              (StorySubScene<COCBmobEditable> value) {
+              return DropdownMenuItem<StorySubSceneCreate>(
                 value: value,
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width/5, // for example
@@ -168,14 +168,14 @@ class sceneCreationPageState extends State<sceneCreationPage> {
           borderRadius: BorderRadius.circular(5),
           border: Border.all(color: Colors.black54, width: 2)),
       child: InkWell(
-        child: _image == null
-            ? Image.asset(
-                "assets/images/add.png",
-                fit: BoxFit.fill,
-              )
-            : PhotoFilter(image: _image, filename: _imagefileName, filter: filters_map[getTimeFilterName()],fit: BoxFit.fill,),
+        child: PhotoFilter(image: _image, filename: _imagefileName, filter: filters_map[getTimeFilterName()],fit: BoxFit.fill,),
         onTap: () async {
-          getImage();
+          File f = await ModuleCreationHelper.pickImage();
+          setImage( f);
+
+          widget._curScene.bgImg.file =  f;
+          setState(() {
+          });
         },
       ),
     );
@@ -267,11 +267,7 @@ class sceneCreationPageState extends State<sceneCreationPage> {
                     child: new Text('Confirm'),
                     onPressed: () {
                       setState(() {
-                        widget._scene.subScenes.add(new StorySubSceneCreate(
-                            widget._scene, widget._controller.text));
-                        if(widget._curScene==null){
-                          widget._curScene=widget._scene.subScenes[0];
-                        }
+                        widget._scene.subScenes.add(new StorySubSceneCreate(widget._controller.text));
                       });
                       widget._controller.clear();
                       Navigator.of(cxt).pop();

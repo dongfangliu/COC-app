@@ -1,18 +1,19 @@
+import 'package:data_plugin/bmob/table/bmob_object.dart';
 import 'package:data_plugin/bmob/table/bmob_user.dart';
 import 'package:data_plugin/bmob/type/bmob_file.dart';
 import "package:data_plugin/data_plugin.dart";
 import 'package:trpgcocapp/data/coc_file.dart';
 import '../roleCard/roleCard.dart';
-class StoryMap<T  extends CoCFile> {
+class StoryMap<T  extends COCFile> {
 
   StoryMap();
-  T bgImage;
-  List<StoryScene> scenes=new List<StoryScene>();
+  T mapImg;
+  List<StoryScene<T>> scenes=new List<StoryScene<T>>();
   void addScene(StoryScene<T> scene){
     this.scenes.add(scene);
   }
 }
-class StoryScene<T  extends CoCFile>{
+class StoryScene<T  extends COCFile>{
   String name;
   int mainSceneIdx=0;
   double xPosition;
@@ -24,27 +25,30 @@ class StoryScene<T  extends CoCFile>{
 
 
 }
-class StorySubScene<T  extends CoCFile>{
+class StorySubScene<T  extends COCFile>{
   String name='undefined';
   T bgImg;
-
   StorySubScene(this.name);
 }
 
-class StoryMod<T  extends CoCFile>{
+class StoryMod<T  extends COCFile> extends BmobObject{
   StoryMap<T> map;
 
-  StoryMod(this.npcs, this.moduleName, this.estimate_hours,
+  StoryMod(this.npcs,this.map,this.moduleName, this.estimate_hours,
       this.kpHourMin, this.plHourMin);
 
   List<roleCard> npcs=[];
   String moduleName='undefined';
+  String descript = '';
   T thumbnailImg;
   int estimate_hours;
   int kpHourMin;
   int plHourMin;
 
-  void addMap(){
-    this.map = new StoryMap<T>();
+
+  @override
+  Map getParams() {
+    // TODO: implement getParams
+    return null;
   }
 }
