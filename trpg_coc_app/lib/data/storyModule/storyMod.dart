@@ -59,7 +59,6 @@ class StoryMod<T  extends COCFile> extends BmobObject{
   StoryMap<T> map;
   StoryMod(this.npcs,this.moduleName, this.estimate_hours,
       this.kpHourMin, this.plHourMin);
-
   List<roleCard> npcs=[];
   String moduleName='undefined';
   String descript = '';
@@ -68,6 +67,9 @@ class StoryMod<T  extends COCFile> extends BmobObject{
   int estimate_hours;
   int kpHourMin;
   int plHourMin;
+  int likes = 0;
+  List<String> tags=[];
+  // should add use
   factory StoryMod.fromJson(Map<String, dynamic> json) =>
       _$StoryModFromJson<T>(json);
 

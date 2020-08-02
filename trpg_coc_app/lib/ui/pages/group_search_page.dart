@@ -6,8 +6,8 @@ import '../../data/gameGroup/gameGroupUserData.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../widgets/dialogs/statefulDialog.dart';
-import '../widgets/gameGroupCard.dart';
-import '../../styles/gameGroupsPageStyle.dart';
+import '../widgets/gamegroup_card.dart';
+import '../../styles/gamegroups_pages_style.dart';
 class groupSearchFilter {
   int _minNum = 0;
   int _maxNum = 100;

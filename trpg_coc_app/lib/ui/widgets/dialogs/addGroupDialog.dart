@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import '../../../styles/addGroupDialogStyle.dart';
+import '../../../styles/addGroup_dialog_style.dart';
 class addGroupDialog extends StatefulWidget {
   File _imageFile;
 

@@ -5,7 +5,7 @@ import 'package:trpgcocapp/bloc/module_creation/module_creation_bloc.dart';
 import 'package:trpgcocapp/bloc/module_creation/module_creation_event.dart';
 import 'package:trpgcocapp/bloc/module_creation/module_creation_repository.dart';
 import 'package:trpgcocapp/data/storyModule/storyModCreate.dart';
-import 'package:trpgcocapp/ui/pages/mapCreationPage.dart';
+import 'package:trpgcocapp/ui/pages/map_creation_page.dart';
 
 class moduleCreationPage extends StatefulWidget {
   StoryModCreate _module;

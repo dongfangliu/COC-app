@@ -1,6 +1,6 @@
 import "package:flutter/material.dart";
 import 'package:trpgcocapp/data/storyModule/storyModCreate.dart';
-import 'package:trpgcocapp/ui/widgets/storyMapWidget.dart';
+import 'package:trpgcocapp/ui/widgets/module_map.dart';
 class MapCreationPage extends StatefulWidget {
   StoryMapCreate _mapCreate;
 

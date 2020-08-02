@@ -67,6 +67,8 @@ class StoryModUsing extends StoryMod<COCBmobServerFile> {
    this.map = mapUsing;
   }
 
+
+
   factory StoryModUsing.fromJson(Map<String, dynamic> json) => _$StoryModUsingFromJson(json);
   Map<String, dynamic> toJson() => _$StoryModUsingToJson(this);
 }

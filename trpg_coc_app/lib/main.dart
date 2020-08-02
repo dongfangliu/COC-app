@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trpgcocapp/bloc/file/file_bloc.dart';
 import 'package:trpgcocapp/bloc/file/file_widget.dart';
-import 'package:trpgcocapp/ui/pages/moduleCreationPage.dart';
+import 'package:trpgcocapp/ui/pages/module_creation_page.dart';
+import 'package:trpgcocapp/ui/pages/module_search_page.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: moduleCreationPage(),
+      home: ModuleSearchPage(),
     );
   }
 }
