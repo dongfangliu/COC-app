@@ -28,8 +28,10 @@ class moduleCreationState extends State<moduleCreationPage> {
       TextEditingController();
   final TextEditingController introTextController = TextEditingController();
   final TextEditingController gamehoursTextController = TextEditingController();
-  final TextEditingController plhoursTextController = TextEditingController();
-  final TextEditingController kphoursTextController = TextEditingController();
+  final TextEditingController hoursMaxTextController = TextEditingController();
+  final TextEditingController hoursMinTextController = TextEditingController();
+  final TextEditingController peopleMaxTextController = TextEditingController();
+  final TextEditingController peopleMinTextController = TextEditingController();
   ModuleCreationBloc _moduleCreationBloc;
   @override
   void initState() {
@@ -91,9 +93,10 @@ class moduleCreationState extends State<moduleCreationPage> {
   void OnSubmmitBtnPressed(BuildContext context) {
     widget._module.moduleName = moduleNameTextController.text;
     widget._module.descript = introTextController.text;
-    widget._module.plHourMin = int.parse(plhoursTextController.text);
-    widget._module.kpHourMin = int.parse(kphoursTextController.text);
-    widget._module.estimate_hours = int.parse(gamehoursTextController.text);
+    widget._module.hours_min = int.parse(hoursMinTextController.text);
+    widget._module.hours_max = int.parse(hoursMaxTextController.text);
+    widget._module.people_max = int.parse(peopleMaxTextController.text);
+    widget._module.people_min = int.parse(peopleMinTextController.text);
     ModuleCreationRepository.modCreate = widget._module;
     _moduleCreationBloc.add(SubmmitModule());
   }
@@ -217,17 +220,36 @@ class moduleCreationState extends State<moduleCreationPage> {
           height: MediaQuery.of(context).size.height * 0.05,
           child: Row(
             children: <Widget>[
-              Text("level : "),
-              Text("Kp hours >"),
+              Text("game Hours"),
               Flexible(
                   child: TextField(
-                controller: kphoursTextController,
+                controller: hoursMinTextController,
               )),
-              Text("PL hours >"),
+
+              Text("-"),
               Flexible(
                   child: TextField(
-                controller: plhoursTextController,
-              )),
+                    controller: hoursMaxTextController,
+                  )),
+            ],
+          ),
+        ),
+        Container(
+          width: MediaQuery.of(context).size.width * 0.7,
+          height: MediaQuery.of(context).size.height * 0.05,
+          child: Row(
+            children: <Widget>[
+              Text("player Num"),
+              Flexible(
+                  child: TextField(
+                    controller: peopleMinTextController,
+                  )),
+
+              Text("-"),
+              Flexible(
+                  child: TextField(
+                    controller: peopleMaxTextController,
+                  )),
             ],
           ),
         ),

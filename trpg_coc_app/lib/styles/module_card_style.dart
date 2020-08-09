@@ -13,7 +13,7 @@ class moduleCardStyle {
 
   static final cardShadowColor = Colors.grey;
   static final cardBgColor = Colors.grey;
-  static final cardShadowBlurRadius = 5.0;
+  static final cardShadowBlurRadius = 2.0;
   static final cardShadowSpreadRadius = 2.0;
   static final cardTextColor = Colors.white;
   static final groupCardSplashColor = Colors.blue.withAlpha(30);

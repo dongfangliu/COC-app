@@ -57,7 +57,9 @@ class StorySubSceneUsing extends StorySubScene<COCBmobServerFile> {
 
 @JsonSerializable()
 class StoryModUsing extends StoryMod<COCBmobServerFile> {
-  StoryModUsing(List<roleCard> npcs, String moduleName, int estimate_hours, int kpHourMin, int plHourMin) : super(npcs, moduleName, estimate_hours, kpHourMin, plHourMin);
+  StoryModUsing(List<roleCard> npcs, String moduleName, int hours_min,int hours_max,
+      int people_min,int people_max,int likes) :
+        super(npcs, moduleName, hours_min, hours_max, people_min,people_max,likes);
 
   from(StoryModCreate modCreate) async {
    this.thumbnailImg= COCBmobServerFile();

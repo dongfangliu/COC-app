@@ -28,7 +28,6 @@ dependencies:
   flutter_qq: ^0.0.5
   cached_network_image: ^2.1.0+1
   image_picker: any
-  circular_profile_avatar: ^1.0.6
   json_annotation: ^2.0.0
   bloc: ^4.0.0
   flutter_bloc: ^4.0.0
@@ -44,6 +43,8 @@ dependencies:
   flappy_search_bar: ^1.7.2
   flutter_animated_dialog: ^1.1.0
   flutter_tags: ^0.4.8+2
+  flutter_icons: ^1.1.0
+  circular_profile_avatar: ^1.0.6
 
 
 dev_dependencies:

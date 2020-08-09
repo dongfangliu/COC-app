@@ -9,58 +9,71 @@ import 'package:trpgcocapp/data/roleCard/roleCard.dart';
 import 'package:trpgcocapp/data/storyModule/storyModCreate.dart';
 import 'package:trpgcocapp/data/storyModule/storyModOnUse.dart';
 
-class ModuleCreationRepository{
+class ModuleCreationRepository {
   static StoryModCreate modCreate;
   static File ModThumbnail;
   static File defaultSubSceneBg;
   static File defaultMapBg;
-  static Future<OperateResult> initDefaultFiles() async{
-    try{
-      if(ModThumbnail ==null) {
+  static Future<OperateResult> initDefaultFiles() async {
+    try {
+      if (ModThumbnail == null) {
         ModThumbnail = await FileGenerator.fromAsset('images/add.png');
       }
-      if(defaultSubSceneBg==null){
-      defaultSubSceneBg = await FileGenerator.fromAsset('images/subscenebg.jpg');
+      if (defaultSubSceneBg == null) {
+        defaultSubSceneBg =
+            await FileGenerator.fromAsset('images/subscenebg.jpg');
       }
-      if(defaultMapBg==null){
+      if (defaultMapBg == null) {
         defaultMapBg = await FileGenerator.fromAsset('images/map.png');
       }
-      OperateResult result=OperateResult.custom("success initilized", true, null);
+      OperateResult result =
+          OperateResult.custom("success initilized", true, null);
       return result;
-    }catch(e){
-      OperateResult result=OperateResult();result.isSuccess=false;result.msg=e.toString();
+    } catch (e) {
+      OperateResult result = OperateResult();
+      result.isSuccess = false;
+      result.msg = e.toString();
       return result;
     }
   }
-  static Future<OperateResult> submmit() async{
+
+  static Future<OperateResult> submmit() async {
     try {
-      StoryModUsing modUsing = await ModuleCreationHelper.convertToUsing(
-          modCreate);
+      StoryModUsing modUsing =
+          await ModuleCreationHelper.convertToUsing(modCreate);
       // others
       BmobSaved bmobSaved = await modUsing.save();
-      OperateResult result=OperateResult();result.isSuccess=true;
-      result.result=null;result.msg=bmobSaved.toString();
+      OperateResult result = OperateResult();
+      result.isSuccess = true;
+      result.result = null;
+      result.msg = bmobSaved.toString();
       return result;
-    }catch(e){
-      OperateResult result=OperateResult();result.isSuccess=false;result.msg=e.toString();
+    } catch (e) {
+      OperateResult result = OperateResult();
+      result.isSuccess = false;
+      result.msg = e.toString();
       return result;
     }
   }
-
-
 }
-class ModuleCreationHelper{
+
+class ModuleCreationHelper {
   static Future<File> pickImage() async {
     var imageFile = await ImagePicker.pickImage(source: ImageSource.gallery);
     return imageFile;
   }
-  static Future<roleCard> addNPC(){
 
-  }
+  static Future<roleCard> addNPC() {}
   static Future<StoryModUsing> convertToUsing(StoryModCreate _modCreate) async {
     try {
-
-      StoryModUsing modUsing =new StoryModUsing(_modCreate.npcs, _modCreate.moduleName, _modCreate.estimate_hours, _modCreate.kpHourMin, _modCreate.plHourMin);
+      StoryModUsing modUsing = new StoryModUsing(
+          _modCreate.npcs,
+          _modCreate.moduleName,
+          _modCreate.hours_min,
+          _modCreate.hours_max,
+          _modCreate.people_min,
+          _modCreate.people_max,
+          0);
       await modUsing.from(_modCreate);
       return modUsing;
     } catch (e) {
