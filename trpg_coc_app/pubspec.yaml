@@ -45,6 +45,7 @@ dependencies:
   flutter_tags: ^0.4.8+2
   flutter_icons: ^1.1.0
   circular_profile_avatar: ^1.0.6
+  faker: ^1.2.1
 
 
 dev_dependencies:
