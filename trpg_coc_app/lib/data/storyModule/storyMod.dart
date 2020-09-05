@@ -99,6 +99,8 @@ class StoryMod<T extends COCFile> extends BmobObject {
   String descript = '';
   @JsonKey(fromJson: _dataFromJson, toJson: _dataToJson)
   T thumbnailImg;
+  @JsonKey(fromJson: _dataFromJson, toJson: _dataToJson)
+  T iconImg;
   int hours_min = 0;
   int hours_max = 0;
   int people_min = 0;

@@ -5,6 +5,16 @@ import 'package:equatable/equatable.dart';
 abstract class TimecostOperationEvent extends Equatable {
   const TimecostOperationEvent();
 }
+
+class TryInitialize extends TimecostOperationEvent{
+
+  @override
+  // TODO: implement props
+  List<Object> get props => null;
+
+  TryInitialize();
+}
+
 class TakeOperation extends TimecostOperationEvent{
 
   @override

@@ -1,9 +1,17 @@
+import 'dart:io';
+
 import "package:flutter/material.dart";
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_icons/flutter_icons.dart';
+import 'package:flutter_tags/flutter_tags.dart';
+import 'package:trpgcocapp/bloc/common/timecost_op/timecost_operation_event.dart';
+import 'package:trpgcocapp/bloc/common/timecost_op/timecost_operation_state.dart';
 import 'package:trpgcocapp/bloc/common/timecost_op/timecost_operator_widget.dart';
 import 'package:trpgcocapp/bloc/module_creation/module_creation_bloc.dart';
 import 'package:trpgcocapp/bloc/module_creation/module_creation_event.dart';
 import 'package:trpgcocapp/bloc/module_creation/module_creation_repository.dart';
+import 'package:trpgcocapp/data/storyModule/storyMod.dart';
 import 'package:trpgcocapp/data/storyModule/storyModCreate.dart';
 import 'package:trpgcocapp/ui/pages/map_creation_page.dart';
 
@@ -11,46 +19,51 @@ class moduleCreationPage extends StatefulWidget {
   StoryModCreate _module;
   moduleCreationPage();
 
-
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
     return moduleCreationState();
-  }
-
-  Future<void> setupModule() async {
-    this._module = await StoryModCreate.getInstance();
   }
 }
 
 class moduleCreationState extends State<moduleCreationPage> {
   final TextEditingController moduleNameTextController =
       TextEditingController();
+  final TextEditingController authorTextController = TextEditingController();
   final TextEditingController introTextController = TextEditingController();
   final TextEditingController gamehoursTextController = TextEditingController();
   final TextEditingController hoursMaxTextController = TextEditingController();
   final TextEditingController hoursMinTextController = TextEditingController();
   final TextEditingController peopleMaxTextController = TextEditingController();
   final TextEditingController peopleMinTextController = TextEditingController();
+  List<String> tagItems = [];
   ModuleCreationBloc _moduleCreationBloc;
+  TextStyle subTextStyle = TextStyle(color: Colors.black);
   @override
   void initState() {
+    _moduleCreationBloc = ModuleCreationBloc();
+    _moduleCreationBloc.add(TryInitialize());
     super.initState();
-    widget.setupModule().then((v){setState(() {
-    });});
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocProvider<ModuleCreationBloc>(
-        create: (context){_moduleCreationBloc = ModuleCreationBloc();return _moduleCreationBloc;},
-        child: TimecostOpListenerWidget<ModuleCreationBloc>(
-            child: widget._module==null?buildPendingPage(context):buildBody(context)
-        )
+      body: BlocBuilder<ModuleCreationBloc, TimecostOperationState>(
+        bloc: _moduleCreationBloc,
+        builder: (BuildContext context, state) {
+          if (state is NotInitialized) {
+            return buildPendingPage(context);
+          } else {
+            return buildBody(context);
+          }
+        },
       ),
       appBar: AppBar(
-        title: Text("Create Module"),
+        title: Text(
+          "Create Module",
+          textAlign: TextAlign.center,
+        ),
       ),
     );
   }
@@ -70,12 +83,16 @@ class moduleCreationState extends State<moduleCreationPage> {
   }
 
   Widget buildBody(BuildContext context) {
+    if (widget._module == null) {
+      widget._module = ModuleCreationRepository.getInstance();
+    }
     return SingleChildScrollView(
       child: Column(
         children: <Widget>[
-          buildNameCard(context),
+          buildModuleHeader(context),
+          Padding(padding: EdgeInsets.all(5)),
           buildIntroField(context),
-          buildSummaryCard(context),
+//          buildSummaryCard(context),
           buildNPCList(context),
           buildSceneList(context),
           MaterialButton(
@@ -86,13 +103,97 @@ class moduleCreationState extends State<moduleCreationPage> {
               child: Text("Submit"))
         ],
       ),
-//      width: MediaQuery.of(context).size.width,
     );
+  }
+
+  Widget buildModuleHeader(BuildContext context) {
+    return Container(
+        height: MediaQuery.of(context).size.height * 0.3,
+        child: Card(
+            color: Colors.transparent,
+            child:
+            Container(
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      colorFilter: new ColorFilter.mode(
+                          Colors.black.withOpacity(0.2), BlendMode.dstATop),
+                      image: FileImage(widget._module.thumbnailImg.file),
+                      fit: BoxFit.fitWidth)),
+              child:
+              InkWell(
+                onTap: () async {
+                  File f =await ModuleCreationHelper.pickImage();
+                  if(f!=null){
+                    widget._module.thumbnailImg.file =f;}
+                  setState(() {});
+                },
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    Container(
+                      height: MediaQuery.of(context).size.height * 0.15,
+                      width: MediaQuery.of(context).size.height * 0.15,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                          image: DecorationImage(
+                              image: FileImage(widget._module.iconImg.file),
+                              fit: BoxFit.fitWidth)),
+                      child: InkWell(onTap: () async {
+                        File f =await ModuleCreationHelper.pickImage();
+                        if(f!=null){
+                          widget._module.iconImg.file =f;}
+
+                        setState(() {});
+                      }),
+                      padding: EdgeInsets.all(20),
+                    ),
+                    Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          buildModuleNameTextField(context),
+                          buildAuthorTextField(context),
+                          buildTags(context)
+                        ])
+                  ],
+                ),
+              ),
+            )));
+  }
+
+  Widget buildModuleNameTextField(context) {
+    return Container(
+        width: MediaQuery.of(context).size.width * 0.6,
+        child: TextField(
+            style: TextStyle(color: Colors.black, fontSize: 20),
+            controller: moduleNameTextController,
+            textAlign: TextAlign.left,
+            maxLength: 20,
+            maxLines: 1,
+            decoration: InputDecoration(
+                hintText: "Module Name",
+                hintStyle: TextStyle(color: Colors.black, fontSize: 20))));
+  }
+
+  Widget buildAuthorTextField(context) {
+    return Container(
+        width: MediaQuery.of(context).size.width * 0.3,
+        child: TextField(
+            style: subTextStyle,
+            controller: authorTextController,
+            textAlign: TextAlign.left,
+            inputFormatters: [
+              LengthLimitingTextInputFormatter(20),
+            ],
+            maxLines: 1,
+            decoration:
+                InputDecoration(hintText: "author", hintStyle: subTextStyle)));
   }
 
   void OnSubmmitBtnPressed(BuildContext context) {
     widget._module.moduleName = moduleNameTextController.text;
     widget._module.descript = introTextController.text;
+    widget._module.author = authorTextController.text;
     widget._module.hours_min = int.parse(hoursMinTextController.text);
     widget._module.hours_max = int.parse(hoursMaxTextController.text);
     widget._module.people_max = int.parse(peopleMaxTextController.text);
@@ -135,7 +236,8 @@ class moduleCreationState extends State<moduleCreationPage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => MapCreationPage(widget._module.map),
+                          builder: (context) =>
+                              MapCreationPage(widget._module.map),
                         ),
                       );
                     },
@@ -225,12 +327,11 @@ class moduleCreationState extends State<moduleCreationPage> {
                   child: TextField(
                 controller: hoursMinTextController,
               )),
-
               Text("-"),
               Flexible(
                   child: TextField(
-                    controller: hoursMaxTextController,
-                  )),
+                controller: hoursMaxTextController,
+              )),
             ],
           ),
         ),
@@ -242,14 +343,13 @@ class moduleCreationState extends State<moduleCreationPage> {
               Text("player Num"),
               Flexible(
                   child: TextField(
-                    controller: peopleMinTextController,
-                  )),
-
+                controller: peopleMinTextController,
+              )),
               Text("-"),
               Flexible(
                   child: TextField(
-                    controller: peopleMaxTextController,
-                  )),
+                controller: peopleMaxTextController,
+              )),
             ],
           ),
         ),
@@ -292,25 +392,48 @@ class moduleCreationState extends State<moduleCreationPage> {
     );
   }
 
-  Widget buildNameCard(BuildContext context) {
-    return Card(
-      child: Container(
-        height: MediaQuery.of(context).size.height * 0.2,
-        padding: EdgeInsets.only(left: 10, top: 10, right: 10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            TextField(
-                controller: moduleNameTextController,
-                textAlign: TextAlign.center,
-                maxLength: 20,
-                maxLines: 1,
-                decoration: InputDecoration(hintText: "Module Name")),
-            Text("Credit by: "),
-            Text("update at :  "),
-          ],
-        ),
-      ),
+  buildTags(BuildContext context) {
+    return Tags(
+      textField: tagItems.length >= 4
+          ? null
+          : TagsTextField(
+              textStyle: TextStyle(fontSize: 10, color: Colors.white),
+              onSubmitted: (String str) {
+                // Add item to the data source.
+                setState(() {
+                  // required
+                  tagItems.add(str);
+                });
+              },
+            ),
+      itemCount: tagItems.length, // required
+      itemBuilder: (int index) {
+        final item = tagItems[index];
+
+        return ItemTags(
+          // Each ItemTags must contain a Key. Keys allow Flutter to
+          // uniquely identify widgets.
+          key: Key(index.toString()),
+          index: index, // required
+          title: item,
+          textStyle: TextStyle(fontSize: 10, color: Colors.black),
+          icon: ItemTagsIcon(icon: MaterialCommunityIcons.tag_outline),
+          combine: ItemTagsCombine.withTextBefore,
+          removeButton: ItemTagsRemoveButton(
+            onRemoved: () {
+              // Remove the item from the data source.
+              setState(() {
+                // required
+                tagItems.removeAt(index);
+              });
+              //required
+              return true;
+            },
+          ), // OR null,
+          onPressed: (item) => print(item),
+          onLongPressed: (item) => print(item),
+        );
+      },
     );
   }
 }

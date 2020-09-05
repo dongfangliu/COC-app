@@ -29,6 +29,20 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.4.0"
+  auto_size_text:
+    dependency: "direct main"
+    description:
+      name: auto_size_text
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.1.0"
+  auto_size_text_field:
+    dependency: "direct main"
+    description:
+      name: auto_size_text_field
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.1.5"
   bloc:
     dependency: "direct main"
     description:

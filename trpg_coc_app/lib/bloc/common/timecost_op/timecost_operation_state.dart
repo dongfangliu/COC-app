@@ -2,7 +2,10 @@ import 'package:equatable/equatable.dart';
 abstract class TimecostOperationState extends Equatable {
   const TimecostOperationState();
 }
-
+class NotInitialized extends TimecostOperationState {
+  @override
+  List<Object> get props => [];
+}
 class ReadyToOperate extends TimecostOperationState {
   @override
   List<Object> get props => [];
