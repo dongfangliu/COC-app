@@ -1,6 +1,6 @@
 import 'package:data_plugin/bmob/table/bmob_object.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'file:///E:/Mycodes/Android/Projects/COC-app/COC-app/trpg_coc_app/lib/data/file/coc_file.dart';
+import 'package:trpgcocapp/data/file/coc_file.dart';
 import '../roleCard/roleCard.dart';
 
 part 'storyMod.g.dart';

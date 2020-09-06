@@ -5,7 +5,7 @@ import 'package:data_plugin/bmob/bmob.dart';
 import 'package:data_plugin/bmob/response/bmob_saved.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:trpgcocapp/bloc/common/timecost_op/timecost_operator.dart';
-import 'file:///E:/Mycodes/Android/Projects/COC-app/COC-app/trpg_coc_app/lib/data/file/coc_file.dart';
+import 'package:trpgcocapp/data/file/coc_file.dart';
 import 'package:trpgcocapp/data/roleCard/roleCard.dart';
 import 'package:trpgcocapp/data/storyModule/storyModCreate.dart';
 import 'package:trpgcocapp/data/storyModule/storyModOnUse.dart';
