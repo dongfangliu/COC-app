@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:photofilters/photofilters.dart';
 import 'package:selectable_container/selectable_container.dart';
 import 'package:trpgcocapp/bloc/module_creation/module_creation_repository.dart';
-import 'file:///E:/Mycodes/Android/Projects/COC-app/COC-app/trpg_coc_app/lib/data/file/coc_file.dart';
+import 'package:trpgcocapp/data/file/coc_file.dart';
 import 'package:trpgcocapp/data/storyModule/storyMod.dart';
 import 'package:trpgcocapp/data/storyModule/storyModCreate.dart';
 import 'package:trpgcocapp/data/storyModule/storyModOnUse.dart';
