@@ -1,0 +1,14 @@
+BmobFile 需要先上传
+再添加到object里面
+
+使用时需要下载，下载后才能用 ？ CachedNetwork->Image.asset?
+
+
+创建一个管理类()->状态维护，下载，本地化,上传，bloc?
+
+FileBloc
+
+state -> Empty,Local,Uploading,Downloading,Remote
+event->None,changeFile,TryUpload,TryDownload,Completed
+members->localUrl,tempLocalUrl,remoteURL
+function->setFileLocal,upload,download,deleteRemote
