@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:auto_size_text_field/auto_size_text_field.dart';
 import "package:flutter/material.dart";
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -91,10 +92,16 @@ class moduleCreationState extends State<moduleCreationPage> {
         children: <Widget>[
           buildModuleHeader(context),
           Padding(padding: EdgeInsets.all(5)),
-          buildIntroField(context),
-//          buildSummaryCard(context),
-          buildNPCList(context),
-          buildSceneList(context),
+          Card(
+            child: Column(
+              children: [
+                buildIntroField(context),
+                buildSummaryCard(context),
+                buildNPCList(context),
+                buildSceneList(context),
+              ],
+            ),
+          ),
           MaterialButton(
               color: Colors.blueAccent,
               onPressed: () {
@@ -111,50 +118,52 @@ class moduleCreationState extends State<moduleCreationPage> {
         height: MediaQuery.of(context).size.height * 0.3,
         child: Card(
             color: Colors.transparent,
-            child:
-            Container(
+            child: Container(
               decoration: BoxDecoration(
                   image: DecorationImage(
                       colorFilter: new ColorFilter.mode(
                           Colors.black.withOpacity(0.2), BlendMode.dstATop),
                       image: FileImage(widget._module.thumbnailImg.file),
                       fit: BoxFit.fitWidth)),
-              child:
-              InkWell(
+              child: InkWell(
                 onTap: () async {
-                  File f =await ModuleCreationHelper.pickImage();
-                  if(f!=null){
-                    widget._module.thumbnailImg.file =f;}
+                  File f = await ModuleCreationHelper.pickImage();
+                  if (f != null) {
+                    widget._module.thumbnailImg.file = f;
+                  }
                   setState(() {});
                 },
                 child: Row(
-                  mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
                     Container(
                       height: MediaQuery.of(context).size.height * 0.15,
                       width: MediaQuery.of(context).size.height * 0.15,
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
+                          borderRadius: BorderRadius.circular(10),
                           image: DecorationImage(
                               image: FileImage(widget._module.iconImg.file),
                               fit: BoxFit.fitWidth)),
                       child: InkWell(onTap: () async {
-                        File f =await ModuleCreationHelper.pickImage();
-                        if(f!=null){
-                          widget._module.iconImg.file =f;}
+                        File f = await ModuleCreationHelper.pickImage();
+                        if (f != null) {
+                          widget._module.iconImg.file = f;
+                        }
 
                         setState(() {});
                       }),
                       padding: EdgeInsets.all(20),
                     ),
-                    Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          buildModuleNameTextField(context),
-                          buildAuthorTextField(context),
-                          buildTags(context)
-                        ])
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.6,
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            buildModuleNameTextField(context),
+                            buildAuthorTextField(context),
+                            buildTags(context)
+                          ]),
+                    )
                   ],
                 ),
               ),
@@ -163,12 +172,11 @@ class moduleCreationState extends State<moduleCreationPage> {
 
   Widget buildModuleNameTextField(context) {
     return Container(
-        width: MediaQuery.of(context).size.width * 0.6,
-        child: TextField(
-            style: TextStyle(color: Colors.black, fontSize: 20),
+        child: AutoSizeTextField(
+            style: TextStyle(color: Colors.black),
             controller: moduleNameTextController,
             textAlign: TextAlign.left,
-            maxLength: 20,
+            maxLength: 50,
             maxLines: 1,
             decoration: InputDecoration(
                 hintText: "Module Name",
@@ -178,7 +186,7 @@ class moduleCreationState extends State<moduleCreationPage> {
   Widget buildAuthorTextField(context) {
     return Container(
         width: MediaQuery.of(context).size.width * 0.3,
-        child: TextField(
+        child: AutoSizeTextField(
             style: subTextStyle,
             controller: authorTextController,
             textAlign: TextAlign.left,
@@ -203,8 +211,7 @@ class moduleCreationState extends State<moduleCreationPage> {
   }
 
   Widget buildSceneList(BuildContext context) {
-    return Card(
-        child: Container(
+    return Container(
       height: MediaQuery.of(context).size.height * 0.35,
       padding: EdgeInsets.only(left: 10, right: 10),
       child: Column(children: <Widget>[
@@ -246,12 +253,11 @@ class moduleCreationState extends State<moduleCreationPage> {
               },
             ))
       ]),
-    ));
+    );
   }
 
   Widget buildNPCList(BuildContext context) {
-    return Card(
-        child: Container(
+    return Container(
       height: MediaQuery.of(context).size.height * 0.3,
       padding: EdgeInsets.only(left: 10, right: 10),
       child: Column(children: <Widget>[
@@ -289,115 +295,115 @@ class moduleCreationState extends State<moduleCreationPage> {
               },
             ))
       ]),
-    ));
+    );
   }
 
   Widget buildSummaryCard(BuildContext context) {
-    return Card(
-        child: Container(
-      height: MediaQuery.of(context).size.height * 0.35,
-      padding: EdgeInsets.only(left: 10, right: 10),
+    var _crossAxisSpacing = 5.0;
+    var _mainAxisSpacing = 5.0;
+    var _drawerWidth =MediaQuery.of(context).size.height * 0.5-2*30;
+    var _crossAxisCount = 2;
+    var _width = (_drawerWidth - ((_crossAxisCount - 1) * _crossAxisSpacing)) /
+        _crossAxisCount;
+    var cellHeight = MediaQuery.of(context).size.height * 0.05;
+    var _aspectRatio = _width / cellHeight;
+    return Container(
+
+      padding: EdgeInsets.only(bottom: 20),
       child: Column(children: <Widget>[
         ListTile(
           leading: Icon(Icons.description),
           title: Text("Summary"),
         ),
         Container(
-            width: MediaQuery.of(context).size.width * 0.4,
-            height: MediaQuery.of(context).size.height * 0.05,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text("Estimate game hours : "),
-                Flexible(
-                  child: TextField(
-                    textAlign: TextAlign.center,
-                    controller: gamehoursTextController,
-                  ),
-                )
-              ],
-            )),
-        Container(
-          width: MediaQuery.of(context).size.width * 0.7,
-          height: MediaQuery.of(context).size.height * 0.05,
-          child: Row(
-            children: <Widget>[
-              Text("game Hours"),
-              Flexible(
-                  child: TextField(
-                controller: hoursMinTextController,
-              )),
-              Text("-"),
-              Flexible(
-                  child: TextField(
-                controller: hoursMaxTextController,
-              )),
-            ],
-          ),
-        ),
-        Container(
-          width: MediaQuery.of(context).size.width * 0.7,
-          height: MediaQuery.of(context).size.height * 0.05,
-          child: Row(
-            children: <Widget>[
-              Text("player Num"),
-              Flexible(
-                  child: TextField(
-                controller: peopleMinTextController,
-              )),
-              Text("-"),
-              Flexible(
-                  child: TextField(
-                controller: peopleMaxTextController,
-              )),
-            ],
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.all(10),
-          child: Text("NPCS Num: " + widget._module.npcs.length.toString()),
-        ),
-        Padding(
-          padding: EdgeInsets.all(10),
+          width: MediaQuery.of(context).size.width * 0.8,
+          height: cellHeight*6,
+          color: Colors.black12,
           child:
-              Text("Support Map : " + (widget._module.map == null).toString()),
+          Padding(
+            padding: EdgeInsets.all(30),
+          child: GridView(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: _crossAxisCount,
+                childAspectRatio: _aspectRatio,
+                crossAxisSpacing: _crossAxisSpacing,
+                mainAxisSpacing: _mainAxisSpacing,
+              ),
+              children: [
+                Text("年代 : " + ModEraText[ModEra.PPRESENT]),
+                Text("地区 : " + ModRegionText[ModRegion.Europe]),
+                Row(
+                  children: <Widget>[
+                    Text("时长："),
+                    Flexible(
+                        child: TextField(
+                          controller: hoursMinTextController,
+                        )),
+                    Text("-"),
+                    Flexible(
+                        child: TextField(
+                          controller: hoursMaxTextController,
+                        )),
+                  ],
+                ),
+                Row(
+                  children: <Widget>[
+                    Text("人数："),
+                    Flexible(
+                        child: TextField(
+                          controller: peopleMinTextController,
+                        )),
+                    Text("-"),
+                    Flexible(
+                        child: TextField(
+                          controller: peopleMaxTextController,
+                        )),
+                  ],
+                ),
+                Text("Support Map : "
+//                    +
+//                    (widget._module.map == null).toString()
+                ),
+                Text( "NPCS Num: "
+//                    + widget._module.npcs.length.toString()
+                ),
+                Text("Scene Num : "
+//                    + ((widget._module.map != null)? widget._module.map.scenes.length.toString():"0")
+                ),
+
+              ])
+          )
+          ,
         ),
-        Padding(
-          padding: EdgeInsets.all(10),
-          child: widget._module.map != null
-              ? Text("Scene Num : " +
-                  (widget._module.map.scenes.length.toString()))
-              : Text("Scene Num : 0"),
-        )
       ]),
-    ));
+    );
   }
 
   Widget buildIntroField(BuildContext context) {
-    return Card(
-      child: Container(
-          height: MediaQuery.of(context).size.height * 0.3,
-          padding: EdgeInsets.only(left: 10, right: 10),
-          child: Column(children: <Widget>[
-            ListTile(
-              leading: Icon(Icons.description),
-              title: Text("Brief Intro"),
-            ),
-            TextField(
-                controller: introTextController,
-                maxLength: 140,
-                maxLines: 4,
-                decoration: InputDecoration(hintText: "Introduction Text"))
-          ])),
-    );
+    return Container(
+        height: MediaQuery.of(context).size.height * 0.3,
+        padding: EdgeInsets.only(left: 10, right: 10),
+        child: Column(children: <Widget>[
+          ListTile(
+            leading: Icon(Icons.description),
+            title: Text("Brief Intro"),
+          ),
+          TextField(
+              controller: introTextController,
+              maxLength: 140,
+              maxLines: 4,
+              decoration: InputDecoration(hintText: "Introduction Text"))
+        ]));
   }
 
   buildTags(BuildContext context) {
     return Tags(
-      textField: tagItems.length >= 4
+      textField: tagItems.length >= 3
           ? null
           : TagsTextField(
-              textStyle: TextStyle(fontSize: 10, color: Colors.white),
+              maxLength: 4,
+              width: 50,
+              textStyle: TextStyle(fontSize: 10, color: Colors.black),
               onSubmitted: (String str) {
                 // Add item to the data source.
                 setState(() {
@@ -409,7 +415,6 @@ class moduleCreationState extends State<moduleCreationPage> {
       itemCount: tagItems.length, // required
       itemBuilder: (int index) {
         final item = tagItems[index];
-
         return ItemTags(
           // Each ItemTags must contain a Key. Keys allow Flutter to
           // uniquely identify widgets.
@@ -418,7 +423,7 @@ class moduleCreationState extends State<moduleCreationPage> {
           title: item,
           textStyle: TextStyle(fontSize: 10, color: Colors.black),
           icon: ItemTagsIcon(icon: MaterialCommunityIcons.tag_outline),
-          combine: ItemTagsCombine.withTextBefore,
+          combine: ItemTagsCombine.withTextAfter,
           removeButton: ItemTagsRemoveButton(
             onRemoved: () {
               // Remove the item from the data source.
