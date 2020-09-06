@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:trpgcocapp/data/app_user.dart';
-import 'file:///E:/Mycodes/Android/Projects/COC-app/COC-app/trpg_coc_app/lib/styles/theme.dart';
+import 'package:trpgcocapp/styles/theme.dart';
 import 'package:trpgcocapp/ui/pages/me/me_page.dart';
 
 class TestMainPage extends StatefulWidget{

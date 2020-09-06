@@ -34,7 +34,7 @@ import 'package:trpgcocapp/data/app_user.dart';
 import 'package:trpgcocapp/ui/pages/character_sheet/char_sheet.dart';
 import 'package:trpgcocapp/ui/pages/login/login_page.dart';
 import 'package:trpgcocapp/ui/pages/login/splash_page.dart';
-import 'file:///E:/Mycodes/Android/Projects/COC-app/COC-app/trpg_coc_app/lib/ui/pages/main/test_main_page.dart';
+import 'package:trpgcocapp/ui/pages/main/test_main_page.dart';
 
 // Test main()
 void main() => runApp(MyApp());

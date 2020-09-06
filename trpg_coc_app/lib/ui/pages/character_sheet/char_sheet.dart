@@ -5,7 +5,7 @@ import 'package:trpgcocapp/bloc/char_sheet/char_sheet_bloc.dart';
 import 'package:trpgcocapp/bloc/char_sheet/char_sheet_events.dart';
 import 'package:trpgcocapp/bloc/char_sheet/char_sheet_states.dart';
 import 'package:trpgcocapp/data/char_sheet/char_data_part.dart';
-import 'file:///E:/Mycodes/Android/Projects/COC-app/COC-app/trpg_coc_app/lib/styles/theme.dart';
+import 'package:trpgcocapp/styles/theme.dart';
 import 'char_sheet_pages.dart';
 
 /*

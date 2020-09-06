@@ -14,8 +14,8 @@ import 'package:trpgcocapp/bloc/login/vCode_states.dart';
 import 'package:trpgcocapp/controller/flutter_qq/qq_login.dart';
 import 'package:trpgcocapp/data/app_user.dart';
 import 'login_form.dart';
-import 'file:///E:/Mycodes/Android/Projects/COC-app/COC-app/trpg_coc_app/lib/ui/pages/main/test_main_page.dart';
-import 'file:///E:/Mycodes/Android/Projects/COC-app/COC-app/trpg_coc_app/lib/styles/theme.dart';
+import 'package:trpgcocapp/ui/pages/main/test_main_page.dart';
+import 'package:trpgcocapp/styles/theme.dart';
 
 enum LoginMsgs {
   WrongPhoneFormat, // 301

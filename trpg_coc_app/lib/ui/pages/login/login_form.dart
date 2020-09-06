@@ -11,7 +11,7 @@ import 'package:trpgcocapp/bloc/login/login_states.dart';
 import 'package:trpgcocapp/bloc/login/vCode_bloc.dart';
 import 'package:trpgcocapp/bloc/login/vCode_events.dart';
 import 'package:trpgcocapp/bloc/login/vCode_states.dart';
-import 'file:///E:/Mycodes/Android/Projects/COC-app/COC-app/trpg_coc_app/lib/styles/theme.dart';
+import 'package:trpgcocapp/styles/theme.dart';
 
 class LoginForm extends StatefulWidget {
   @override

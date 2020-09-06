@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'file:///E:/Mycodes/Android/Projects/COC-app/COC-app/trpg_coc_app/lib/styles/theme.dart';
+import 'package:trpgcocapp/styles/theme.dart';
 
 class SplashPage extends StatelessWidget {
   @override
