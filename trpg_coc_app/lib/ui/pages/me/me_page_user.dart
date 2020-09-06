@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:trpgcocapp/controller/Bmob/user_connector.dart';
 import 'package:trpgcocapp/data/app_user.dart';
-import 'file:///E:/Mycodes/Android/Projects/COC-app/COC-app/trpg_coc_app/lib/styles/theme.dart';
+import 'package:trpgcocapp/styles/theme.dart';
 
 enum returnMsgs{
   OldPWDIncorrect,
