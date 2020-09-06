@@ -1,0 +1,12 @@
+[
+  {
+    "name": "弓箭",
+    "useSkillRow": 17,
+    "useSkillCol": 2,
+    "damage": "1D6+半DB",
+    "range": "30码",
+    "penetrable": false,
+    "price20s": 7,
+    "priceModern": 75
+  }
+]
