@@ -49,6 +49,8 @@ dependencies:
   auto_size_text_field: ^0.1.5
   auto_size_text: ^2.1.0
 
+  shared_preferences: ^0.5.7
+
 
 dev_dependencies:
   flutter_test:
@@ -78,6 +80,9 @@ flutter:
     - assets/images/add.png
     - assets/images/map.png
     - assets/images/defaultModIcon.png
+    - assets/images/user_avatar.png
+    - assets/occupations.json
+    - assets/weapons.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

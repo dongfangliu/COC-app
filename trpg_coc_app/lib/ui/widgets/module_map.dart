@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:matrix_gesture_detector/matrix_gesture_detector.dart';
 import 'package:trpgcocapp/data/storyModule/storyModCreate.dart';
 import 'package:trpgcocapp/data/storyModule/storyModOnUse.dart';
-import 'package:trpgcocapp/ui/pages/scene_creation_page.dart';
+import 'file:///E:/Mycodes/Android/Projects/COC-app/COC-app/trpg_coc_app/lib/ui/pages/wenji_pages/scene_creation_page.dart';
 
 
 

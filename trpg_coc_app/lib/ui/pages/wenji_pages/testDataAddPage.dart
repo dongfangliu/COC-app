@@ -10,7 +10,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:trpgcocapp/data/gameGroup/gameGroup.dart';
 import 'package:trpgcocapp/data/gameGroup/gameGroupUserData.dart';
 import 'package:trpgcocapp/controller/Bmob/bmob_login.dart';
-import '../widgets/dialogs/statefulDialog.dart';
+import '../../widgets/dialogs/statefulDialog.dart';
 
 class testDataAddPage extends StatefulWidget {
   File _imageFile;

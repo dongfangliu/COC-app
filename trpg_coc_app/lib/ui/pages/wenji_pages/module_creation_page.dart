@@ -14,7 +14,7 @@ import 'package:trpgcocapp/bloc/module_creation/module_creation_event.dart';
 import 'package:trpgcocapp/bloc/module_creation/module_creation_repository.dart';
 import 'package:trpgcocapp/data/storyModule/storyMod.dart';
 import 'package:trpgcocapp/data/storyModule/storyModCreate.dart';
-import 'package:trpgcocapp/ui/pages/map_creation_page.dart';
+import 'file:///E:/Mycodes/Android/Projects/COC-app/COC-app/trpg_coc_app/lib/ui/pages/wenji_pages/map_creation_page.dart';
 
 class moduleCreationPage extends StatefulWidget {
   StoryModCreate _module;

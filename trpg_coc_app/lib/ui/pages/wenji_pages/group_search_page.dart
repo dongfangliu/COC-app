@@ -1,13 +1,13 @@
 
 import 'package:flutter/services.dart';
 
-import '../../data/gameGroup/gameGroup.dart';
-import '../../data/gameGroup/gameGroupUserData.dart';
+import '../../../data/gameGroup/gameGroup.dart';
+import '../../../data/gameGroup/gameGroupUserData.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import '../widgets/dialogs/statefulDialog.dart';
-import '../widgets/gamegroup_card.dart';
-import '../../styles/gamegroups_pages_style.dart';
+import '../../widgets/dialogs/statefulDialog.dart';
+import '../../widgets/gamegroup_card.dart';
+import '../../../styles/gamegroups_pages_style.dart';
 class groupSearchFilter {
   int _minNum = 0;
   int _maxNum = 100;
