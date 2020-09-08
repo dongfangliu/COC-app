@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:trpgcocapp/data/char_sheet/char_data.dart';
 import 'package:trpgcocapp/bloc/char_sheet/char_sheet_bloc.dart';
 import 'package:trpgcocapp/bloc/char_sheet/char_sheet_events.dart';
 import 'package:trpgcocapp/bloc/char_sheet/char_sheet_states.dart';
@@ -101,7 +102,6 @@ class _CharSheetFormState extends State<CharSheetForm> {
 
   @override
   Widget build(BuildContext context) {
-    print("Entering Character Sheet");
     return Theme(
       data: ThemeData(
         primaryColor: AppTheme.textColor,
@@ -213,6 +213,19 @@ class _CharSheetFormState extends State<CharSheetForm> {
   }
 
   _onFinishButtonPressed() {
-    print("Finish button pressed");
+    // TODO 需要在 CharData 中加入一个字段判断是否是 NPC 卡
+    CharSheetState state = charSheetBloc.state;
+    CharData charData = CharData();
+
+    charData.infoData = state.charData["info"];
+    charData.attrData = state.charData["attr"];
+    charData.occuData = state.charData["occu"];
+    charData.skillData = state.charData["skill"];
+    charData.combatData = state.charData["combat"];
+    charData.invtData = state.charData["invt"];
+    charData.storyData = state.charData["story"];
+
+    // 返回数据至上一个页面
+    Navigator.pop(context, charData);
   }
 }

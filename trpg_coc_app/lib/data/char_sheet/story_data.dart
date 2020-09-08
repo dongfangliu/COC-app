@@ -56,7 +56,6 @@ class StoryData extends CharDataPart {
         stories[3] == "" ||
         stories[4] == "" ||
         stories[5] == "") {
-      print(stories[0]);
       return false;
     } else {
       return true;

@@ -47,7 +47,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-//void main() {
+// void main() {
 //  BlocSupervisor.delegate = AppBlocDelegate();
 //  runApp(
 //    BlocProvider(
@@ -55,9 +55,9 @@ class MyApp extends StatelessWidget {
 //      child: MyApp(),
 //    )
 //  );
-//}
+// }
 //
-//class MyApp extends StatelessWidget {
+// class MyApp extends StatelessWidget {
 //  @override
 //  Widget build(BuildContext context) {
 //    CurrentUser.getInstance().readUser().then((currentUser){
@@ -88,7 +88,7 @@ class MyApp extends StatelessWidget {
 //      ),
 //    );
 //  }
-//}
-//
+// }
+
 
 
