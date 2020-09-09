@@ -1,9 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:trpgcocapp/data/gameGroup/gameGroup.dart';
-import 'dialogs/statefulDialog.dart';
-import '../../styles/addGroup_dialog_style.dart';
-import '../../styles/gamegroup_card_style.dart';
+import '../../widgets/dialogs/statefulDialog.dart';
+import '../../../styles/addGroup_dialog_style.dart';
+import '../../../styles/gamegroup_card_style.dart';
 class gameGroupCard extends StatefulWidget {
   gameGroup group;
   @override
