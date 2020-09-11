@@ -9,7 +9,7 @@ class ModuleCreationBloc extends TimecostOperationBloc {
   @override
   TimecostOperationState get initialState => NotInitialized();
   ModuleCreationBloc(){
-    operator.addEventActionPair(TryInitialize(), ModuleCreationRepository.initDefaultFiles);
+    operator.addEventActionPair(TryInitialize(), ModuleCreationRepository.init);
     operator.addEventActionPair(SubmmitModule(), ModuleCreationRepository.submmit);
   }
   @override

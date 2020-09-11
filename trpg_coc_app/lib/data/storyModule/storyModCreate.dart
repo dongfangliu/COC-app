@@ -7,8 +7,7 @@ import 'package:trpgcocapp/data/storyModule/storyMod.dart';
 class StoryMapCreate extends StoryMap<COCBmobEditable> {
   StoryMapCreate() : super() {
     this.scenes = new List<StorySceneCreate>();
-    this.mapImg =
-        new COCBmobEditable(file: ModuleCreationRepository.defaultMapBg);
+    this.mapImg = new COCBmobEditable.AssetImage(defaultFilePath: "map.png");
   }
 }
 
@@ -22,28 +21,20 @@ class StorySceneCreate extends StoryScene<COCBmobEditable> {
 
 class StorySubSceneCreate extends StorySubScene<COCBmobEditable> {
   StorySubSceneCreate(String name) : super(name) {
-    this.bgImg =
-        new COCBmobEditable(file: ModuleCreationRepository.defaultSubSceneBg);
+    this.bgImg = new COCBmobEditable.AssetImage(
+        defaultFilePath: "images/subscenebg.jpg");
   }
 }
 
 class StoryModCreate extends StoryMod<COCBmobEditable> {
-
-
-  StoryModCreate(
-      List<roleCard> npcs,
-      String moduleName,
-      COCBmobEditable thumbnailImg,
-      COCBmobEditable iconImg,
-      int hours_min,
-      int hours_max,
-      int people_min,
-      int people_max,
-      int likes)
+  StoryModCreate(List<roleCard> npcs, String moduleName, int hours_min,
+      int hours_max, int people_min, int people_max, int likes)
       : super(npcs, moduleName, hours_min, hours_max, people_min, people_max,
             likes) {
     this.map = new StoryMapCreate();
-    this.thumbnailImg = thumbnailImg;
-    this.iconImg = iconImg;
+    this.thumbnailImg =
+        new COCBmobEditable.AssetImage(defaultFilePath: "images/add.png");
+    this.iconImg = new COCBmobEditable.AssetImage(
+        defaultFilePath: "images/defaultModIcon.png");
   }
 }

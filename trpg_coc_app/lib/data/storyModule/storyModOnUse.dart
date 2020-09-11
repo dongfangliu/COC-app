@@ -1,4 +1,5 @@
 import 'package:data_plugin/bmob/table/bmob_object.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:trpgcocapp/data/file/coc_file.dart';
 import 'package:trpgcocapp/data/roleCard/roleCard.dart';
@@ -14,8 +15,9 @@ class StoryMapUsing extends StoryMap<COCBmobServerFile> {
 
   from(StoryMapCreate mapCreate)async {
     this.mapImg = new COCBmobServerFile();
-    await this.mapImg.from(mapCreate.mapImg.file);
 
+    await mapCreate.mapImg.checkFileBeforeUpload();
+    await this.mapImg.from(mapCreate.mapImg.file);
     this.scenes = new List<StorySceneUsing>();
     for(int i = 0; i<mapCreate.scenes.length;i++){
       StorySceneCreate sceneCreate = mapCreate.scenes[i];
@@ -51,6 +53,7 @@ class StorySubSceneUsing extends StorySubScene<COCBmobServerFile> {
   from(StorySubSceneCreate sceneCreate)
      async {
     this.bgImg =new  COCBmobServerFile();
+    await sceneCreate.bgImg.checkFileBeforeUpload();
     await this.bgImg.from(sceneCreate.bgImg.file);
   }
 }
@@ -63,6 +66,7 @@ class StoryModUsing extends StoryMod<COCBmobServerFile> {
 
   from(StoryModCreate modCreate) async {
    this.thumbnailImg= COCBmobServerFile();
+   await modCreate.thumbnailImg.checkFileBeforeUpload();
    await this.thumbnailImg.from(modCreate.thumbnailImg.file);
    StoryMapUsing mapUsing =new StoryMapUsing();
    await  mapUsing.from(modCreate.map);
