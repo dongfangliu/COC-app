@@ -7,7 +7,7 @@ import 'package:trpgcocapp/data/storyModule/storyMod.dart';
 class StoryMapCreate extends StoryMap<COCBmobEditable> {
   StoryMapCreate() : super() {
     this.scenes = new List<StorySceneCreate>();
-    this.mapImg = new COCBmobEditable.AssetImage(defaultFilePath: "map.png");
+    this.mapImg = new COCBmobEditable.AssetImage(defaultFilePath: "assets/images/map.png");
   }
 }
 
@@ -22,7 +22,7 @@ class StorySceneCreate extends StoryScene<COCBmobEditable> {
 class StorySubSceneCreate extends StorySubScene<COCBmobEditable> {
   StorySubSceneCreate(String name) : super(name) {
     this.bgImg = new COCBmobEditable.AssetImage(
-        defaultFilePath: "images/subscenebg.jpg");
+        defaultFilePath: "assets/images/subscenebg.jpg");
   }
 }
 
@@ -33,8 +33,8 @@ class StoryModCreate extends StoryMod<COCBmobEditable> {
             likes) {
     this.map = new StoryMapCreate();
     this.thumbnailImg =
-        new COCBmobEditable.AssetImage(defaultFilePath: "images/add.png");
+        new COCBmobEditable.AssetImage(defaultFilePath: "assets/images/add.png");
     this.iconImg = new COCBmobEditable.AssetImage(
-        defaultFilePath: "images/defaultModIcon.png");
+        defaultFilePath: "assets/images/defaultModIcon.png");
   }
 }

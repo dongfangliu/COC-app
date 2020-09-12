@@ -10,11 +10,11 @@ import 'package:path_provider/path_provider.dart';
 part 'coc_file.g.dart';
 
 class FileGenerator {
-  static Future<File> fromAsset(String pathRelativeToAssets) async {
+  static Future<File> fromAsset(String pathToAssets) async {
     try {
-      final byteData = await rootBundle.load('assets/$pathRelativeToAssets');
+      final byteData = await rootBundle.load('$pathToAssets');
       final file = await new File(
-              '${(await getTemporaryDirectory()).path}/$pathRelativeToAssets')
+              '${(await getTemporaryDirectory()).path}/$pathToAssets')
           .create(recursive: true);
       await file.writeAsBytes(byteData.buffer
           .asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
@@ -49,42 +49,44 @@ enum FILE_TYPE { MEME, IMAGE, VIDEO, DOCUMENT }
 class COCEditableFile<T extends COCServerFile> extends COCFile {
   FILE_SOURCE filesource;
   FILE_TYPE filetype;
-  String defaultFilePath = "";
+  String filePath = "";
   File file = null;
   T serverFile = null;
   COCEditableFile(this.file);
   bool hasDefaultFile() {
-    return (defaultFilePath != null) && (defaultFilePath != "");
+    return (filePath != null) && (filePath != "");
   }
 
   COCEditableFile.Image(
       {this.filesource = FILE_SOURCE.ASSET,
-      @required this.defaultFilePath}) {
+      @required this.filePath}) {
     this.filetype = FILE_TYPE.IMAGE;
   }
-  COCEditableFile.AssetImage({@required this.defaultFilePath}) {
+  COCEditableFile.AssetImage({@required this.filePath}) {
     this.filetype = FILE_TYPE.IMAGE;
     this.filesource = FILE_SOURCE.ASSET;
   }
-  COCEditableFile.NetworkImage({@required this.defaultFilePath}) {
+  COCEditableFile.NetworkImage({@required this.filePath}) {
     this.filetype = FILE_TYPE.IMAGE;
     this.filesource = FILE_SOURCE.NETWORK;
   }
   void setPath(
       {FILE_SOURCE file_source = FILE_SOURCE.ASSET, @required String path}) {
     this.filesource = file_source;
-    this.defaultFilePath = path;
+    this.filePath = path;
   }
 
   void setFile(File file) {
+    if(file==null){return;}
     this.file = file;
+    this.filesource = FILE_SOURCE.STORAGE;
   }
 
   void checkFileBeforeUpload() async {
     if (file == null) {
       switch (filesource) {
         case FILE_SOURCE.ASSET:
-          this.file = await FileGenerator.fromAsset(defaultFilePath);
+          this.file = await FileGenerator.fromAsset(filePath);
           break;
 
         case FILE_SOURCE.STORAGE:
@@ -93,7 +95,7 @@ class COCEditableFile<T extends COCServerFile> extends COCFile {
         case FILE_SOURCE.NETWORK:
           Directory tempDir = await getTemporaryDirectory();
           this.file = await FileGenerator.fromURL(
-              this.defaultFilePath, tempDir.path + "/temp0");
+              this.filePath, tempDir.path + "/temp0");
           // TODO: Handle this case.
           break;
       }
@@ -140,13 +142,27 @@ class COCBmobEditable extends COCEditableFile<COCBmobServerFile> {
   COCBmobEditable.Image(
       {FILE_SOURCE filesource = FILE_SOURCE.ASSET,
       @required String defaultFilePath})
-      : super.Image(filesource: filesource, defaultFilePath: defaultFilePath) {}
+      : super.Image(filesource: filesource, filePath: defaultFilePath) {}
   COCBmobEditable.AssetImage({@required String defaultFilePath})
-      : super.AssetImage(defaultFilePath: defaultFilePath) {}
+      : super.AssetImage(filePath: defaultFilePath) {}
   COCBmobEditable.NetworkImage({@required String defaultFilePath})
-      : super.NetworkImage(defaultFilePath: defaultFilePath) {}
+      : super.NetworkImage(filePath: defaultFilePath) {}
 }
 
 T _dataFromJson<T>(Map<String, dynamic> input) => input['value'] as T;
 
 Map<String, dynamic> _dataToJson<T>(T input) => {'value': input};
+
+ImageProvider buildCOCEditableImg(COCBmobEditable imgFile) {
+  switch(imgFile.filesource) {
+    case FILE_SOURCE.ASSET:
+      return AssetImage(imgFile.filePath);
+      break;
+    case FILE_SOURCE.STORAGE:
+      return FileImage(imgFile.file);
+      break;
+    case FILE_SOURCE.NETWORK:
+      return NetworkImage(imgFile.filePath);
+      break;
+  }
+}

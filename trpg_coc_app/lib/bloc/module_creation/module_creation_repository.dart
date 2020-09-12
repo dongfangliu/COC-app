@@ -11,14 +11,14 @@ import 'package:trpgcocapp/data/storyModule/storyModCreate.dart';
 import 'package:trpgcocapp/data/storyModule/storyModOnUse.dart';
 
 class ModuleCreationRepository {
-  static StoryModCreate modCreate;
-  static Future<OperateResult> init()async {
+   StoryModCreate modCreate;
+   Future<OperateResult> init()async {
     String appId = 'c0e5dbfe38a164ba90d2c4c7e1c846a9';
     String apiKey = '6fc3e0520028a3a095ebb8aa1097c10e';
     String appHost = 'https://api2.bmob.cn';
     Bmob.init(appHost, appId, apiKey);
     if (modCreate == null) {
-      modCreate = StoryModCreate(
+      modCreate = new  StoryModCreate(
           new List<roleCard>(),
           "undefined",
           0,
@@ -31,7 +31,7 @@ class ModuleCreationRepository {
     result.isSuccess = true;
     return result;
   }
-  static StoryModCreate getInstance(){
+   StoryModCreate getInstance(){
     if (modCreate == null) {
       modCreate = StoryModCreate(
           new List<roleCard>(),
@@ -44,7 +44,7 @@ class ModuleCreationRepository {
       return modCreate;;
     }
   }
-  static Future<OperateResult> submmit() async {
+   Future<OperateResult> submmit() async {
     try {
       StoryModUsing modUsing =
           await ModuleCreationHelper.convertToUsing(modCreate);

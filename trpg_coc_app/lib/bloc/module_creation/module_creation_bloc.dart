@@ -8,10 +8,12 @@ import 'module_creation_event.dart';
 class ModuleCreationBloc extends TimecostOperationBloc {
   @override
   TimecostOperationState get initialState => NotInitialized();
+  ModuleCreationRepository moduleCreationRepository = new ModuleCreationRepository();
   ModuleCreationBloc(){
-    operator.addEventActionPair(TryInitialize(), ModuleCreationRepository.init);
-    operator.addEventActionPair(SubmmitModule(), ModuleCreationRepository.submmit);
+    operator.addEventActionPair(TryInitialize(), moduleCreationRepository.init);
+    operator.addEventActionPair(SubmmitModule(), moduleCreationRepository.submmit);
   }
+  getModule()=>moduleCreationRepository.modCreate;
   @override
   Future<void> close() {
     return super.close();
