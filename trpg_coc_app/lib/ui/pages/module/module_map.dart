@@ -343,7 +343,8 @@ class storyMapPointWidgetState extends State<storyMapPointWidget> {
         child: Container(
           width: 50,
           height: 50,
-          color: Colors.white,
+          color: Colors.transparent,
+          child: Icon(Icons.location_on,color:Colors.white),
         ),
       ),
     );

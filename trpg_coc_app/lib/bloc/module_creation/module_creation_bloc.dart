@@ -4,6 +4,7 @@ import 'package:trpgcocapp/bloc/common/timecost_op/timecost_operation_bloc.dart'
 import 'package:trpgcocapp/bloc/common/timecost_op/timecost_operation_event.dart';
 import 'package:trpgcocapp/bloc/common/timecost_op/timecost_operation_state.dart';
 import 'package:trpgcocapp/bloc/module_creation/module_creation_repository.dart';
+import 'package:trpgcocapp/data/storyModule/storyModCreate.dart';
 import 'module_creation_event.dart';
 class ModuleCreationBloc extends TimecostOperationBloc {
   @override
@@ -13,7 +14,7 @@ class ModuleCreationBloc extends TimecostOperationBloc {
     operator.addEventActionPair(TryInitialize(), moduleCreationRepository.init);
     operator.addEventActionPair(SubmmitModule(), moduleCreationRepository.submmit);
   }
-  getModule()=>moduleCreationRepository.modCreate;
+  StoryModCreate getModule()=>moduleCreationRepository.modCreate;
   @override
   Future<void> close() {
     return super.close();

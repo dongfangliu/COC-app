@@ -18,5 +18,5 @@ Map<String, dynamic> _$skillToJson(skill instance) => <String, dynamic>{
       'name': instance.name,
       'baseValue': instance.baseValue,
       'intrestPoint': instance.intrestPoint,
-      'occupationPoint': instance.occupationPoint
+      'occupationPoint': instance.occupationPoint,
     };

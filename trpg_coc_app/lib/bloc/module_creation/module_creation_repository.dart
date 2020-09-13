@@ -5,6 +5,7 @@ import 'package:data_plugin/bmob/bmob.dart';
 import 'package:data_plugin/bmob/response/bmob_saved.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:trpgcocapp/bloc/common/timecost_op/timecost_operator.dart';
+import 'package:trpgcocapp/data/char_sheet/char_data.dart';
 import 'package:trpgcocapp/data/file/coc_file.dart';
 import 'package:trpgcocapp/data/roleCard/roleCard.dart';
 import 'package:trpgcocapp/data/storyModule/storyModCreate.dart';
@@ -19,7 +20,7 @@ class ModuleCreationRepository {
     Bmob.init(appHost, appId, apiKey);
     if (modCreate == null) {
       modCreate = new  StoryModCreate(
-          new List<roleCard>(),
+          new List<CharDataCreate>(),
           "undefined",
           0,
           0,
@@ -34,7 +35,7 @@ class ModuleCreationRepository {
    StoryModCreate getInstance(){
     if (modCreate == null) {
       modCreate = StoryModCreate(
-          new List<roleCard>(),
+          new List<CharDataCreate>(),
           "undefined",
           0,
           0,

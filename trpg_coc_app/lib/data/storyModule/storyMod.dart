@@ -1,7 +1,7 @@
 import 'package:data_plugin/bmob/table/bmob_object.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:trpgcocapp/data/char_sheet/char_data.dart';
 import 'package:trpgcocapp/data/file/coc_file.dart';
-import '../roleCard/roleCard.dart';
 
 part 'storyMod.g.dart';
 
@@ -94,7 +94,7 @@ class StoryMod<T extends COCFile> extends BmobObject {
   StoryMap<T> map;
   StoryMod(this.npcs, this.moduleName, this.hours_min, this.hours_max,
       this.people_min, this.people_max, this.likes);
-  List<roleCard> npcs = [];
+  List<CharDataTemplate> npcs = [];
   String moduleName = 'undefined';
   String descript = '';
   @JsonKey(fromJson: _dataFromJson, toJson: _dataToJson)

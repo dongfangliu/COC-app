@@ -1,6 +1,7 @@
 import 'package:data_plugin/bmob/table/bmob_object.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:trpgcocapp/data/char_sheet/char_data.dart';
 import 'package:trpgcocapp/data/file/coc_file.dart';
 import 'package:trpgcocapp/data/roleCard/roleCard.dart';
 import 'package:trpgcocapp/data/storyModule/storyMod.dart';
@@ -60,7 +61,7 @@ class StorySubSceneUsing extends StorySubScene<COCBmobServerFile> {
 
 @JsonSerializable()
 class StoryModUsing extends StoryMod<COCBmobServerFile> {
-  StoryModUsing(List<roleCard> npcs, String moduleName, int hours_min,int hours_max,
+  StoryModUsing(List<CharData> npcs, String moduleName, int hours_min,int hours_max,
       int people_min,int people_max,int likes) :
         super(npcs, moduleName, hours_min, hours_max, people_min,people_max,likes);
 

@@ -1,5 +1,6 @@
 import 'package:data_plugin/bmob/bmob.dart';
 import 'package:trpgcocapp/bloc/module_creation/module_creation_repository.dart';
+import 'package:trpgcocapp/data/char_sheet/char_data.dart';
 import 'package:trpgcocapp/data/file/coc_file.dart';
 import 'package:trpgcocapp/data/roleCard/roleCard.dart';
 import 'package:trpgcocapp/data/storyModule/storyMod.dart';
@@ -27,7 +28,7 @@ class StorySubSceneCreate extends StorySubScene<COCBmobEditable> {
 }
 
 class StoryModCreate extends StoryMod<COCBmobEditable> {
-  StoryModCreate(List<roleCard> npcs, String moduleName, int hours_min,
+  StoryModCreate(List<CharDataCreate> npcs, String moduleName, int hours_min,
       int hours_max, int people_min, int people_max, int likes)
       : super(npcs, moduleName, hours_min, hours_max, people_min, people_max,
             likes) {

@@ -18,5 +18,5 @@ Map<String, dynamic> _$packableToJson(packable instance) => <String, dynamic>{
       'name': instance.name,
       'description': instance.description,
       'num': instance.num,
-      'loc': instance.loc
+      'loc': instance.loc,
     };
