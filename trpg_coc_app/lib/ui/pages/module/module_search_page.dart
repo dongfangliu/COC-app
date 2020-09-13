@@ -11,7 +11,7 @@ import 'package:trpgcocapp/bloc/module_search/module_search_repo.dart';
 import 'package:trpgcocapp/data/file/coc_file.dart';
 import 'package:trpgcocapp/data/storyModule/storyMod.dart';
 import 'package:trpgcocapp/data/storyModule/storyModOnUse.dart';
-import 'file:///E:/Mycodes/Android/Projects/COC-app/COC-app/trpg_coc_app/lib/ui/pages/module/module_card.dart';
+import 'package:trpgcocapp/ui/pages/module/module_card.dart';
 
 class ModuleSearchPage extends StatefulWidget {
   ModuleSearchRepository _searchRepository = new ModuleSearchRepository();
