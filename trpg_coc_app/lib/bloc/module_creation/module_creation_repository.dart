@@ -5,31 +5,38 @@ import 'package:data_plugin/bmob/bmob.dart';
 import 'package:data_plugin/bmob/response/bmob_saved.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:trpgcocapp/bloc/common/timecost_op/timecost_operator.dart';
+import 'package:trpgcocapp/data/char_sheet/char_data.dart';
 import 'package:trpgcocapp/data/file/coc_file.dart';
 import 'package:trpgcocapp/data/roleCard/roleCard.dart';
 import 'package:trpgcocapp/data/storyModule/storyModCreate.dart';
 import 'package:trpgcocapp/data/storyModule/storyModOnUse.dart';
 
 class ModuleCreationRepository {
-  static StoryModCreate modCreate;
-  static File ModThumbnail;
-  static File ModIcon;
-  static File defaultSubSceneBg;
-  static File defaultMapBg;
-
-  static StoryModCreate getInstance(){
-//    FileRepository().init();
+   StoryModCreate modCreate;
+   Future<OperateResult> init()async {
     String appId = 'c0e5dbfe38a164ba90d2c4c7e1c846a9';
     String apiKey = '6fc3e0520028a3a095ebb8aa1097c10e';
     String appHost = 'https://api2.bmob.cn';
     Bmob.init(appHost, appId, apiKey);
-//    await ModuleCreationRepository.initDefaultFiles();
+    if (modCreate == null) {
+      modCreate = new  StoryModCreate(
+          new List<CharDataCreate>(),
+          "undefined",
+          0,
+          0,
+          0,
+          0,
+          0);
+    }
+    OperateResult result = OperateResult();
+    result.isSuccess = true;
+    return result;
+  }
+   StoryModCreate getInstance(){
     if (modCreate == null) {
       modCreate = StoryModCreate(
-          new List<roleCard>(),
+          new List<CharDataCreate>(),
           "undefined",
-          new COCBmobEditable(file: ModuleCreationRepository.ModThumbnail),
-          new COCBmobEditable(file: ModuleCreationRepository.ModIcon),
           0,
           0,
           0,
@@ -38,33 +45,7 @@ class ModuleCreationRepository {
       return modCreate;;
     }
   }
-  static Future<OperateResult> initDefaultFiles() async {
-    try {
-      if (ModThumbnail == null) {
-        ModThumbnail = await FileGenerator.fromAsset('images/add.png');
-      }
-      if (ModIcon == null) {
-        ModIcon = await FileGenerator.fromAsset('images/defaultModIcon.png');
-      }
-      if (defaultSubSceneBg == null) {
-        defaultSubSceneBg =
-            await FileGenerator.fromAsset('images/subscenebg.jpg');
-      }
-      if (defaultMapBg == null) {
-        defaultMapBg = await FileGenerator.fromAsset('images/map.png');
-      }
-      OperateResult result =
-          OperateResult.custom("success initilized", true, null);
-      return result;
-    } catch (e) {
-      OperateResult result = OperateResult();
-      result.isSuccess = false;
-      result.msg = e.toString();
-      return result;
-    }
-  }
-
-  static Future<OperateResult> submmit() async {
+   Future<OperateResult> submmit() async {
     try {
       StoryModUsing modUsing =
           await ModuleCreationHelper.convertToUsing(modCreate);

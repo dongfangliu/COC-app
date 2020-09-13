@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:matrix_gesture_detector/matrix_gesture_detector.dart';
+import 'package:trpgcocapp/data/file/coc_file.dart';
 import 'package:trpgcocapp/data/storyModule/storyModCreate.dart';
 import 'package:trpgcocapp/data/storyModule/storyModOnUse.dart';
 import 'scene_creation_page.dart';
@@ -250,8 +251,7 @@ class storyMapCreateWidgetState extends State<storyMapCreateWidget> {
   Widget getMapBg(BuildContext context) {
     return Container(
       color: Colors.yellow,
-      child: Image.file(
-        widget.map.mapImg.file,
+      child: Image(image:buildCOCEditableImg( widget.map.mapImg),
         fit: BoxFit.fitWidth,
       ),
 //color: Colors.transparent,
@@ -343,7 +343,8 @@ class storyMapPointWidgetState extends State<storyMapPointWidget> {
         child: Container(
           width: 50,
           height: 50,
-          color: Colors.white,
+          color: Colors.transparent,
+          child: Icon(Icons.location_on,color:Colors.white),
         ),
       ),
     );

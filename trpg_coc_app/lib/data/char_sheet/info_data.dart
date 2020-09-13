@@ -1,8 +1,5 @@
-//part of 'char_data_part.dart';
-
 import 'package:json_annotation/json_annotation.dart';
 import 'char_data_part.dart';
-
 part 'info_data.g.dart';
 
 @JsonSerializable()
@@ -13,7 +10,6 @@ class InfoData extends CharDataPart {
   String sex = "";
   String residence = "";
   String birthplace = "";
-
   InfoData();
 
   @override

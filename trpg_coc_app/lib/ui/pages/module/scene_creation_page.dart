@@ -30,7 +30,9 @@ class sceneCreationPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     sceneCreationPageState state = sceneCreationPageState();
-    state.setImage(_curScene.bgImg.file);
+    state.setImage(_curScene.bgImg).then((value){state.setState(() {
+
+    });});
     return state;
   }
   sceneCreationPage(this._scene){
@@ -43,12 +45,23 @@ class sceneCreationPageState extends State<sceneCreationPage> {
   String _imagefileName;
 
   var filters_map = Map.fromIterable(presetFiltersList, key: (e) => e.name, value: (e) => e);
-  void setImage(File file){
-    var image = imageLib.decodeImage(file.readAsBytesSync());
-    _imagefileName = file.path;
-
-    image = imageLib.copyResize(image, width:600);
-    _image = image;
+  Future<void> setImage(COCBmobEditable image) async {
+    File f;
+    switch(image.filesource){
+      case FILE_SOURCE.ASSET:
+        f =await FileGenerator.fromAsset(image.filePath);
+        break;
+      case FILE_SOURCE.STORAGE:
+      f = image.file;
+        break;
+      case FILE_SOURCE.NETWORK:
+      f = await FileGenerator.fromURL(image.filePath, _imagefileName);
+        break;
+    }
+    var img = imageLib.decodeImage(f.readAsBytesSync());
+    _imagefileName = f.path;
+    img = imageLib.copyResize(img, width:600);
+    _image  = img;
   }
   @override
   Widget build(BuildContext context) {
@@ -171,9 +184,8 @@ class sceneCreationPageState extends State<sceneCreationPage> {
         child: PhotoFilter(image: _image, filename: _imagefileName, filter: filters_map[getTimeFilterName()],fit: BoxFit.fill,),
         onTap: () async {
           File f = await ModuleCreationHelper.pickImage();
-          setImage( f);
-
-          widget._curScene.bgImg.file =  f;
+          widget._curScene.bgImg.setFile(f);
+          await setImage( widget._curScene.bgImg);
           setState(() {
           });
         },

@@ -66,5 +66,5 @@ Map<String, dynamic> _$roleCardToJson(roleCard instance) => <String, dynamic>{
       'backpack': instance.backpack,
       'skills': instance.skills,
       'additionInfo': instance.additionInfo,
-      'isNPC': instance.isNPC
+      'isNPC': instance.isNPC,
     };

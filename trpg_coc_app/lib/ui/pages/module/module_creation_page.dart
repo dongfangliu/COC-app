@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:auto_size_text_field/auto_size_text_field.dart';
 import "package:flutter/material.dart";
 import 'package:flutter/services.dart';
@@ -12,12 +13,15 @@ import 'package:trpgcocapp/bloc/common/timecost_op/timecost_operator_widget.dart
 import 'package:trpgcocapp/bloc/module_creation/module_creation_bloc.dart';
 import 'package:trpgcocapp/bloc/module_creation/module_creation_event.dart';
 import 'package:trpgcocapp/bloc/module_creation/module_creation_repository.dart';
+import 'package:trpgcocapp/data/char_sheet/char_data.dart';
+import 'package:trpgcocapp/data/file/coc_file.dart';
 import 'package:trpgcocapp/data/storyModule/storyMod.dart';
 import 'package:trpgcocapp/data/storyModule/storyModCreate.dart';
+import 'package:trpgcocapp/ui/pages/character_sheet/char_sheet.dart';
+import 'package:trpgcocapp/ui/pages/module/scene_creation_page.dart';
 import 'map_creation_page.dart';
 
 class moduleCreationPage extends StatefulWidget {
-  StoryModCreate _module;
   moduleCreationPage();
 
   @override
@@ -84,9 +88,6 @@ class moduleCreationState extends State<moduleCreationPage> {
   }
 
   Widget buildBody(BuildContext context) {
-    if (widget._module == null) {
-      widget._module = ModuleCreationRepository.getInstance();
-    }
     return SingleChildScrollView(
       child: Column(
         children: <Widget>[
@@ -123,13 +124,14 @@ class moduleCreationState extends State<moduleCreationPage> {
                   image: DecorationImage(
                       colorFilter: new ColorFilter.mode(
                           Colors.black.withOpacity(0.2), BlendMode.dstATop),
-                      image: FileImage(widget._module.thumbnailImg.file),
+                      image: buildCOCEditableImg(
+                          _moduleCreationBloc.getModule().thumbnailImg),
                       fit: BoxFit.fitWidth)),
               child: InkWell(
                 onTap: () async {
                   File f = await ModuleCreationHelper.pickImage();
                   if (f != null) {
-                    widget._module.thumbnailImg.file = f;
+                    _moduleCreationBloc.getModule().thumbnailImg.setFile(f);
                   }
                   setState(() {});
                 },
@@ -142,12 +144,13 @@ class moduleCreationState extends State<moduleCreationPage> {
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           image: DecorationImage(
-                              image: FileImage(widget._module.iconImg.file),
+                              image: buildCOCEditableImg(
+                                  _moduleCreationBloc.getModule().iconImg),
                               fit: BoxFit.fitWidth)),
                       child: InkWell(onTap: () async {
                         File f = await ModuleCreationHelper.pickImage();
                         if (f != null) {
-                          widget._module.iconImg.file = f;
+                          _moduleCreationBloc.getModule().iconImg.setFile(f);
                         }
 
                         setState(() {});
@@ -199,14 +202,17 @@ class moduleCreationState extends State<moduleCreationPage> {
   }
 
   void OnSubmmitBtnPressed(BuildContext context) {
-    widget._module.moduleName = moduleNameTextController.text;
-    widget._module.descript = introTextController.text;
-    widget._module.author = authorTextController.text;
-    widget._module.hours_min = int.parse(hoursMinTextController.text);
-    widget._module.hours_max = int.parse(hoursMaxTextController.text);
-    widget._module.people_max = int.parse(peopleMaxTextController.text);
-    widget._module.people_min = int.parse(peopleMinTextController.text);
-    ModuleCreationRepository.modCreate = widget._module;
+    _moduleCreationBloc.getModule().moduleName = moduleNameTextController.text;
+    _moduleCreationBloc.getModule().descript = introTextController.text;
+    _moduleCreationBloc.getModule().author = authorTextController.text;
+    _moduleCreationBloc.getModule().hours_min =
+        int.parse(hoursMinTextController.text);
+    _moduleCreationBloc.getModule().hours_max =
+        int.parse(hoursMaxTextController.text);
+    _moduleCreationBloc.getModule().people_max =
+        int.parse(peopleMaxTextController.text);
+    _moduleCreationBloc.getModule().people_min =
+        int.parse(peopleMinTextController.text);
     _moduleCreationBloc.add(SubmmitModule());
   }
 
@@ -224,32 +230,76 @@ class moduleCreationState extends State<moduleCreationPage> {
             padding: EdgeInsets.all(10),
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: 1,
+              itemCount: _moduleCreationBloc.getModule().map.scenes.length + 1,
               itemBuilder: (BuildContext ctxt, int index) {
-                return Container(
-                  margin: EdgeInsets.all(5),
-                  width: MediaQuery.of(context).size.height * 0.3,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      border: Border.all(color: Colors.black54, width: 2)),
-                  child: InkWell(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        Icon(Icons.add),
-                      ],
+                if (index == _moduleCreationBloc.getModule().map.scenes.length) {
+                  return Container(
+                    margin: EdgeInsets.all(5),
+                    width: MediaQuery.of(context).size.height * 0.3,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        border: Border.all(color: Colors.black54, width: 2)),
+                    child: InkWell(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          Icon(Icons.add),
+                        ],
+                      ),
+                      onTap: () async{
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => MapCreationPage(
+                                _moduleCreationBloc.getModule().map),
+                          ),
+                        ).then((value) =>
+                            setState(() {
+
+                            }));
+                      },
                     ),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              MapCreationPage(widget._module.map),
-                        ),
-                      );
-                    },
-                  ),
-                );
+                  );
+                } else {
+                  StorySceneCreate scene = _moduleCreationBloc.getModule().map.scenes[index];
+                  return Container(
+                    margin: EdgeInsets.all(5),
+                    width: MediaQuery.of(context).size.height * 0.3,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+//                        border: Border.all(color: Colors.black54, width: 2)
+                    ),
+                    child: InkWell(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          Image(
+                            image: buildCOCEditableImg(scene.subScenes[scene.mainSceneIdx].bgImg),
+                            fit: BoxFit.fitWidth,
+                            width: MediaQuery.of(context).size.height * 0.3,
+                            height: MediaQuery.of(context).size.height * 0.18,
+                          ),
+                          Expanded(
+                            child: AutoSizeText(scene.name),
+                          )
+
+                        ],
+                      ),
+                      onTap: () async{
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => sceneCreationPage(scene),
+                          ),
+                        ).then((value) =>
+                            setState(() {
+
+                        }));
+
+                      },
+                    ),
+                  );
+                }
               },
             ))
       ]),
@@ -270,9 +320,9 @@ class moduleCreationState extends State<moduleCreationPage> {
             padding: EdgeInsets.all(10),
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: widget._module.npcs.length + 1,
+              itemCount: _moduleCreationBloc.getModule().npcs.length + 1,
               itemBuilder: (BuildContext ctxt, int index) {
-                if (index == widget._module.npcs.length) {
+                if (index == _moduleCreationBloc.getModule().npcs.length) {
                   return Container(
                     margin: EdgeInsets.only(left: 5, right: 5),
                     width: MediaQuery.of(context).size.height * 0.13,
@@ -286,11 +336,52 @@ class moduleCreationState extends State<moduleCreationPage> {
                           Icon(Icons.add),
                         ],
                       ),
-                      onTap: () {},
+                      onTap: () async{
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => CharSheet(isNPC: true,),
+                          ),
+                        ).then((value) {
+                        _moduleCreationBloc.getModule().npcs.add(value);
+                            setState(() {
+
+                            });
+                        });
+                      },
                     ),
                   );
                 } else {
-                  return null;
+                  CharDataCreate npc =
+                      _moduleCreationBloc.getModule().npcs[index];
+                  return Container(
+                    margin: EdgeInsets.only(left: 5, right: 5),
+                    width: MediaQuery.of(context).size.height * 0.13,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+//                        border: Border.all(color: Colors.black54, width: 2)
+                    ),
+                    child: InkWell(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        mainAxisSize: MainAxisSize.max,
+                        children: <Widget>[
+                          Image(
+                            image: buildCOCEditableImg(npc.avatar),
+                            fit: BoxFit.fill,
+                            width: MediaQuery.of(context).size.height * 0.13,
+                            height: MediaQuery.of(context).size.height * 0.13,
+                          ),
+
+                    Expanded(
+                      child:
+                      AutoSizeText(npc.infoData.name)
+                    )
+                        ],
+                      ),
+                      onTap: () async{},
+                    ),
+                  );
                 }
               },
             ))
@@ -301,14 +392,13 @@ class moduleCreationState extends State<moduleCreationPage> {
   Widget buildSummaryCard(BuildContext context) {
     var _crossAxisSpacing = 5.0;
     var _mainAxisSpacing = 5.0;
-    var _drawerWidth =MediaQuery.of(context).size.height * 0.5-2*30;
+    var _drawerWidth = MediaQuery.of(context).size.height * 0.5 - 2 * 30;
     var _crossAxisCount = 2;
     var _width = (_drawerWidth - ((_crossAxisCount - 1) * _crossAxisSpacing)) /
         _crossAxisCount;
     var cellHeight = MediaQuery.of(context).size.height * 0.05;
     var _aspectRatio = _width / cellHeight;
     return Container(
-
       padding: EdgeInsets.only(bottom: 20),
       child: Column(children: <Widget>[
         ListTile(
@@ -317,63 +407,55 @@ class moduleCreationState extends State<moduleCreationPage> {
         ),
         Container(
           width: MediaQuery.of(context).size.width * 0.8,
-          height: cellHeight*6,
+          height: cellHeight * 6,
           color: Colors.black12,
-          child:
-          Padding(
-            padding: EdgeInsets.all(30),
-          child: GridView(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: _crossAxisCount,
-                childAspectRatio: _aspectRatio,
-                crossAxisSpacing: _crossAxisSpacing,
-                mainAxisSpacing: _mainAxisSpacing,
-              ),
-              children: [
-                Text("年代 : " + ModEraText[ModEra.PPRESENT]),
-                Text("地区 : " + ModRegionText[ModRegion.Europe]),
-                Row(
-                  children: <Widget>[
-                    Text("时长："),
-                    Flexible(
-                        child: TextField(
+          child: Padding(
+              padding: EdgeInsets.all(30),
+              child: GridView(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: _crossAxisCount,
+                    childAspectRatio: _aspectRatio,
+                    crossAxisSpacing: _crossAxisSpacing,
+                    mainAxisSpacing: _mainAxisSpacing,
+                  ),
+                  children: [
+                    Text("年代 : " + ModEraText[ModEra.PPRESENT]),
+                    Text("地区 : " + ModRegionText[ModRegion.Europe]),
+                    Row(
+                      children: <Widget>[
+                        Text("时长："),
+                        Flexible(
+                            child: TextField(
                           controller: hoursMinTextController,
                         )),
-                    Text("-"),
-                    Flexible(
-                        child: TextField(
+                        Text("-"),
+                        Flexible(
+                            child: TextField(
                           controller: hoursMaxTextController,
                         )),
-                  ],
-                ),
-                Row(
-                  children: <Widget>[
-                    Text("人数："),
-                    Flexible(
-                        child: TextField(
+                      ],
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Text("人数："),
+                        Flexible(
+                            child: TextField(
                           controller: peopleMinTextController,
                         )),
-                    Text("-"),
-                    Flexible(
-                        child: TextField(
+                        Text("-"),
+                        Flexible(
+                            child: TextField(
                           controller: peopleMaxTextController,
                         )),
-                  ],
-                ),
-                Text("Support Map : "
-//                    +
-//                    (widget._module.map == null).toString()
-                ),
-                Text( "NPCS Num: "
-//                    + widget._module.npcs.length.toString()
-                ),
-                Text("Scene Num : "
-//                    + ((widget._module.map != null)? widget._module.map.scenes.length.toString():"0")
-                ),
-
-              ])
-          )
-          ,
+                      ],
+                    ),
+                    Text("Support Map : "+(_moduleCreationBloc.getModule().map == null).toString()
+                        ),
+                    Text("NPCS Num: "                    + _moduleCreationBloc.getModule().npcs.length.toString()
+                        ),
+                    Text("Scene Num : "+ ((_moduleCreationBloc.getModule().map != null)? _moduleCreationBloc.getModule().map.scenes.length.toString():"0")
+                        ),
+                  ])),
         ),
       ]),
     );

@@ -8,9 +8,7 @@ part of 'storyMod.dart';
 
 StoryMap<T> _$StoryMapFromJson<T extends COCFile>(Map<String, dynamic> json) {
   return StoryMap<T>()
-    ..mapImg = json['mapImg'] == null
-        ? null
-        : _dataFromJson(json['mapImg'] as Map<String, dynamic>)
+    ..mapImg = _dataFromJson(json['mapImg'] as Map<String, dynamic>)
     ..scenes = (json['scenes'] as List)
         ?.map((e) =>
             e == null ? null : StoryScene.fromJson(e as Map<String, dynamic>))
@@ -20,23 +18,22 @@ StoryMap<T> _$StoryMapFromJson<T extends COCFile>(Map<String, dynamic> json) {
 Map<String, dynamic> _$StoryMapToJson<T extends COCFile>(
         StoryMap<T> instance) =>
     <String, dynamic>{
-      'mapImg': instance.mapImg == null ? null : _dataToJson(instance.mapImg),
-      'scenes': instance.scenes
+      'mapImg': _dataToJson(instance.mapImg),
+      'scenes': instance.scenes,
     };
 
 StoryScene<T> _$StorySceneFromJson<T extends COCFile>(
     Map<String, dynamic> json) {
   return StoryScene<T>(
-      json['name'] as String,
-      json['mainSceneIdx'] as int,
-      (json['npcsId'] as List)?.map((e) => e as int)?.toList(),
-      (json['xPosition'] as num)?.toDouble(),
-      (json['yPosition'] as num)?.toDouble())
-    ..subScenes = (json['subScenes'] as List)
-        ?.map((e) => e == null
-            ? null
-            : StorySubScene.fromJson(e as Map<String, dynamic>))
-        ?.toList();
+    json['name'] as String,
+    json['mainSceneIdx'] as int,
+    (json['npcsId'] as List)?.map((e) => e as int)?.toList(),
+    (json['xPosition'] as num)?.toDouble(),
+    (json['yPosition'] as num)?.toDouble(),
+  )..subScenes = (json['subScenes'] as List)
+      ?.map((e) =>
+          e == null ? null : StorySubScene.fromJson(e as Map<String, dynamic>))
+      ?.toList();
 }
 
 Map<String, dynamic> _$StorySceneToJson<T extends COCFile>(
@@ -47,36 +44,37 @@ Map<String, dynamic> _$StorySceneToJson<T extends COCFile>(
       'xPosition': instance.xPosition,
       'yPosition': instance.yPosition,
       'subScenes': instance.subScenes,
-      'npcsId': instance.npcsId
+      'npcsId': instance.npcsId,
     };
 
 StorySubScene<T> _$StorySubSceneFromJson<T extends COCFile>(
     Map<String, dynamic> json) {
-  return StorySubScene<T>(json['name'] as String)
-    ..bgImg = json['bgImg'] == null
-        ? null
-        : _dataFromJson(json['bgImg'] as Map<String, dynamic>);
+  return StorySubScene<T>(
+    json['name'] as String,
+  )..bgImg = _dataFromJson(json['bgImg'] as Map<String, dynamic>);
 }
 
 Map<String, dynamic> _$StorySubSceneToJson<T extends COCFile>(
         StorySubScene<T> instance) =>
     <String, dynamic>{
       'name': instance.name,
-      'bgImg': instance.bgImg == null ? null : _dataToJson(instance.bgImg)
+      'bgImg': _dataToJson(instance.bgImg),
     };
 
 StoryMod<T> _$StoryModFromJson<T extends COCFile>(Map<String, dynamic> json) {
   return StoryMod<T>(
-      (json['npcs'] as List)
-          ?.map((e) =>
-              e == null ? null : roleCard.fromJson(e as Map<String, dynamic>))
-          ?.toList(),
-      json['moduleName'] as String,
-      json['hours_min'] as int,
-      json['hours_max'] as int,
-      json['people_min'] as int,
-      json['people_max'] as int,
-      json['likes'] as int)
+    (json['npcs'] as List)
+        ?.map((e) => e == null
+            ? null
+            : CharDataTemplate.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
+    json['moduleName'] as String,
+    json['hours_min'] as int,
+    json['hours_max'] as int,
+    json['people_min'] as int,
+    json['people_max'] as int,
+    json['likes'] as int,
+  )
     ..createdAt = json['createdAt'] as String
     ..updatedAt = json['updatedAt'] as String
     ..objectId = json['objectId'] as String
@@ -85,9 +83,8 @@ StoryMod<T> _$StoryModFromJson<T extends COCFile>(Map<String, dynamic> json) {
         ? null
         : StoryMap.fromJson(json['map'] as Map<String, dynamic>)
     ..descript = json['descript'] as String
-    ..thumbnailImg = json['thumbnailImg'] == null
-        ? null
-        : _dataFromJson(json['thumbnailImg'] as Map<String, dynamic>)
+    ..thumbnailImg = _dataFromJson(json['thumbnailImg'] as Map<String, dynamic>)
+    ..iconImg = _dataFromJson(json['iconImg'] as Map<String, dynamic>)
     ..author = json['author'] as String
     ..era = _$enumDecodeNullable(_$ModEraEnumMap, json['era'])
     ..region = _$enumDecodeNullable(_$ModRegionEnumMap, json['region'])
@@ -105,9 +102,8 @@ Map<String, dynamic> _$StoryModToJson<T extends COCFile>(
       'npcs': instance.npcs,
       'moduleName': instance.moduleName,
       'descript': instance.descript,
-      'thumbnailImg': instance.thumbnailImg == null
-          ? null
-          : _dataToJson(instance.thumbnailImg),
+      'thumbnailImg': _dataToJson(instance.thumbnailImg),
+      'iconImg': _dataToJson(instance.iconImg),
       'hours_min': instance.hours_min,
       'hours_max': instance.hours_max,
       'people_min': instance.people_min,
@@ -116,40 +112,52 @@ Map<String, dynamic> _$StoryModToJson<T extends COCFile>(
       'likes': instance.likes,
       'era': _$ModEraEnumMap[instance.era],
       'region': _$ModRegionEnumMap[instance.region],
-      'tags': instance.tags
+      'tags': instance.tags,
     };
 
-T _$enumDecode<T>(Map<T, dynamic> enumValues, dynamic source) {
+T _$enumDecode<T>(
+  Map<T, dynamic> enumValues,
+  dynamic source, {
+  T unknownValue,
+}) {
   if (source == null) {
     throw ArgumentError('A value must be provided. Supported values: '
         '${enumValues.values.join(', ')}');
   }
-  return enumValues.entries
-      .singleWhere((e) => e.value == source,
-          orElse: () => throw ArgumentError(
-              '`$source` is not one of the supported values: '
-              '${enumValues.values.join(', ')}'))
-      .key;
+
+  final value = enumValues.entries
+      .singleWhere((e) => e.value == source, orElse: () => null)
+      ?.key;
+
+  if (value == null && unknownValue == null) {
+    throw ArgumentError('`$source` is not one of the supported values: '
+        '${enumValues.values.join(', ')}');
+  }
+  return value ?? unknownValue;
 }
 
-T _$enumDecodeNullable<T>(Map<T, dynamic> enumValues, dynamic source) {
+T _$enumDecodeNullable<T>(
+  Map<T, dynamic> enumValues,
+  dynamic source, {
+  T unknownValue,
+}) {
   if (source == null) {
     return null;
   }
-  return _$enumDecode<T>(enumValues, source);
+  return _$enumDecode<T>(enumValues, source, unknownValue: unknownValue);
 }
 
-const _$ModEraEnumMap = <ModEra, dynamic>{
+const _$ModEraEnumMap = {
   ModEra.NINETEENTH: '1920s',
   ModEra.MODERN: 'modern',
   ModEra.OTHERS: 'others',
-  ModEra.PPRESENT: 'present'
+  ModEra.PPRESENT: 'present',
 };
 
-const _$ModRegionEnumMap = <ModRegion, dynamic>{
+const _$ModRegionEnumMap = {
   ModRegion.America: 'America',
   ModRegion.Europe: 'Europe',
   ModRegion.China: 'China',
   ModRegion.Japan: 'Japan',
-  ModRegion.others: 'others'
+  ModRegion.others: 'others',
 };

@@ -1,5 +1,7 @@
 import 'package:data_plugin/bmob/table/bmob_object.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:trpgcocapp/data/char_sheet/char_data.dart';
 import 'package:trpgcocapp/data/file/coc_file.dart';
 import 'package:trpgcocapp/data/roleCard/roleCard.dart';
 import 'package:trpgcocapp/data/storyModule/storyMod.dart';
@@ -14,8 +16,9 @@ class StoryMapUsing extends StoryMap<COCBmobServerFile> {
 
   from(StoryMapCreate mapCreate)async {
     this.mapImg = new COCBmobServerFile();
-    await this.mapImg.from(mapCreate.mapImg.file);
 
+    await mapCreate.mapImg.checkFileBeforeUpload();
+    await this.mapImg.from(mapCreate.mapImg.file);
     this.scenes = new List<StorySceneUsing>();
     for(int i = 0; i<mapCreate.scenes.length;i++){
       StorySceneCreate sceneCreate = mapCreate.scenes[i];
@@ -51,18 +54,20 @@ class StorySubSceneUsing extends StorySubScene<COCBmobServerFile> {
   from(StorySubSceneCreate sceneCreate)
      async {
     this.bgImg =new  COCBmobServerFile();
+    await sceneCreate.bgImg.checkFileBeforeUpload();
     await this.bgImg.from(sceneCreate.bgImg.file);
   }
 }
 
 @JsonSerializable()
 class StoryModUsing extends StoryMod<COCBmobServerFile> {
-  StoryModUsing(List<roleCard> npcs, String moduleName, int hours_min,int hours_max,
+  StoryModUsing(List<CharData> npcs, String moduleName, int hours_min,int hours_max,
       int people_min,int people_max,int likes) :
         super(npcs, moduleName, hours_min, hours_max, people_min,people_max,likes);
 
   from(StoryModCreate modCreate) async {
    this.thumbnailImg= COCBmobServerFile();
+   await modCreate.thumbnailImg.checkFileBeforeUpload();
    await this.thumbnailImg.from(modCreate.thumbnailImg.file);
    StoryMapUsing mapUsing =new StoryMapUsing();
    await  mapUsing.from(modCreate.map);
