@@ -1,6 +1,6 @@
 import "package:flutter/material.dart";
 import 'package:trpgcocapp/data/storyModule/storyModCreate.dart';
-import 'package:trpgcocapp/ui/pages/module/module_map.dart';
+import 'package:trpgcocapp/ui/pages/module/module_map_create.dart';
 class MapCreationPage extends StatefulWidget {
   StoryMapCreate _mapCreate;
 
@@ -25,7 +25,7 @@ class MapCreationPageState extends State<MapCreationPage> {
   }
 
   buildBody(BuildContext context) {
-    return storyMapCreateWidget(widget._mapCreate);
+    return StoryMapCreateWidget(widget._mapCreate);
 
   }
 
