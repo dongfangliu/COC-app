@@ -51,8 +51,7 @@ class _CharSheetPageStoryState extends State<CharSheetPageStory> {
     super.dispose();
   }
 
-  @override
-  Widget build(BuildContext context) {
+  @override Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor,
       body: GestureDetector(

@@ -7,19 +7,21 @@ part 'invt_data.g.dart';
 
 @JsonSerializable()
 class InvtData extends CharDataPart {
-  double cash;
+  // 自动生成
+  String livingStd = "";      // 生活水平
+  double cash = 0;            // 现金
+  int otherAsset = 0;         // 其他资产
+  double consumptionStd = 0;  // 消费水平
+
+  // 需要在 invt 页中填写
+  String assetDesc = "";    // 请在此详述您的资产
+  List<String> invts = [];  // 装备和随身物品
 
   InvtData();
 
   bool isFinished() {
-    return true;
-    if (
-    cash == null
-    ) {
-      return false;
-    } else {
-      return true;
-    }
+    if ( assetDesc == "" || invts == [] ) { return false; }
+    else { return true; }
   }
 
   @override
