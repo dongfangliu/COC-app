@@ -9,17 +9,17 @@ import 'scene_creation_page.dart';
 
 
 
-class storyMapCreateWidget extends StatefulWidget {
+class StoryMapCreateWidget extends StatefulWidget {
   StoryMapCreate map;
   @override
   State<StatefulWidget> createState() {
-    return storyMapCreateWidgetState();
+    return StoryMapCreateWidgetState();
   }
 
-  storyMapCreateWidget(this.map);
+  StoryMapCreateWidget(this.map);
 }
 
-class storyMapCreateWidgetState extends State<storyMapCreateWidget> {
+class StoryMapCreateWidgetState extends State<StoryMapCreateWidget> {
   List<Widget> movableMapPoints = [];
   final ValueNotifier<Matrix4> notifier = ValueNotifier(Matrix4.identity());
   bool useListView = true;
