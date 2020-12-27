@@ -3,6 +3,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:trpgcocapp/data/app_user.dart';
 import 'package:trpgcocapp/styles/theme.dart';
 import 'package:trpgcocapp/ui/pages/me/me_page.dart';
+import 'package:trpgcocapp/ui/pages/module/module_creation_page.dart';
+import 'package:trpgcocapp/ui/pages/module/module_demo_page.dart';
 
 class TestMainPage extends StatefulWidget{
   AppUser currentUser;
@@ -12,16 +14,10 @@ class TestMainPage extends StatefulWidget{
   }
 
   @override
-  _TestMainPageState createState() => new _TestMainPageState(currentUser);
+  _TestMainPageState createState() => new _TestMainPageState();
 }
 
 class _TestMainPageState extends State<TestMainPage> {
-  AppUser currentUser;
-
-  _TestMainPageState(AppUser initUser){
-    currentUser = initUser;
-  }
-
   @override
   Widget build(BuildContext context) {
     return CupertinoTabScaffold(
@@ -30,32 +26,20 @@ class _TestMainPageState extends State<TestMainPage> {
         backgroundColor: AppTheme.backgroundColor,
         items: [
           BottomNavigationBarItem(
-            icon: Icon(
-              FontAwesomeIcons.ban,
-              size: 20,
-            ),
-            title: Text("Stay out of here"),
+            icon: Icon(FontAwesomeIcons.folder, size: 20,),
+            label: "Games",
           ),
           BottomNavigationBarItem(
-            icon: Icon(
-              FontAwesomeIcons.folder,
-              size: 20,
-            ),
-            title: Text("My Games"),
+            icon: Icon(FontAwesomeIcons.paperPlane, size: 20,),
+            label: "Friends",
           ),
           BottomNavigationBarItem(
-            icon: Icon(
-              FontAwesomeIcons.paperPlane,
-              size: 20,
-            ),
-            title: Text("Friends"),
+            icon: Icon(FontAwesomeIcons.map, size: 20,),
+            label: "Modules",
           ),
           BottomNavigationBarItem(
-            icon: Icon(
-              FontAwesomeIcons.userAlt,
-              size: 20,
-            ),
-            title: Text("Me"),
+            icon: Icon(FontAwesomeIcons.userAlt, size: 20,),
+            label: "Me",
           ),
         ],
       ),
@@ -64,35 +48,19 @@ class _TestMainPageState extends State<TestMainPage> {
           builder: (context) {
             switch (index) {
               case 0:
-                return Center(
-                  child: Text(
-                    'This is not your territory. \nYou are dead.'
-                  ),
-                );
+                return Center(child: Text('Here are your games.'));
                 break;
               case 1:
-                return Center(
-                  child: Text(
-                    'Here are your games.'
-                  )
-                );
+                return Center(child: Text('Here are your friends.'));
                 break;
               case 2:
-                return Center(
-                    child: Text(
-                        'Here are your friends.'
-                    )
-                );
+                return moduleDemoPage();
                 break;
               case 3:
-                return MePage(currentUser);
+                return MePage(widget.currentUser);
                 break;
               default:
-                return Center(
-                  child: Text(
-                      'No one should be here'
-                  ),
-                );
+                return Center(child: Text('No one should be here'),);
                 break;
             }
           },

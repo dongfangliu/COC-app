@@ -28,7 +28,7 @@ class _MePageState extends State<MePage> {
           SizedBox(height: 20),
           _buildSettingButton(),
           _buildUserInfo(),
-          _buildButtons()
+          // _buildButtons()
         ],
       )
     );
@@ -100,73 +100,73 @@ class _MePageState extends State<MePage> {
       onTap: (){ _onUserInfoTabbed(context); },
     );
   }
-  Widget _buildButtons() {
-    return Expanded(
-      child: ListView(
-        children: <Widget>[
-          _buildModsButton(),
-          _buildGroupsButton()
-        ],
-      ),
-    );
-  }
+  // Widget _buildButtons() {
+  //   return Expanded(
+  //     child: ListView(
+  //       children: <Widget>[
+  //         _buildModsButton(),
+  //         _buildGroupsButton()
+  //       ],
+  //     ),
+  //   );
+  // }
 
-  Widget _buildModsButton(){
-    return Padding(
-      padding: EdgeInsets.only(top: 10, left: 30, right: 30),
-      child: Container(
-        height: 50,
-        child: FlatButton(
-          color: Colors.transparent,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(10)),
-            side: BorderSide(
-              color: Colors.grey,
-              width: 1,
-            ),
-          ),
-          child: Text(
-            'Mods',
-            style: TextStyle(
-                fontFamily: 'papyrus',
-                fontSize: 24,
-                color: Colors.grey,
-                decoration: TextDecoration.none
-            ),
-          ),
-          onPressed: (){ _onMyModsPressed(context); },
-        ),
-      )
-    );
-  }
-  Widget _buildGroupsButton() {
-    return Padding(
-      padding: EdgeInsets.only(top: 10, left: 30, right: 30),
-      child: Container(
-        height: 50,
-        child: FlatButton(
-          color: Colors.transparent,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(10)),
-            side: BorderSide(
-              color: Colors.grey,
-              width: 1,
-            ),
-          ),
-          child: Text(
-            'My Groups',
-            style: TextStyle(
-                fontFamily: 'papyrus',
-                fontSize: 24,
-                color: Colors.grey,
-                decoration: TextDecoration.none
-            ),
-          ),
-          onPressed: (){ _onMyGroupsPressed(context); },
-        ),
-      )
-    );
-  }
+  // Widget _buildModsButton(){
+  //   return Padding(
+  //     padding: EdgeInsets.only(top: 10, left: 30, right: 30),
+  //     child: Container(
+  //       height: 50,
+  //       child: FlatButton(
+  //         color: Colors.transparent,
+  //         shape: RoundedRectangleBorder(
+  //           borderRadius: BorderRadius.all(Radius.circular(10)),
+  //           side: BorderSide(
+  //             color: Colors.grey,
+  //             width: 1,
+  //           ),
+  //         ),
+  //         child: Text(
+  //           'Mods',
+  //           style: TextStyle(
+  //               fontFamily: 'papyrus',
+  //               fontSize: 24,
+  //               color: Colors.grey,
+  //               decoration: TextDecoration.none
+  //           ),
+  //         ),
+  //         onPressed: (){ _onMyModsPressed(context); },
+  //       ),
+  //     )
+  //   );
+  // }
+  // Widget _buildGroupsButton() {
+  //   return Padding(
+  //     padding: EdgeInsets.only(top: 10, left: 30, right: 30),
+  //     child: Container(
+  //       height: 50,
+  //       child: FlatButton(
+  //         color: Colors.transparent,
+  //         shape: RoundedRectangleBorder(
+  //           borderRadius: BorderRadius.all(Radius.circular(10)),
+  //           side: BorderSide(
+  //             color: Colors.grey,
+  //             width: 1,
+  //           ),
+  //         ),
+  //         child: Text(
+  //           'My Groups',
+  //           style: TextStyle(
+  //               fontFamily: 'papyrus',
+  //               fontSize: 24,
+  //               color: Colors.grey,
+  //               decoration: TextDecoration.none
+  //           ),
+  //         ),
+  //         onPressed: (){ _onMyGroupsPressed(context); },
+  //       ),
+  //     )
+  //   );
+  // }
 
   void _onSettingPressed(BuildContext context) {
     Navigator.push(
@@ -180,14 +180,14 @@ class _MePageState extends State<MePage> {
       CupertinoPageRoute(builder: (_){return MePageUser(currentUser);})
     );
   }
-  void _onMyModsPressed(BuildContext context) {
-    Navigator.push(
-      context,
-      CupertinoPageRoute(builder: (_){return MePageMods(currentUser);})
-    );
-  }
-  void _onMyGroupsPressed(BuildContext context) {
-    print("My Groups Button Pressed");
-  }
+  // void _onMyModsPressed(BuildContext context) {
+  //   Navigator.push(
+  //     context,
+  //     CupertinoPageRoute(builder: (_){return MePageMods(currentUser);})
+  //   );
+  // }
+  // void _onMyGroupsPressed(BuildContext context) {
+  //   print("My Groups Button Pressed");
+  // }
 }
 
