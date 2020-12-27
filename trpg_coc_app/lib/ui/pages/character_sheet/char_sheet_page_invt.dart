@@ -22,6 +22,7 @@ class _CharSheetPageInvtState extends State<CharSheetPageInvt> {
 
   TextEditingController assetDestCtrl;
   List<TextEditingController> invtCtrls;
+  List<Widget> invtTiles;
 
   TextStyle _getTextStyle(double size) {
     return TextStyle(
@@ -98,29 +99,25 @@ class _CharSheetPageInvtState extends State<CharSheetPageInvt> {
 
     // region 初始化 TextEditingControllers
     assetDestCtrl = TextEditingController();
-    assetDestCtrl.text = invtData.assetDesc;
-
-    assetDestCtrl.addListener(() {
-      invtData.assetDesc = assetDestCtrl.text;
-      _updateData();
-    });
 
     invtCtrls = [];
     for (String invt in invts) {
       TextEditingController invtCtrl = TextEditingController();
-      invtCtrl.text = invt;
+      // invtCtrl.text = invt;
       invtCtrls.add(invtCtrl);
-
-      invtCtrl.addListener(() {
-        List<String> newInvts = [];
-        for (TextEditingController invtCtrl in invtCtrls) {
-          newInvts.add(invtCtrl.text);
-        }
-        invtData.invts = newInvts;
-        _updateData();
-      });
+      //
+      // invtCtrl.addListener(() {
+      //   List<String> newInvts = [];
+      //   for (TextEditingController invtCtrl in invtCtrls) {
+      //     newInvts.add(invtCtrl.text);
+      //   }
+      //   invtData.invts = newInvts;
+      //   _updateData();
+      // });
     }
     // endregion
+
+    invtTiles = [];
   }
 
   @override
@@ -269,6 +266,13 @@ class _CharSheetPageInvtState extends State<CharSheetPageInvt> {
   Widget _buildInvtDesc() {
     double textSize = 18;
 
+    assetDestCtrl.text = invtData.assetDesc;
+
+    assetDestCtrl.addListener(() {
+      invtData.assetDesc = assetDestCtrl.text;
+      _updateData();
+    });
+
     return Column(
       children: [
         Text("请在此详述您的资产：", style: _getTextStyle(textSize),),
@@ -288,8 +292,6 @@ class _CharSheetPageInvtState extends State<CharSheetPageInvt> {
   Widget _buildInvts() {
     double textSize = 18;
 
-    List<Widget> invtTiles = [];
-
     Widget _buildAllInvts() {
       return BlocBuilder<CharSheetBloc, CharSheetState>(
         builder: (context, state) {
@@ -297,32 +299,17 @@ class _CharSheetPageInvtState extends State<CharSheetPageInvt> {
           List<String> invts = invtData.invts;
 
           invtCtrls = [];
-          List<Widget> invtTiles = [];
+          invtTiles = [];
 
-          for (String invt in invts) {
+          for (int i = 0; i < invts.length; i++) {
             // 添加一个 TextEditingController
             TextEditingController invtCtrl = TextEditingController();
-            invtCtrl.text = invt;
+            invtCtrl.text = invts[i];
             invtCtrls.add(invtCtrl);
 
-            // TODO BUG 不知道为什么这里输入会倒过来且光标无法移动
             invtCtrl.addListener(() {
-              List<String> newInvts = [];
-              for (TextEditingController invtCtrl in invtCtrls) {
-                newInvts.add(invtCtrl.text);
-              }
-              invtData.invts = newInvts;
-              _updateData();
+              invts[i] = invtCtrl.text;
             });
-            // invtCtrl.addListener(() {
-            //   List<String> newInvts = [];
-            //   for (TextEditingController invtCtrl in invtCtrls) {
-            //     newInvts.add(invtCtrl.text);
-            //   }
-            //   invtData.invts = newInvts;
-            //   _updateData();
-            // });
-
 
             invtTiles.add(ListTile(
               title: TextField(
@@ -336,10 +323,8 @@ class _CharSheetPageInvtState extends State<CharSheetPageInvt> {
           return Column( children: invtTiles, );
         },
       );
-      // return Column( children: invtTiles, );
     }
 
-    // Build Add Button
     Widget _buildAddButton(){
       return Container(
         width: 260,
