@@ -10,6 +10,7 @@ import 'package:trpgcocapp/bloc/char_sheet/char_sheet_events.dart';
 import 'package:trpgcocapp/bloc/char_sheet/char_sheet_states.dart';
 import 'package:trpgcocapp/data/char_sheet/char_data_part.dart';
 import 'package:trpgcocapp/data/char_sheet/data_repository/weapons.dart';
+import 'package:trpgcocapp/data/file/coc_file.dart';
 import 'package:trpgcocapp/styles/theme.dart';
 import 'package:trpgcocapp/data/char_sheet/data_repository/skills.dart';
 import 'package:trpgcocapp/data/char_sheet/data_repository/occupations.dart';

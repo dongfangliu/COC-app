@@ -3,7 +3,7 @@
 import 'package:data_plugin/bmob/bmob.dart';
 import 'package:data_plugin/bmob/response/bmob_saved.dart';
 import 'package:trpgcocapp/bloc/common/timecost_op/timecost_operator.dart';
-import 'package:trpgcocapp/data/storyModule/storyModOnUse.dart';
+import 'package:trpgcocapp/data/storyModule/storyMod.dart';
 
 class ModuleUsingHelper {
   static Future<OperateResult> init()async {
@@ -16,9 +16,9 @@ class ModuleUsingHelper {
     return result;
   }
 
-   static Future<OperateResult> addComment(String comment,StoryModUsing mod) async {
+   static Future<OperateResult> addComment(String comment,StoryMod mod) async {
   }
-   static Future<OperateResult> deleteComment(String comment,StoryModUsing mod) async {
+   static Future<OperateResult> deleteComment(String comment,StoryMod mod) async {
    }
      static Future<OperateResult> addLike() async {
    }

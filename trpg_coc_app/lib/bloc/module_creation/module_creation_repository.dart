@@ -8,19 +8,18 @@ import 'package:trpgcocapp/bloc/common/timecost_op/timecost_operator.dart';
 import 'package:trpgcocapp/data/char_sheet/char_data.dart';
 import 'package:trpgcocapp/data/file/coc_file.dart';
 import 'package:trpgcocapp/data/roleCard/roleCard.dart';
-import 'package:trpgcocapp/data/storyModule/storyModCreate.dart';
-import 'package:trpgcocapp/data/storyModule/storyModOnUse.dart';
+import 'package:trpgcocapp/data/storyModule/storyMod.dart';
 
 class ModuleCreationRepository {
-   StoryModCreate modCreate;
+   StoryMod modCreate;
    Future<OperateResult> init()async {
     String appId = 'c0e5dbfe38a164ba90d2c4c7e1c846a9';
     String apiKey = '6fc3e0520028a3a095ebb8aa1097c10e';
     String appHost = 'https://api2.bmob.cn';
     Bmob.init(appHost, appId, apiKey);
     if (modCreate == null) {
-      modCreate = new  StoryModCreate(
-          new List<CharDataCreate>(),
+      modCreate = new  StoryMod(
+          new List<CharData>(),
           "undefined",
           0,
           0,
@@ -32,10 +31,10 @@ class ModuleCreationRepository {
     result.isSuccess = true;
     return result;
   }
-   StoryModCreate getInstance(){
+   StoryMod getInstance(){
     if (modCreate == null) {
-      modCreate = StoryModCreate(
-          new List<CharDataCreate>(),
+      modCreate = StoryMod(
+          new List<CharData>(),
           "undefined",
           0,
           0,
@@ -47,7 +46,7 @@ class ModuleCreationRepository {
   }
    Future<OperateResult> submmit() async {
     try {
-      StoryModUsing modUsing =
+      StoryMod modUsing =
           await ModuleCreationHelper.convertToUsing(modCreate);
       // others
       BmobSaved bmobSaved = await modUsing.save();
@@ -72,9 +71,9 @@ class ModuleCreationHelper {
   }
 
   static Future<roleCard> addNPC() {}
-  static Future<StoryModUsing> convertToUsing(StoryModCreate _modCreate) async {
+  static Future<StoryMod> convertToUsing(StoryMod _modCreate) async {
     try {
-      StoryModUsing modUsing = new StoryModUsing(
+      StoryMod modUsing = new StoryMod(
           _modCreate.npcs,
           _modCreate.moduleName,
           _modCreate.hours_min,
@@ -82,7 +81,7 @@ class ModuleCreationHelper {
           _modCreate.people_min,
           _modCreate.people_max,
           0);
-      await modUsing.from(_modCreate);
+//      await modUsing.from(_modCreate);
       return modUsing;
     } catch (e) {
       throw e;

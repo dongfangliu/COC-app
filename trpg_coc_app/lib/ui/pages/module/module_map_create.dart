@@ -1,25 +1,22 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:matrix_gesture_detector/matrix_gesture_detector.dart';
 import 'package:trpgcocapp/data/file/coc_file.dart';
-import 'package:trpgcocapp/data/storyModule/storyModCreate.dart';
-import 'package:trpgcocapp/data/storyModule/storyModOnUse.dart';
+import 'package:trpgcocapp/data/storyModule/storyMod.dart';
 import 'scene_creation_page.dart';
 
 
 
-class StoryMapCreateWidget extends StatefulWidget {
-  StoryMapCreate map;
+class StoryMapWidget extends StatefulWidget {
+  StoryMap map;
   @override
   State<StatefulWidget> createState() {
-    return StoryMapCreateWidgetState();
+    return StoryMapWidgetState();
   }
 
-  StoryMapCreateWidget(this.map);
+  StoryMapWidget(this.map);
 }
 
-class StoryMapCreateWidgetState extends State<StoryMapCreateWidget> {
+class StoryMapWidgetState extends State<StoryMapWidget> {
   List<Widget> movableMapPoints = [];
   final ValueNotifier<Matrix4> notifier = ValueNotifier(Matrix4.identity());
   bool useListView = true;
@@ -149,7 +146,7 @@ class StoryMapCreateWidgetState extends State<StoryMapCreateWidget> {
                     child: new Text('Confirm'),
                     onPressed: () {
                       widget.map.addScene(
-                          new StorySceneCreate( _controller.text, 0,[],0, 0));
+                          new StoryScene( _controller.text, 0,[],0, 0));
                       _controller.clear();
                       setState(() {});
                       Navigator.of(cxt).pop();
@@ -205,7 +202,7 @@ class StoryMapCreateWidgetState extends State<StoryMapCreateWidget> {
                           new FlatButton(
                             child: new Text('Confirm'),
                             onPressed: () {
-                              widget.map.addScene(new StorySceneCreate(
+                              widget.map.addScene(new StoryScene(
                                   _controller.text,0,[], offset.dx, offset.dy));
                               _controller.clear();
                               setState(() {});
@@ -251,7 +248,7 @@ class StoryMapCreateWidgetState extends State<StoryMapCreateWidget> {
   Widget getMapBg(BuildContext context) {
     return Container(
       color: Colors.yellow,
-      child: Image(image:buildCOCEditableImg( widget.map.mapImg),
+      child: Image(image:buildCOCFileImg( widget.map.mapImg),
         fit: BoxFit.fitWidth,
       ),
 //color: Colors.transparent,
@@ -260,7 +257,7 @@ class StoryMapCreateWidgetState extends State<StoryMapCreateWidget> {
 
   void buildMapPoints(BuildContext context) {
     movableMapPoints.clear();
-    for (StorySceneCreate scene in widget.map.scenes) {
+    for (StoryScene scene in widget.map.scenes) {
       movableMapPoints.add(storyMapPointWidget(widget.map,scene, this.callback));
     }
   }
@@ -275,8 +272,8 @@ class StoryMapCreateWidgetState extends State<StoryMapCreateWidget> {
 }
 
 class storyMapPointWidget extends StatefulWidget {
-  StoryMapCreate map;
-  StorySceneCreate scene;
+  StoryMap map;
+  StoryScene scene;
 
   Function setStateParent;
   final TextEditingController _controller = new TextEditingController();

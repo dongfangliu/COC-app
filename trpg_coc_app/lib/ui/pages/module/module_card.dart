@@ -3,14 +3,13 @@ import 'package:data_plugin/bmob/response/bmob_saved.dart';
 import 'package:data_plugin/bmob/response/bmob_updated.dart';
 import 'package:flutter/material.dart';
 import 'package:trpgcocapp/data/storyModule/storyMod.dart';
-import 'package:trpgcocapp/data/storyModule/storyModOnUse.dart';
 import 'package:trpgcocapp/styles/module_card_style.dart';
 import 'package:like_button/like_button.dart';
 import 'package:flutter_tags/flutter_tags.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 
 class ModuleCard extends StatefulWidget {
-  StoryModUsing _modUsing;
+  StoryMod _modUsing;
   @override
   createState() => new ModuleCardState();
 
@@ -28,7 +27,7 @@ class ModuleCardState extends State<ModuleCard> {
         // a dialog is better, then details go to demo page
       },
       child: new CachedNetworkImage(
-        imageUrl: widget._modUsing.thumbnailImg.serverfile.url,
+        imageUrl: widget._modUsing.thumbnailImg.url,
         imageBuilder: (context, imageProvider) {
           return new Container(
               height: MediaQuery.of(context).size.height * 0.2,

@@ -1,8 +1,6 @@
 import 'package:data_plugin/bmob/bmob_query.dart';
 import 'package:trpgcocapp/bloc/query_server/query.dart';
 import 'package:trpgcocapp/data/storyModule/storyMod.dart';
-import 'package:trpgcocapp/data/storyModule/storyModOnUse.dart';
-
 import 'module_search_helper.dart';
 
 class ModuleSearchFilter {
@@ -13,7 +11,7 @@ class ModuleSearchFilter {
   int hoursMin = 0; //min max
   int hoursMax = 999; //min max
 
-  bool filterFunc(StoryModUsing m){
+  bool filterFunc(StoryMod m){
     Map<ModRegion, bool> regfilter =Map.from( this.regionFilter);
     Map<ModEra, bool> erafilter =Map.from(this.eraFilter) ;
 
@@ -35,7 +33,7 @@ class ModuleSearchFilter {
         (m.hours_max <= hoursMax);
   }
 
-//  List<StoryModUsing> getFilterResults(List<StoryModUsing> mods) {
+//  List<StoryMod> getFilterResults(List<StoryMod> mods) {
 //    this.regionFilter.removeWhere((k, v) {
 //      return v == false;
 //    });
@@ -80,42 +78,42 @@ class ModuleSearchFilter {
 
 class ModuleSearchRepository {
   ModuleSearchFilter searchFilter = new ModuleSearchFilter();
-  List<StoryModUsing> lastSearchResults;
-  List<StoryModUsing> searchResults;
-  List<StoryModUsing> filteredResults;
+  List<StoryMod> lastSearchResults;
+  List<StoryMod> searchResults;
+  List<StoryMod> filteredResults;
 
-  Future<List<StoryModUsing>> searchByName(String name) async {
+  Future<List<StoryMod>> searchByName(String name) async {
     this.lastSearchResults = searchResults;
     BmobQuery query = ModuleSearchHelper.constructQuery(name, false);
-    Request<StoryModUsing> request = Request.queryObjects(query);
+    Request<StoryMod> request = Request.queryObjects(query);
     this.searchResults = await request.execute();
     this.filteredResults.clear();
     this.searchFilter.resetAll();
     return searchResults;
   }
 
-  Future<List<StoryModUsing>> searchAll({int num = 50}) async {
+  Future<List<StoryMod>> searchAll({int num = 50}) async {
     this.lastSearchResults = searchResults;
     BmobQuery query = ModuleSearchHelper.getRandomModuleSearchQuery(num);
-    Request<StoryModUsing> request = Request.queryObjects(query);
+    Request<StoryMod> request = Request.queryObjects(query);
     this.searchResults = await request.execute();
     this.filteredResults.clear();
     this.searchFilter.resetAll();
     return searchResults;
   }
 
-  int sortByTimeOld2New(StoryModUsing a, StoryModUsing b){
+  int sortByTimeOld2New(StoryMod a, StoryMod b){
     return DateTime.parse(a.getUpdatedAt())
         .compareTo(DateTime.parse(b.getUpdatedAt()));
   }
-  int sortByTimeNew2Old(StoryModUsing a, StoryModUsing b){
+  int sortByTimeNew2Old(StoryMod a, StoryMod b){
     return DateTime.parse(b.getUpdatedAt())
         .compareTo(DateTime.parse(a.getUpdatedAt()));
   }
-  int sortByLikesLeast2Most(StoryModUsing a, StoryModUsing b) {
+  int sortByLikesLeast2Most(StoryMod a, StoryMod b) {
     return a.likes.compareTo(b.likes);
   }
-  int sortByLikesMost2Least(StoryModUsing a, StoryModUsing b) {
+  int sortByLikesMost2Least(StoryMod a, StoryMod b) {
     return b.likes.compareTo(a.likes);
   }
 }

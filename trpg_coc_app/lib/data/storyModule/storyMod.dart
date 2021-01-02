@@ -43,64 +43,60 @@ const Map<ModRegion, String> ModRegionText = {
 };
 
 @JsonSerializable()
-class StoryMap<T extends COCFile> {
+class StoryMap{
   StoryMap();
 
-  @JsonKey(fromJson: _dataFromJson, toJson: _dataToJson)
-  T mapImg;
-  List<StoryScene<T>> scenes = new List<StoryScene<T>>();
-  void addScene(StoryScene<T> scene) {
+  COC_File mapImg=COC_File.Asset(url:"assets/images/map.png");
+  List<StoryScene> scenes = new List<StoryScene>();
+  void addScene(StoryScene scene) {
     this.scenes.add(scene);
   }
 
   factory StoryMap.fromJson(Map<String, dynamic> json) =>
-      _$StoryMapFromJson<T>(json);
+      _$StoryMapFromJson(json);
 
   Map<String, dynamic> toJson() => _$StoryMapToJson(this);
 }
 
 @JsonSerializable()
-class StoryScene<T extends COCFile> {
+class StoryScene {
   String name;
   int mainSceneIdx = 0;
   double xPosition;
   double yPosition;
-  List<StorySubScene<T>> subScenes = [];
+  List<StorySubScene> subScenes = [];
   List<int> npcsId = [];
 
   StoryScene(this.name, this.mainSceneIdx, this.npcsId, this.xPosition,
       this.yPosition);
 
   factory StoryScene.fromJson(Map<String, dynamic> json) =>
-      _$StorySceneFromJson<T>(json);
+      _$StorySceneFromJson(json);
 
   Map<String, dynamic> toJson() => _$StorySceneToJson(this);
 }
 
 @JsonSerializable()
-class StorySubScene<T extends COCFile> {
+class StorySubScene {
   String name = 'undefined';
-  @JsonKey(fromJson: _dataFromJson, toJson: _dataToJson)
-  T bgImg;
+  COC_File bgImg=COC_File.Asset(url:"assets/images/subscenebg.jpg");
   StorySubScene(this.name);
   factory StorySubScene.fromJson(Map<String, dynamic> json) =>
-      _$StorySubSceneFromJson<T>(json);
+      _$StorySubSceneFromJson(json);
 
   Map<String, dynamic> toJson() => _$StorySubSceneToJson(this);
 }
 
 @JsonSerializable()
-class StoryMod<T extends COCFile> extends BmobObject {
-  StoryMap<T> map;
+class StoryMod extends BmobObject {
+  StoryMap map;
   StoryMod(this.npcs, this.moduleName, this.hours_min, this.hours_max,
       this.people_min, this.people_max, this.likes);
   List<CharDataTemplate> npcs = [];
   String moduleName = 'undefined';
   String descript = '';
-  @JsonKey(fromJson: _dataFromJson, toJson: _dataToJson)
-  T thumbnailImg;
-  @JsonKey(fromJson: _dataFromJson, toJson: _dataToJson)
-  T iconImg;
+  COC_File thumbnailImg=COC_File.Asset(url:"assets/images/map.png");
+  COC_File iconImg=COC_File.Asset(url:"assets/images/defaultModIcon.png");
   int hours_min = 0;
   int hours_max = 0;
   int people_min = 0;
@@ -112,7 +108,7 @@ class StoryMod<T extends COCFile> extends BmobObject {
   List<String> tags = [];
   // should add use
   factory StoryMod.fromJson(Map<String, dynamic> json) =>
-      _$StoryModFromJson<T>(json);
+      _$StoryModFromJson(json);
 
   Map<String, dynamic> toJson() => _$StoryModToJson(this);
 
@@ -124,7 +120,7 @@ class StoryMod<T extends COCFile> extends BmobObject {
   String getHourRangeText()=>hours_min.toString()+"-"+hours_max.toString();
 
 }
-
-T _dataFromJson<T>(Map<String, dynamic> input) => input['value'] as T;
-
-Map<String, dynamic> _dataToJson<T>(T input) => {'value': input};
+//
+//T _dataFromJson(Map<String, dynamic> input) => input['value'] as T;
+//
+//Map<String, dynamic> _dataToJson(T input) => {'value': input};

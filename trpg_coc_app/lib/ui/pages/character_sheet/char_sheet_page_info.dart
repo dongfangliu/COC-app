@@ -105,7 +105,11 @@ class _CharSheetPageInfoState extends State<CharSheetPageInfo> {
     // TODO 人物卡的头像暂时只作占位
     return CircleAvatar(
       radius: 45,
-      backgroundImage: AssetImage('assets/images/user_avatar.png'),
+      backgroundImage:
+//      buildCOCEditableImg(bloc),
+
+
+      AssetImage('assets/images/user_avatar.png'),
       backgroundColor: Colors.grey,
     );
   }

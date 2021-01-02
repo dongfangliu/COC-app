@@ -11,7 +11,6 @@ import 'package:trpgcocapp/bloc/common/timecost_op/timecost_operation_state.dart
 import 'package:trpgcocapp/bloc/module_demostration/module_demo_bloc.dart';
 import 'package:trpgcocapp/data/char_sheet/char_data.dart';
 import 'package:trpgcocapp/data/storyModule/storyMod.dart';
-import 'package:trpgcocapp/data/storyModule/storyModOnUse.dart';
 import 'package:trpgcocapp/ui/pages/module/scene_demo_page.dart';
 
 class moduleDemoPage extends StatefulWidget {
@@ -102,7 +101,7 @@ class moduleDemoPageState extends State<moduleDemoPage> {
                       colorFilter: new ColorFilter.mode(
                           Colors.black.withOpacity(0.2), BlendMode.dstATop),
                       image: CachedNetworkImageProvider(
-                          _moduleDemoBloc.mod.thumbnailImg.serverfile.url),
+                          _moduleDemoBloc.mod.thumbnailImg.url),
                       fit: BoxFit.fitWidth)),
               child: InkWell(
                 onTap: () async {
@@ -117,7 +116,7 @@ class moduleDemoPageState extends State<moduleDemoPage> {
                           borderRadius: BorderRadius.circular(10),
                           image: DecorationImage(
                               image: CachedNetworkImageProvider(
-                                  _moduleDemoBloc.mod.iconImg.serverfile.url),
+                                  _moduleDemoBloc.mod.iconImg.url),
                               fit: BoxFit.fitWidth)),
                       child: InkWell(onTap: () {
                       }),
@@ -170,7 +169,7 @@ class moduleDemoPageState extends State<moduleDemoPage> {
               scrollDirection: Axis.horizontal,
               itemCount: _moduleDemoBloc.mod.map.scenes.length ,
               itemBuilder: (BuildContext ctxt, int index) {
-                  StorySceneUsing scene = _moduleDemoBloc.mod.map.scenes[index];
+                  StoryScene scene = _moduleDemoBloc.mod.map.scenes[index];
                   return Container(
                     margin: EdgeInsets.all(5),
                     width: MediaQuery.of(context).size.height * 0.3,
@@ -183,7 +182,7 @@ class moduleDemoPageState extends State<moduleDemoPage> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
                           Image(
-                            image: CachedNetworkImageProvider(scene.subScenes[scene.mainSceneIdx].bgImg.serverfile.url),
+                            image: CachedNetworkImageProvider(scene.subScenes[scene.mainSceneIdx].bgImg.url),
                             fit: BoxFit.fitWidth,
                             width: MediaQuery.of(context).size.height * 0.3,
                             height: MediaQuery.of(context).size.height * 0.18,
@@ -245,7 +244,7 @@ class moduleDemoPageState extends State<moduleDemoPage> {
                         mainAxisSize: MainAxisSize.max,
                         children: <Widget>[
                           Image(
-                            image: CachedNetworkImageProvider(npc.avatar.serverfile.url),
+                            image: CachedNetworkImageProvider(npc.avatar.url),
                             fit: BoxFit.fill,
                             width: MediaQuery.of(context).size.height * 0.13,
                             height: MediaQuery.of(context).size.height * 0.13,

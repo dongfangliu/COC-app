@@ -10,7 +10,6 @@ import 'package:selectable_container/selectable_container.dart';
 import 'package:trpgcocapp/bloc/module_search/module_search_repo.dart';
 import 'package:trpgcocapp/data/file/coc_file.dart';
 import 'package:trpgcocapp/data/storyModule/storyMod.dart';
-import 'package:trpgcocapp/data/storyModule/storyModOnUse.dart';
 import 'package:trpgcocapp/ui/pages/module/module_card.dart';
 
 class ModuleSearchPage extends StatefulWidget {
@@ -20,7 +19,7 @@ class ModuleSearchPage extends StatefulWidget {
 }
 
 class _ModuleSearchPageState extends State<ModuleSearchPage> {
-  final SearchBarController<StoryModUsing> _searchBarController =
+  final SearchBarController<StoryMod> _searchBarController =
       SearchBarController();
 
   final TextEditingController _hoursMin = new TextEditingController(text: "0");
@@ -31,19 +30,18 @@ class _ModuleSearchPageState extends State<ModuleSearchPage> {
   final TextEditingController _peopleMax =
       new TextEditingController(text: "999");
 
-  Future<List<StoryModUsing>> _getTestModules(String text) async {
+  Future<List<StoryMod>> _getTestModules(String text) async {
     await Future.delayed(Duration(seconds: text.length == 4 ? 10 : 1));
-    List<StoryModUsing> posts = [];
+    List<StoryMod> posts = [];
 
     var random = new Random();
     var faker = new Faker();
     for (int i = 0; i < 10; i++) {
-      StoryModUsing mod = new StoryModUsing([], faker.company.name(), 0, 0, 0, 0, 0);
+      StoryMod mod = new StoryMod([], faker.company.name(), 0, 0, 0, 0, 0);
       mod.author = new Faker().person.name();
       mod.likes = random.nextInt(100);
-      mod.thumbnailImg = COCBmobServerFile();
-      mod.thumbnailImg.serverfile = BmobFile();
-      mod.thumbnailImg.serverfile.url =
+      mod.thumbnailImg= COC_File();
+      mod.thumbnailImg.url =
           "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1381105898,90479310&fm=26&gp=0.jpg";
       mod.descript = "This is a good module";
       mod.tags = ["OULALA", "LALALA"];
@@ -63,7 +61,7 @@ class _ModuleSearchPageState extends State<ModuleSearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: SearchBar<StoryModUsing>(
+        child: SearchBar<StoryMod>(
           searchBarPadding: EdgeInsets.symmetric(horizontal: 10),
           headerPadding: EdgeInsets.symmetric(horizontal: 10),
           listPadding: EdgeInsets.only(left: 10,right: 10,top: 5),
@@ -78,7 +76,7 @@ class _ModuleSearchPageState extends State<ModuleSearchPage> {
             OnSearchCanceled();
           },
           mainAxisSpacing: 10,
-          onItemFound: (StoryModUsing modUsing, int index) {
+          onItemFound: (StoryMod modUsing, int index) {
             return buildItemWidget(modUsing, context);
           },
         ),
@@ -552,7 +550,7 @@ class _ModuleSearchPageState extends State<ModuleSearchPage> {
     );
   }
 
-  Widget buildItemWidget(StoryModUsing post, BuildContext context) {
+  Widget buildItemWidget(StoryMod post, BuildContext context) {
     return ModuleCard(post);
   }
 
@@ -588,7 +586,7 @@ class _ModuleSearchPageState extends State<ModuleSearchPage> {
   String _value = 'Recent';
   Widget buildSortBtn() {
     final List<String> items = ['Most Likes', 'Least Likes', 'Recent', 'Old'];
-    final Map<String, int Function(StoryModUsing, StoryModUsing)> itemsfuncs = {
+    final Map<String, int Function(StoryMod, StoryMod)> itemsfuncs = {
       'Most Likes': widget._searchRepository.sortByLikesMost2Least,
       'Least Likes': widget._searchRepository.sortByLikesLeast2Most,
       'Recent': widget._searchRepository.sortByTimeNew2Old,

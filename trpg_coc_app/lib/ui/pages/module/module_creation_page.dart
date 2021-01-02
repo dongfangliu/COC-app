@@ -16,7 +16,6 @@ import 'package:trpgcocapp/bloc/module_creation/module_creation_repository.dart'
 import 'package:trpgcocapp/data/char_sheet/char_data.dart';
 import 'package:trpgcocapp/data/file/coc_file.dart';
 import 'package:trpgcocapp/data/storyModule/storyMod.dart';
-import 'package:trpgcocapp/data/storyModule/storyModCreate.dart';
 import 'package:trpgcocapp/ui/pages/character_sheet/char_sheet.dart';
 import 'package:trpgcocapp/ui/pages/module/scene_creation_page.dart';
 import 'map_creation_page.dart';
@@ -124,14 +123,14 @@ class moduleCreationState extends State<moduleCreationPage> {
                   image: DecorationImage(
                       colorFilter: new ColorFilter.mode(
                           Colors.black.withOpacity(0.2), BlendMode.dstATop),
-                      image: buildCOCEditableImg(
+                      image: buildCOCFileImg(
                           _moduleCreationBloc.getModule().thumbnailImg),
                       fit: BoxFit.fitWidth)),
               child: InkWell(
                 onTap: () async {
                   File f = await ModuleCreationHelper.pickImage();
                   if (f != null) {
-                    _moduleCreationBloc.getModule().thumbnailImg.setFile(f);
+                    await _moduleCreationBloc.getModule().thumbnailImg.Update(f);
                   }
                   setState(() {});
                 },
@@ -144,13 +143,13 @@ class moduleCreationState extends State<moduleCreationPage> {
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           image: DecorationImage(
-                              image: buildCOCEditableImg(
+                              image: buildCOCFileImg(
                                   _moduleCreationBloc.getModule().iconImg),
                               fit: BoxFit.fitWidth)),
                       child: InkWell(onTap: () async {
                         File f = await ModuleCreationHelper.pickImage();
                         if (f != null) {
-                          _moduleCreationBloc.getModule().iconImg.setFile(f);
+                          await _moduleCreationBloc.getModule().iconImg.Update(f);
                         }
 
                         setState(() {});
@@ -261,7 +260,7 @@ class moduleCreationState extends State<moduleCreationPage> {
                     ),
                   );
                 } else {
-                  StorySceneCreate scene = _moduleCreationBloc.getModule().map.scenes[index];
+                  StoryScene scene = _moduleCreationBloc.getModule().map.scenes[index];
                   return Container(
                     margin: EdgeInsets.all(5),
                     width: MediaQuery.of(context).size.height * 0.3,
@@ -274,7 +273,7 @@ class moduleCreationState extends State<moduleCreationPage> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
                           Image(
-                            image: buildCOCEditableImg(scene.subScenes[scene.mainSceneIdx].bgImg),
+                            image: buildCOCFileImg(scene.subScenes[scene.mainSceneIdx].bgImg),
                             fit: BoxFit.fitWidth,
                             width: MediaQuery.of(context).size.height * 0.3,
                             height: MediaQuery.of(context).size.height * 0.18,
@@ -352,7 +351,7 @@ class moduleCreationState extends State<moduleCreationPage> {
                     ),
                   );
                 } else {
-                  CharDataCreate npc =
+                  CharData npc =
                       _moduleCreationBloc.getModule().npcs[index];
                   return Container(
                     margin: EdgeInsets.only(left: 5, right: 5),
@@ -367,7 +366,7 @@ class moduleCreationState extends State<moduleCreationPage> {
                         mainAxisSize: MainAxisSize.max,
                         children: <Widget>[
                           Image(
-                            image: buildCOCEditableImg(npc.avatar),
+                            image: buildCOCFileImg(npc.avatar),
                             fit: BoxFit.fill,
                             width: MediaQuery.of(context).size.height * 0.13,
                             height: MediaQuery.of(context).size.height * 0.13,

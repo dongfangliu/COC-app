@@ -9,10 +9,11 @@ part of 'CommentLikes.dart';
 Comment<CoommentSource, ContentType, CommentTarget>
     _$CommentFromJson<CoommentSource, ContentType, CommentTarget>(
         Map<String, dynamic> json) {
-  return Comment<CoommentSource, ContentType, CommentTarget>()
-    ..from = _dataFromJson(json['from'] as Map<String, dynamic>)
-    ..content = _dataFromJson(json['content'] as Map<String, dynamic>)
-    ..target = _dataFromJson(json['target'] as Map<String, dynamic>);
+  return Comment<CoommentSource, ContentType, CommentTarget>(
+    from: _dataFromJson(json['from'] as Map<String, dynamic>),
+    content: _dataFromJson(json['content'] as Map<String, dynamic>),
+    target: _dataFromJson(json['target'] as Map<String, dynamic>),
+  );
 }
 
 Map<String, dynamic>
@@ -27,10 +28,11 @@ Map<String, dynamic>
 StrComment<CoommentSource, CommentTarget>
     _$StrCommentFromJson<CoommentSource, CommentTarget>(
         Map<String, dynamic> json) {
-  return StrComment<CoommentSource, CommentTarget>()
+  return StrComment<CoommentSource, CommentTarget>(
+    target: _dataFromJson(json['target'] as Map<String, dynamic>),
+  )
     ..from = _dataFromJson(json['from'] as Map<String, dynamic>)
-    ..content = _dataFromJson(json['content'] as Map<String, dynamic>)
-    ..target = _dataFromJson(json['target'] as Map<String, dynamic>);
+    ..content = _dataFromJson(json['content'] as Map<String, dynamic>);
 }
 
 Map<String, dynamic> _$StrCommentToJson<CoommentSource, CommentTarget>(
@@ -43,9 +45,10 @@ Map<String, dynamic> _$StrCommentToJson<CoommentSource, CommentTarget>(
 
 Like<LikeSource, LikeTarget> _$LikeFromJson<LikeSource, LikeTarget>(
     Map<String, dynamic> json) {
-  return Like<LikeSource, LikeTarget>()
-    ..from = _dataFromJson(json['from'] as Map<String, dynamic>)
-    ..target = _dataFromJson(json['target'] as Map<String, dynamic>);
+  return Like<LikeSource, LikeTarget>(
+    from: _dataFromJson(json['from'] as Map<String, dynamic>),
+    target: _dataFromJson(json['target'] as Map<String, dynamic>),
+  );
 }
 
 Map<String, dynamic> _$LikeToJson<LikeSource, LikeTarget>(
@@ -56,9 +59,10 @@ Map<String, dynamic> _$LikeToJson<LikeSource, LikeTarget>(
     };
 
 BmobLike _$BmobLikeFromJson(Map<String, dynamic> json) {
-  return BmobLike()
-    ..from = _dataFromJson(json['from'] as Map<String, dynamic>)
-    ..target = _dataFromJson(json['target'] as Map<String, dynamic>);
+  return BmobLike(
+    from: _dataFromJson(json['from'] as Map<String, dynamic>),
+    target: _dataFromJson(json['target'] as Map<String, dynamic>),
+  );
 }
 
 Map<String, dynamic> _$BmobLikeToJson(BmobLike instance) => <String, dynamic>{
@@ -67,10 +71,10 @@ Map<String, dynamic> _$BmobLikeToJson(BmobLike instance) => <String, dynamic>{
     };
 
 BmobStrComment _$BmobStrCommentFromJson(Map<String, dynamic> json) {
-  return BmobStrComment()
-    ..from = _dataFromJson(json['from'] as Map<String, dynamic>)
-    ..content = _dataFromJson(json['content'] as Map<String, dynamic>)
-    ..target = _dataFromJson(json['target'] as Map<String, dynamic>);
+  return BmobStrComment(
+    from: _dataFromJson(json['from'] as Map<String, dynamic>),
+    target: _dataFromJson(json['target'] as Map<String, dynamic>),
+  )..content = _dataFromJson(json['content'] as Map<String, dynamic>);
 }
 
 Map<String, dynamic> _$BmobStrCommentToJson(BmobStrComment instance) =>

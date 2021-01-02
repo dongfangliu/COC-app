@@ -28,18 +28,22 @@ class _TestMainPageState extends State<TestMainPage> {
           BottomNavigationBarItem(
             icon: Icon(FontAwesomeIcons.folder, size: 20,),
             label: "Games",
+//            title: Text("Games"),
           ),
           BottomNavigationBarItem(
             icon: Icon(FontAwesomeIcons.paperPlane, size: 20,),
             label: "Friends",
+//            title: Text("Friends"),
           ),
           BottomNavigationBarItem(
             icon: Icon(FontAwesomeIcons.map, size: 20,),
             label: "Modules",
+//            title: Text("Modules"),
           ),
           BottomNavigationBarItem(
             icon: Icon(FontAwesomeIcons.userAlt, size: 20,),
             label: "Me",
+//            title: Text("Me"),
           ),
         ],
       ),

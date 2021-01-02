@@ -2,12 +2,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:matrix_gesture_detector/matrix_gesture_detector.dart';
-import 'package:trpgcocapp/data/storyModule/storyModOnUse.dart';
+import 'package:trpgcocapp/data/storyModule/storyMod.dart';
 import 'package:trpgcocapp/ui/pages/module/scene_demo_page.dart';
 
 
 class StoryMapDemoWidget extends StatefulWidget {
-  StoryMapUsing map;
+  StoryMap map;
   @override
   State<StatefulWidget> createState() {
     return StoryMapDemoWidgetState();
@@ -146,7 +146,7 @@ class StoryMapDemoWidgetState extends State<StoryMapDemoWidget> {
   Widget getMapBg(BuildContext context) {
     return Container(
       color: Colors.transparent,
-      child: CachedNetworkImage( imageUrl:widget.map.mapImg.serverfile.url,
+      child: CachedNetworkImage( imageUrl:widget.map.mapImg.url,
         fit: BoxFit.fitWidth,
       ),
 //color: Colors.transparent,
@@ -155,7 +155,7 @@ class StoryMapDemoWidgetState extends State<StoryMapDemoWidget> {
 
   void buildMapPoints(BuildContext context) {
     movableMapPoints.clear();
-    for (StorySceneUsing scene in widget.map.scenes) {
+    for (StoryScene scene in widget.map.scenes) {
       movableMapPoints.add(storyMapPointDemoWidget(widget.map,scene, this.callback));
     }
   }
@@ -170,8 +170,8 @@ class StoryMapDemoWidgetState extends State<StoryMapDemoWidget> {
 }
 
 class storyMapPointDemoWidget extends StatefulWidget {
-  StoryMapUsing map;
-  StorySceneUsing scene;
+  StoryMap map;
+  StoryScene scene;
 
   Function setStateParent;
   final TextEditingController _controller = new TextEditingController();
