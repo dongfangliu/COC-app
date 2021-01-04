@@ -181,7 +181,7 @@ class moduleDemoPageState extends State<moduleDemoPage> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
                           Image(
-                            image: CachedNetworkImageProvider(scene.subScenes[scene.mainSceneIdx].bgImg.url),
+                            image: buildCOCFileImg(scene.subScenes[scene.mainSceneIdx].bgImg),
                             fit: BoxFit.fitWidth,
                             width: MediaQuery.of(context).size.height * 0.3,
                             height: MediaQuery.of(context).size.height * 0.18,
