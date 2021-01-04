@@ -89,7 +89,7 @@ class StorySubScene {
 
 @JsonSerializable()
 class StoryMod extends BmobObject {
-  StoryMap map;
+  StoryMap map = new StoryMap();
   StoryMod(this.npcs, this.moduleName, this.hours_min, this.hours_max,
       this.people_min, this.people_max, this.likes);
   List<CharDataTemplate> npcs = [];

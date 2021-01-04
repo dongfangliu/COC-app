@@ -7,7 +7,7 @@ import 'package:trpgcocapp/bloc/module_demostration/module_demo_repository.dart'
 import 'package:trpgcocapp/data/storyModule/storyMod.dart';
 import 'module_demo_event.dart';
 class ModuleDemoBloc extends TimecostOperationBloc {
-  StoryMod mod;
+  StoryMod mod = new StoryMod([],"test",0,999,0,10,0);
   @override
   TimecostOperationState get initialState => NotInitialized();
   ModuleDemoBloc(){

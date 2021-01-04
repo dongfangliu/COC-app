@@ -10,6 +10,7 @@ import 'package:trpgcocapp/bloc/common/timecost_op/timecost_operation_event.dart
 import 'package:trpgcocapp/bloc/common/timecost_op/timecost_operation_state.dart';
 import 'package:trpgcocapp/bloc/module_demostration/module_demo_bloc.dart';
 import 'package:trpgcocapp/data/char_sheet/char_data.dart';
+import 'package:trpgcocapp/data/file/coc_file.dart';
 import 'package:trpgcocapp/data/storyModule/storyMod.dart';
 import 'package:trpgcocapp/ui/pages/module/scene_demo_page.dart';
 
@@ -100,8 +101,7 @@ class moduleDemoPageState extends State<moduleDemoPage> {
                   image: DecorationImage(
                       colorFilter: new ColorFilter.mode(
                           Colors.black.withOpacity(0.2), BlendMode.dstATop),
-                      image: CachedNetworkImageProvider(
-                          _moduleDemoBloc.mod.thumbnailImg.url),
+                      image: buildCOCFileImg(_moduleDemoBloc.mod.thumbnailImg),
                       fit: BoxFit.fitWidth)),
               child: InkWell(
                 onTap: () async {
@@ -115,8 +115,7 @@ class moduleDemoPageState extends State<moduleDemoPage> {
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           image: DecorationImage(
-                              image: CachedNetworkImageProvider(
-                                  _moduleDemoBloc.mod.iconImg.url),
+                              image: buildCOCFileImg(_moduleDemoBloc.mod.iconImg),
                               fit: BoxFit.fitWidth)),
                       child: InkWell(onTap: () {
                       }),
