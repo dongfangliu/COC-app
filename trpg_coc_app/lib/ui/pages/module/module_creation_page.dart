@@ -366,7 +366,7 @@ class moduleCreationState extends State<moduleCreationPage> {
                         mainAxisSize: MainAxisSize.max,
                         children: <Widget>[
                           Image(
-                            image: buildCOCFileImg(npc.avatar),
+                            image: buildCOCFileImg(npc.infoData.avatar),
                             fit: BoxFit.fill,
                             width: MediaQuery.of(context).size.height * 0.13,
                             height: MediaQuery.of(context).size.height * 0.13,

@@ -243,7 +243,7 @@ class moduleDemoPageState extends State<moduleDemoPage> {
                         mainAxisSize: MainAxisSize.max,
                         children: <Widget>[
                           Image(
-                            image: CachedNetworkImageProvider(npc.avatar.url),
+                            image: CachedNetworkImageProvider(npc.infoData.avatar.url),
                             fit: BoxFit.fill,
                             width: MediaQuery.of(context).size.height * 0.13,
                             height: MediaQuery.of(context).size.height * 0.13,

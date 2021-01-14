@@ -12,9 +12,6 @@ CharDataTemplate _$CharDataTemplateFromJson(Map<String, dynamic> json) {
     ..updatedAt = json['updatedAt'] as String
     ..objectId = json['objectId'] as String
     ..ACL = json['ACL'] as Map<String, dynamic>
-    ..avatar = json['avatar'] == null
-        ? null
-        : COC_File.fromJson(json['avatar'] as Map<String, dynamic>)
     ..infoData = json['infoData'] == null
         ? null
         : InfoData.fromJson(json['infoData'] as Map<String, dynamic>)
@@ -44,7 +41,6 @@ Map<String, dynamic> _$CharDataTemplateToJson(CharDataTemplate instance) =>
       'updatedAt': instance.updatedAt,
       'objectId': instance.objectId,
       'ACL': instance.ACL,
-      'avatar': instance.avatar,
       'infoData': instance.infoData,
       'attrData': instance.attrData,
       'occuData': instance.occuData,
@@ -60,9 +56,6 @@ CharData _$CharDataFromJson(Map<String, dynamic> json) {
     ..updatedAt = json['updatedAt'] as String
     ..objectId = json['objectId'] as String
     ..ACL = json['ACL'] as Map<String, dynamic>
-    ..avatar = json['avatar'] == null
-        ? null
-        : COC_File.fromJson(json['avatar'] as Map<String, dynamic>)
     ..infoData = json['infoData'] == null
         ? null
         : InfoData.fromJson(json['infoData'] as Map<String, dynamic>)
@@ -91,7 +84,6 @@ Map<String, dynamic> _$CharDataToJson(CharData instance) => <String, dynamic>{
       'updatedAt': instance.updatedAt,
       'objectId': instance.objectId,
       'ACL': instance.ACL,
-      'avatar': instance.avatar,
       'infoData': instance.infoData,
       'attrData': instance.attrData,
       'occuData': instance.occuData,

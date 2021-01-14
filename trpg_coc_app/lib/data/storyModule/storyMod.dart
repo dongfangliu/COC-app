@@ -64,7 +64,7 @@ class StoryScene {
   int mainSceneIdx = 0;
   double xPosition;
   double yPosition;
-  List<StorySubScene> subScenes = [];
+  List<StorySubScene> subScenes = [new StorySubScene("default")];
   List<int> npcsId = [];
 
   StoryScene(this.name, this.mainSceneIdx, this.npcsId, this.xPosition,

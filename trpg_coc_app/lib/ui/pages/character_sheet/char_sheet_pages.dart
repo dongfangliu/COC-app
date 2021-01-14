@@ -1,5 +1,7 @@
 library CharSheetPages;
 
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -8,6 +10,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:trpgcocapp/bloc/char_sheet/char_sheet_bloc.dart';
 import 'package:trpgcocapp/bloc/char_sheet/char_sheet_events.dart';
 import 'package:trpgcocapp/bloc/char_sheet/char_sheet_states.dart';
+import 'package:trpgcocapp/bloc/module_creation/module_creation_repository.dart';
 import 'package:trpgcocapp/data/char_sheet/char_data_part.dart';
 import 'package:trpgcocapp/data/char_sheet/data_repository/weapons.dart';
 import 'package:trpgcocapp/data/file/coc_file.dart';

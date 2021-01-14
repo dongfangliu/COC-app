@@ -14,7 +14,7 @@ part 'char_data.g.dart';
 
 @JsonSerializable()
 class CharDataTemplate extends BmobObject{
-  COC_File avatar;
+
   InfoData infoData;
   AttrData attrData;
   OccuData occuData;
