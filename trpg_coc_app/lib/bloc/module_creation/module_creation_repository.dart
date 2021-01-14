@@ -46,10 +46,10 @@ class ModuleCreationRepository {
   }
    Future<OperateResult> submmit() async {
     try {
-      StoryMod modUsing =
-          await ModuleCreationHelper.convertToUsing(modCreate);
+//      StoryMod modUsing =
+//          await ModuleCreationHelper.convertToUsing(modCreate);
       // others
-      BmobSaved bmobSaved = await modUsing.save();
+      BmobSaved bmobSaved = await modCreate.save();
       OperateResult result = OperateResult();
       result.isSuccess = true;
       result.result = null;
