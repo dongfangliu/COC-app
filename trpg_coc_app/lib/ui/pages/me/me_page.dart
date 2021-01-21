@@ -61,7 +61,8 @@ class _MePageState extends State<MePage> {
             child: CircleAvatar(
               // TODO Show avatar
               radius: 45,
-              backgroundImage: AssetImage('assets/images/user_avatar.png'),
+              backgroundImage: NetworkImage(currentUser.avatar.url),
+              // backgroundImage: AssetImage('assets/images/user_avatar.png'),
               backgroundColor: Colors.grey,
             ),
           ), // User Avatar

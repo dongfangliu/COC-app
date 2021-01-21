@@ -37,59 +37,60 @@ import 'package:trpgcocapp/ui/pages/login/login_page.dart';
 import 'package:trpgcocapp/ui/pages/login/splash_page.dart';
 import 'package:trpgcocapp/ui/pages/main/test_main_page.dart';
 
-// Test main()
-// void main() => runApp(MyApp());
-// class MyApp extends StatelessWidget {
-//  @override
-//  Widget build(BuildContext context) {
-//    return new MaterialApp(
-//      home: CharSheet(isNPC: false,),
-//    );
-//  }
-// }
-
-void main() {
- BlocSupervisor.delegate = AppBlocDelegate();
- runApp(
-   BlocProvider(
-     create: (context) => AUTBloc()..add(AppStarted()),
-     child: MyApp(),
-   )
- );
-}
-
+// Test main() for character sheet
+void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
  @override
  Widget build(BuildContext context) {
-   CurrentUser.getInstance().readUser().then((currentUser){
-     if (currentUser.objectID != null) {
-       UserConnector.getUserByObjectID(currentUser.objectID).then((appUser){
-         //BlocProvider.of<AUTBloc>(context).add(LoggedIn(appUser));
-         BlocProvider.of<AUTBloc>(context).add(LoggedOut());
-       }).catchError((e){
-         BlocProvider.of<AUTBloc>(context).add(LoggedOut());
-       });
-     } else {
-       BlocProvider.of<AUTBloc>(context).add(LoggedOut());
-     }
-   });
-
-   return MaterialApp(
-     debugShowCheckedModeBanner: false,
-     home: BlocBuilder<AUTBloc, AUTState>(
-       builder: (context, state){
-         if (state is Authenticated) {
-           return TestMainPage(state.currentUser);
-         }
-         if (state is Unauthenticated) {
-           return LoginPage();
-         }
-         return SplashPage();
-       },
-     ),
+   return new MaterialApp(
+     home: CharSheet(isNPC: false,),
    );
  }
 }
+
+// Test main() for authentication, login and main page
+// void main() {
+//  BlocSupervisor.delegate = AppBlocDelegate();
+//  runApp(
+//    BlocProvider(
+//      create: (context) => AUTBloc()..add(AppStarted()),
+//      child: MyApp(),
+//    )
+//  );
+// }
+//
+// class MyApp extends StatelessWidget {
+//  @override
+//  Widget build(BuildContext context) {
+//    CurrentUser.getInstance().readUser().then((currentUser){
+//      if (currentUser.objectID != null) {
+//        UserConnector.getUserByObjectID(currentUser.objectID).then((appUser){
+//          BlocProvider.of<AUTBloc>(context).add(LoggedIn(appUser));
+//          // BlocProvider.of<AUTBloc>(context).add(LoggedOut());
+//        }).catchError((e){
+//          BlocProvider.of<AUTBloc>(context).add(LoggedOut());
+//        });
+//      } else {
+//        BlocProvider.of<AUTBloc>(context).add(LoggedOut());
+//      }
+//    });
+//
+//    return MaterialApp(
+//      debugShowCheckedModeBanner: false,
+//      home: BlocBuilder<AUTBloc, AUTState>(
+//        builder: (context, state){
+//          if (state is Authenticated) {
+//            return TestMainPage(state.currentUser);
+//          }
+//          if (state is Unauthenticated) {
+//            return LoginPage();
+//          }
+//          return SplashPage();
+//        },
+//      ),
+//    );
+//  }
+// }
 
 
 

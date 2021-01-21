@@ -10,6 +10,7 @@ class InfoData extends CharDataPart {
   String sex = "";
   String residence = "";
   String birthplace = "";
+
   InfoData();
 
   @override

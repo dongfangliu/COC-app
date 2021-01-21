@@ -54,7 +54,7 @@ class _TestMainPageState extends State<TestMainPage> {
                 return Center(child: Text('Here are your friends.'));
                 break;
               case 2:
-                return moduleDemoPage();
+                return moduleCreationPage();
                 break;
               case 3:
                 return MePage(widget.currentUser);

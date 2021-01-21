@@ -105,7 +105,8 @@ class _MePageUserState extends State<MePageUser> {
             ),  // Avatar text
             CircleAvatar(
               radius: 20,
-              backgroundImage: AssetImage('assets/images/user_avatar.png'),
+              // backgroundImage: AssetImage('assets/images/user_avatar.png'),
+              backgroundImage: NetworkImage(currentUser.avatar.url),
               backgroundColor: Colors.grey,
             ),
             Padding(
