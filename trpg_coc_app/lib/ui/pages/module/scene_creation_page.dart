@@ -8,14 +8,12 @@ import 'package:selectable_container/selectable_container.dart';
 import 'package:trpgcocapp/bloc/module_creation/module_creation_repository.dart';
 import 'package:trpgcocapp/data/file/coc_file.dart';
 import 'package:trpgcocapp/data/storyModule/storyMod.dart';
-import 'package:trpgcocapp/data/storyModule/storyModCreate.dart';
-import 'package:trpgcocapp/data/storyModule/storyModOnUse.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image/image.dart' as imageLib;
 
 class sceneCreationPage extends StatefulWidget {
-  StorySceneCreate _scene;
-  StorySubSceneCreate _curScene;
+  StoryScene _scene;
+  StorySubScene _curScene;
   String _curTime = "noon";
   Map<String,String> timeofDay = {
     "Early morning":"AddictiveBlue",
@@ -45,17 +43,20 @@ class sceneCreationPageState extends State<sceneCreationPage> {
   String _imagefileName;
 
   var filters_map = Map.fromIterable(presetFiltersList, key: (e) => e.name, value: (e) => e);
-  Future<void> setImage(COCBmobEditable image) async {
+  Future<void> setImage(COC_File image) async {
     File f;
-    switch(image.filesource){
+    switch(image.file_source){
       case FILE_SOURCE.ASSET:
-        f =await FileGenerator.fromAsset(image.filePath);
+        f =await FileGenerator.fromAsset(image.url);
         break;
       case FILE_SOURCE.STORAGE:
-      f = image.file;
+      f = File(image.url);
         break;
       case FILE_SOURCE.NETWORK:
-      f = await FileGenerator.fromURL(image.filePath, _imagefileName);
+      f = await FileGenerator.fromURL(image.url, _imagefileName);
+        break;
+      case FILE_SOURCE.INVALID:
+        // TODO: Handle this case.
         break;
     }
     var img = imageLib.decodeImage(f.readAsBytesSync());
@@ -104,7 +105,7 @@ class sceneCreationPageState extends State<sceneCreationPage> {
   }
 
   Widget buildSceneSelectionDropDown(BuildContext context) {
-    return DropdownButton<StorySubSceneCreate>(
+    return DropdownButton<StorySubScene>(
       value: widget._scene.subScenes.length == 0?null: (widget._curScene==null?widget._scene.subScenes[0]:widget._curScene),
       icon: Icon(Icons.arrow_drop_down),
       iconSize: 24,
@@ -114,14 +115,14 @@ class sceneCreationPageState extends State<sceneCreationPage> {
         height: 2,
         color: Colors.deepPurpleAccent,
       ),
-      onChanged: (StorySubSceneCreate value) {
+      onChanged: (StorySubScene value) {
         setState(() {
           widget._curScene = value;
         });
       },
       items: widget._scene.subScenes.length == 0
           ? [
-              DropdownMenuItem<StorySubSceneCreate>(
+              DropdownMenuItem<StorySubScene>(
                 value: null,
                 child:SizedBox(
                   width: MediaQuery.of(context).size.width/5, // for example
@@ -130,9 +131,9 @@ class sceneCreationPageState extends State<sceneCreationPage> {
               )
             ]
           : widget._scene.subScenes
-              .map<DropdownMenuItem<StorySubSceneCreate>>(
-              (StorySubScene<COCBmobEditable> value) {
-              return DropdownMenuItem<StorySubSceneCreate>(
+              .map<DropdownMenuItem<StorySubScene>>(
+              (StorySubScene value) {
+              return DropdownMenuItem<StorySubScene>(
                 value: value,
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width/5, // for example
@@ -184,7 +185,7 @@ class sceneCreationPageState extends State<sceneCreationPage> {
         child: PhotoFilter(image: _image, filename: _imagefileName, filter: filters_map[getTimeFilterName()],fit: BoxFit.fill,),
         onTap: () async {
           File f = await ModuleCreationHelper.pickImage();
-          widget._curScene.bgImg.setFile(f);
+          widget._curScene.bgImg.setFile(FILE_SOURCE.STORAGE, f.path);
           await setImage( widget._curScene.bgImg);
           setState(() {
           });
@@ -279,7 +280,7 @@ class sceneCreationPageState extends State<sceneCreationPage> {
                     child: new Text('Confirm'),
                     onPressed: () {
                       setState(() {
-                        widget._scene.subScenes.add(new StorySubSceneCreate(widget._controller.text));
+                        widget._scene.subScenes.add(new StorySubScene(widget._controller.text));
                       });
                       widget._controller.clear();
                       Navigator.of(cxt).pop();

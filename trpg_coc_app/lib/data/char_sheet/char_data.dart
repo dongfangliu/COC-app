@@ -13,9 +13,8 @@ import 'package:trpgcocapp/data/file/coc_file.dart';
 part 'char_data.g.dart';
 
 @JsonSerializable()
-class CharDataTemplate<T extends COCFile> extends BmobObject{
-  @JsonKey(fromJson: _dataFromJson, toJson: _dataToJson)
-  T avatar;
+class CharDataTemplate extends BmobObject{
+
   InfoData infoData;
   AttrData attrData;
   OccuData occuData;
@@ -36,7 +35,7 @@ class CharDataTemplate<T extends COCFile> extends BmobObject{
   }
 }
 @JsonSerializable()
-class CharData extends CharDataTemplate<COCBmobServerFile>{
+class CharData extends CharDataTemplate {
   factory CharData.fromJson(Map<String, dynamic> json) => _$CharDataFromJson(json);
 
   CharData();
@@ -44,11 +43,11 @@ class CharData extends CharDataTemplate<COCBmobServerFile>{
 }
 
 
-class CharDataCreate extends CharDataTemplate<COCBmobEditable>{
-
-  CharDataCreate(){avatar =COCBmobEditable.AssetImage(defaultFilePath: "assets/images/user_avatar.png"); }
-
-}
-T _dataFromJson<T>(Map<String, dynamic> input) => input['value'] as T;
-
-Map<String, dynamic> _dataToJson<T>(T input) => {'value': input};
+//class CharDataCreate extends CharDataTemplate{
+//
+//  CharDataCreate(){avatar =COC_File.Asset(url:"assets/images/user_avatar.png"); }
+//
+//}
+//T _dataFromJson<T>(Map<String, dynamic> input) => input['value'] as T;
+//
+//Map<String, dynamic> _dataToJson<T>(T input) => {'value': input};

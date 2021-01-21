@@ -6,14 +6,12 @@ part of 'char_data.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-CharDataTemplate<T> _$CharDataTemplateFromJson<T extends COCFile>(
-    Map<String, dynamic> json) {
-  return CharDataTemplate<T>()
+CharDataTemplate _$CharDataTemplateFromJson(Map<String, dynamic> json) {
+  return CharDataTemplate()
     ..createdAt = json['createdAt'] as String
     ..updatedAt = json['updatedAt'] as String
     ..objectId = json['objectId'] as String
     ..ACL = json['ACL'] as Map<String, dynamic>
-    ..avatar = _dataFromJson(json['avatar'] as Map<String, dynamic>)
     ..infoData = json['infoData'] == null
         ? null
         : InfoData.fromJson(json['infoData'] as Map<String, dynamic>)
@@ -37,14 +35,12 @@ CharDataTemplate<T> _$CharDataTemplateFromJson<T extends COCFile>(
         : StoryData.fromJson(json['storyData'] as Map<String, dynamic>);
 }
 
-Map<String, dynamic> _$CharDataTemplateToJson<T extends COCFile>(
-        CharDataTemplate<T> instance) =>
+Map<String, dynamic> _$CharDataTemplateToJson(CharDataTemplate instance) =>
     <String, dynamic>{
       'createdAt': instance.createdAt,
       'updatedAt': instance.updatedAt,
       'objectId': instance.objectId,
       'ACL': instance.ACL,
-      'avatar': _dataToJson(instance.avatar),
       'infoData': instance.infoData,
       'attrData': instance.attrData,
       'occuData': instance.occuData,
@@ -60,7 +56,6 @@ CharData _$CharDataFromJson(Map<String, dynamic> json) {
     ..updatedAt = json['updatedAt'] as String
     ..objectId = json['objectId'] as String
     ..ACL = json['ACL'] as Map<String, dynamic>
-    ..avatar = _dataFromJson(json['avatar'] as Map<String, dynamic>)
     ..infoData = json['infoData'] == null
         ? null
         : InfoData.fromJson(json['infoData'] as Map<String, dynamic>)
@@ -89,7 +84,6 @@ Map<String, dynamic> _$CharDataToJson(CharData instance) => <String, dynamic>{
       'updatedAt': instance.updatedAt,
       'objectId': instance.objectId,
       'ACL': instance.ACL,
-      'avatar': _dataToJson(instance.avatar),
       'infoData': instance.infoData,
       'attrData': instance.attrData,
       'occuData': instance.occuData,

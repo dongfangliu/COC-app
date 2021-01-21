@@ -6,25 +6,24 @@ part of 'storyMod.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-StoryMap<T> _$StoryMapFromJson<T extends COCFile>(Map<String, dynamic> json) {
-  return StoryMap<T>()
-    ..mapImg = _dataFromJson(json['mapImg'] as Map<String, dynamic>)
+StoryMap _$StoryMapFromJson(Map<String, dynamic> json) {
+  return StoryMap()
+    ..mapImg = json['mapImg'] == null
+        ? null
+        : COC_File.fromJson(json['mapImg'] as Map<String, dynamic>)
     ..scenes = (json['scenes'] as List)
         ?.map((e) =>
             e == null ? null : StoryScene.fromJson(e as Map<String, dynamic>))
         ?.toList();
 }
 
-Map<String, dynamic> _$StoryMapToJson<T extends COCFile>(
-        StoryMap<T> instance) =>
-    <String, dynamic>{
-      'mapImg': _dataToJson(instance.mapImg),
+Map<String, dynamic> _$StoryMapToJson(StoryMap instance) => <String, dynamic>{
+      'mapImg': instance.mapImg,
       'scenes': instance.scenes,
     };
 
-StoryScene<T> _$StorySceneFromJson<T extends COCFile>(
-    Map<String, dynamic> json) {
-  return StoryScene<T>(
+StoryScene _$StorySceneFromJson(Map<String, dynamic> json) {
+  return StoryScene(
     json['name'] as String,
     json['mainSceneIdx'] as int,
     (json['npcsId'] as List)?.map((e) => e as int)?.toList(),
@@ -36,8 +35,7 @@ StoryScene<T> _$StorySceneFromJson<T extends COCFile>(
       ?.toList();
 }
 
-Map<String, dynamic> _$StorySceneToJson<T extends COCFile>(
-        StoryScene<T> instance) =>
+Map<String, dynamic> _$StorySceneToJson(StoryScene instance) =>
     <String, dynamic>{
       'name': instance.name,
       'mainSceneIdx': instance.mainSceneIdx,
@@ -47,22 +45,22 @@ Map<String, dynamic> _$StorySceneToJson<T extends COCFile>(
       'npcsId': instance.npcsId,
     };
 
-StorySubScene<T> _$StorySubSceneFromJson<T extends COCFile>(
-    Map<String, dynamic> json) {
-  return StorySubScene<T>(
+StorySubScene _$StorySubSceneFromJson(Map<String, dynamic> json) {
+  return StorySubScene(
     json['name'] as String,
-  )..bgImg = _dataFromJson(json['bgImg'] as Map<String, dynamic>);
+  )..bgImg = json['bgImg'] == null
+      ? null
+      : COC_File.fromJson(json['bgImg'] as Map<String, dynamic>);
 }
 
-Map<String, dynamic> _$StorySubSceneToJson<T extends COCFile>(
-        StorySubScene<T> instance) =>
+Map<String, dynamic> _$StorySubSceneToJson(StorySubScene instance) =>
     <String, dynamic>{
       'name': instance.name,
-      'bgImg': _dataToJson(instance.bgImg),
+      'bgImg': instance.bgImg,
     };
 
-StoryMod<T> _$StoryModFromJson<T extends COCFile>(Map<String, dynamic> json) {
-  return StoryMod<T>(
+StoryMod _$StoryModFromJson(Map<String, dynamic> json) {
+  return StoryMod(
     (json['npcs'] as List)
         ?.map((e) => e == null
             ? null
@@ -83,17 +81,19 @@ StoryMod<T> _$StoryModFromJson<T extends COCFile>(Map<String, dynamic> json) {
         ? null
         : StoryMap.fromJson(json['map'] as Map<String, dynamic>)
     ..descript = json['descript'] as String
-    ..thumbnailImg = _dataFromJson(json['thumbnailImg'] as Map<String, dynamic>)
-    ..iconImg = _dataFromJson(json['iconImg'] as Map<String, dynamic>)
+    ..thumbnailImg = json['thumbnailImg'] == null
+        ? null
+        : COC_File.fromJson(json['thumbnailImg'] as Map<String, dynamic>)
+    ..iconImg = json['iconImg'] == null
+        ? null
+        : COC_File.fromJson(json['iconImg'] as Map<String, dynamic>)
     ..author = json['author'] as String
     ..era = _$enumDecodeNullable(_$ModEraEnumMap, json['era'])
     ..region = _$enumDecodeNullable(_$ModRegionEnumMap, json['region'])
     ..tags = (json['tags'] as List)?.map((e) => e as String)?.toList();
 }
 
-Map<String, dynamic> _$StoryModToJson<T extends COCFile>(
-        StoryMod<T> instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$StoryModToJson(StoryMod instance) => <String, dynamic>{
       'createdAt': instance.createdAt,
       'updatedAt': instance.updatedAt,
       'objectId': instance.objectId,
@@ -102,8 +102,8 @@ Map<String, dynamic> _$StoryModToJson<T extends COCFile>(
       'npcs': instance.npcs,
       'moduleName': instance.moduleName,
       'descript': instance.descript,
-      'thumbnailImg': _dataToJson(instance.thumbnailImg),
-      'iconImg': _dataToJson(instance.iconImg),
+      'thumbnailImg': instance.thumbnailImg,
+      'iconImg': instance.iconImg,
       'hours_min': instance.hours_min,
       'hours_max': instance.hours_max,
       'people_min': instance.people_min,

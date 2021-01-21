@@ -215,8 +215,7 @@ class _CharSheetFormState extends State<CharSheetForm> {
   _onFinishButtonPressed() {
     // TODO 需要在 CharDataCreate 中加入一个字段判断是否是 NPC 卡
     CharSheetState state = charSheetBloc.state;
-    CharDataCreate charData = CharDataCreate();
-
+    CharData charData = CharData();
     charData.infoData = state.charData["info"];
     charData.attrData = state.charData["attr"];
     charData.occuData = state.charData["occu"];

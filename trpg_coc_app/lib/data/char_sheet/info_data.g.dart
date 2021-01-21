@@ -11,6 +11,9 @@ InfoData _$InfoDataFromJson(Map<String, dynamic> json) {
     ..createdAt = json['createdAt'] as String
     ..updatedAt = json['updatedAt'] as String
     ..objectId = json['objectId'] as String
+    ..avatar = json['avatar'] == null
+        ? null
+        : COC_File.fromJson(json['avatar'] as Map<String, dynamic>)
     ..ACL = json['ACL'] as Map<String, dynamic>
     ..name = json['name'] as String
     ..era = json['era'] as String
@@ -25,6 +28,7 @@ Map<String, dynamic> _$InfoDataToJson(InfoData instance) => <String, dynamic>{
       'updatedAt': instance.updatedAt,
       'objectId': instance.objectId,
       'ACL': instance.ACL,
+  'avatar': instance.avatar,
       'name': instance.name,
       'era': instance.era,
       'age': instance.age,

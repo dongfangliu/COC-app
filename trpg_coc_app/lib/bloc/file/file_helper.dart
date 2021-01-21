@@ -54,7 +54,7 @@ class BmobFileHelper extends FileHelper{
   }
    Future<dynamic>  deleteFile(String remote_url) async {
     if (remote_url == null) {
-//      DataPlugin.toast("请先上传文件");
+      DataPlugin.toast("请先上传文件");
       throw Exception("No Remote File");
     }
     try{

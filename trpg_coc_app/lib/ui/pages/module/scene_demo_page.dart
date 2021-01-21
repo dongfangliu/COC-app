@@ -7,13 +7,12 @@ import 'package:photofilters/photofilters.dart';
 import 'package:selectable_container/selectable_container.dart';
 import 'package:trpgcocapp/data/file/coc_file.dart';
 import 'package:trpgcocapp/data/storyModule/storyMod.dart';
-import 'package:trpgcocapp/data/storyModule/storyModOnUse.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image/image.dart' as imageLib;
 
 class SceneDemoPage extends StatefulWidget {
-  StorySceneUsing _scene;
-  StorySubSceneUsing _curScene;
+  StoryScene _scene;
+  StorySubScene _curScene;
   String _curTime = "noon";
   Map<String,String> timeofDay = {
     "Early morning":"AddictiveBlue",
@@ -41,9 +40,9 @@ class SceneDemoPageState extends State<SceneDemoPage> {
   String _imagefileName;
 
   var filters_map = Map.fromIterable(presetFiltersList, key: (e) => e.name, value: (e) => e);
-  Future<void> setImage(COCBmobServerFile image) async {
+  Future<void> setImage(COC_File image) async {
     File f;
-    f = await FileGenerator.fromURL(image.serverfile.url, _imagefileName);
+    f = await FileGenerator.fromURL(image.url, _imagefileName);
     var img = imageLib.decodeImage(f.readAsBytesSync());
     _imagefileName = f.path;
     img = imageLib.copyResize(img, width:600);
@@ -87,7 +86,7 @@ class SceneDemoPageState extends State<SceneDemoPage> {
   }
 
   Widget buildSceneSelectionDropDown(BuildContext context) {
-    return DropdownButton<StorySubSceneUsing>(
+    return DropdownButton<StorySubScene>(
       value: widget._scene.subScenes.length == 0?null: (widget._curScene==null?widget._scene.subScenes[0]:widget._curScene),
       icon: Icon(Icons.arrow_drop_down),
       iconSize: 24,
@@ -97,14 +96,14 @@ class SceneDemoPageState extends State<SceneDemoPage> {
         height: 2,
         color: Colors.deepPurpleAccent,
       ),
-      onChanged: (StorySubSceneUsing value) {
+      onChanged: (StorySubScene value) {
         setState(() {
           widget._curScene = value;
         });
       },
       items: widget._scene.subScenes.length == 0
           ? [
-              DropdownMenuItem<StorySubSceneUsing>(
+              DropdownMenuItem<StorySubScene>(
                 value: null,
                 child:SizedBox(
                   width: MediaQuery.of(context).size.width/5, // for example
@@ -113,9 +112,9 @@ class SceneDemoPageState extends State<SceneDemoPage> {
               )
             ]
           : widget._scene.subScenes
-              .map<DropdownMenuItem<StorySubSceneUsing>>(
-              (StorySubScene<COCServerFile> value) {
-              return DropdownMenuItem<StorySubSceneUsing>(
+              .map<DropdownMenuItem<StorySubScene>>(
+              (StorySubScene value) {
+              return DropdownMenuItem<StorySubScene>(
                 value: value,
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width/5, // for example
