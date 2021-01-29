@@ -25,6 +25,15 @@ class CharSheet extends StatelessWidget {
 
   CharSheet({bool isNPC}){
     isNPC == null ? this.isNPC = false : this.isNPC = isNPC;
+  }  
+  
+  TextStyle _getTextStyle(double size) {
+    return TextStyle(
+        fontFamily: 'papyrus',
+        fontSize: size,
+        color: AppTheme.textColor,
+        decoration: TextDecoration.none
+    );
   }
 
   @override
@@ -34,20 +43,34 @@ class CharSheet extends StatelessWidget {
       navigationBar: CupertinoNavigationBar(
         backgroundColor: AppTheme.backgroundColor,
         actionsForegroundColor: Colors.grey,
-        middle: Text(
-          "Invesgator Sheet",
-          style: TextStyle(
-            decoration: TextDecoration.none,
-            color: AppTheme.textColor,
-            fontFamily: 'papyrus'
-          ),
-        ),
+        leading: _buildReturnButton(context),
+        middle: _buildTitle()
       ),
       child: BlocProvider<CharSheetBloc>(
         create: (context) => CharSheetBloc(isNPC),
         child: CharSheetForm(isNPC),
       )
     );
+  }
+
+  Widget _buildReturnButton(BuildContext context) {
+    return CupertinoButton(
+      child: Icon(CupertinoIcons.back, color: AppTheme.textColor,),
+      onPressed: () {
+        _onReturnButtonPressed(context);
+      },
+    );
+  }
+
+  Widget _buildTitle() {
+    return Text(
+      "Investigator Sheet",
+      style: _getTextStyle(10),
+    );
+  }
+
+  void _onReturnButtonPressed(BuildContext context) {
+    Navigator.pop(context);
   }
   
 }

@@ -103,22 +103,20 @@ class _CharSheetPageInfoState extends State<CharSheetPageInfo> {
 
   Widget _buildAvatar() {
     // TODO 人物卡的头像暂时只作占位
-    return
-      InkWell(
-        onTap: () async {
-      File f = await ModuleCreationHelper.pickImage();
-      if (f != null) {
-        await data.avatar.Update(f);
-      }
-      setState(() {});
-    },child:
-
-      CircleAvatar(
-      radius: 45,
-      backgroundImage:buildCOCFileImg(data.avatar),
-      backgroundColor: Colors.grey,
-    )
-      );
+    return InkWell(
+      onTap: () async {
+        File f = await ModuleCreationHelper.pickImage();
+        if (f != null) {
+          await data.avatar.Update(f);
+        }
+        setState(() {});
+      },
+      child: CircleAvatar(
+        radius: 45,
+        backgroundImage: buildCOCFileImg(data.avatar),
+        backgroundColor: Colors.grey,
+      )
+    );
   }
 
   Widget _buildName() {

@@ -339,13 +339,23 @@ class moduleCreationState extends State<moduleCreationPage> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
+                            /* 潘一滔 210130
+                             * 添加了路由设置
+                             * 使得之后的页面可以通过下面设置的 name
+                             * 直接回到当前页面
+                             */
+                            settings: RouteSettings(name: "/module_creation_page"),
                             builder: (context) => CharSheet(isNPC: true,),
                           ),
                         ).then((value) {
-                        _moduleCreationBloc.getModule().npcs.add(value);
-                            setState(() {
-
-                            });
+                          /* 潘一滔 210130
+                           * 添加了判断返回值是否为 null
+                           * 防止出现 NPC 卡获取不到 CharData 的情况
+                           */
+                          if (value.runtimeType == CharData){
+                            _moduleCreationBloc.getModule().npcs.add(value);
+                          }
+                          setState(() {});
                         });
                       },
                     ),
