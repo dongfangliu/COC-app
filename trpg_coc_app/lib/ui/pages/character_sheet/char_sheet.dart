@@ -43,6 +43,8 @@ class CharSheet extends StatelessWidget {
       navigationBar: CupertinoNavigationBar(
         backgroundColor: AppTheme.backgroundColor,
         actionsForegroundColor: Colors.grey,
+        // TODO 下两行二选一？
+        // automaticallyImplyLeading: true,
         leading: _buildReturnButton(context),
         middle: _buildTitle()
       ),
